@@ -1,5 +1,5 @@
-import { Button } from "./components/ui/button";
-import WordPullUp from "./components/ui/word-pull-up";
+import { Button } from "@/components/ui/button";
+import WordPullUp from "@/components/ui/word-pull-up";
 
 function App() {
   return (

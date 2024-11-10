@@ -25,7 +25,10 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ]
+      ],
+      "@/pages/*": ["./src/pages/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/assets/*": ["./src/assets/*"]
     }
   },
   "include": ["src"]
