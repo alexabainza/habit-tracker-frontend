@@ -1,78 +1,133 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-});
-
-type FormData = z.infer<typeof formSchema>;
+import { joiResolver } from "@hookform/resolvers/joi";
+import { userSchema } from "@/utils/schemas";
+import { Eye, EyeOff } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const RegisterScreen: React.FC = () => {
-  const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+
+  const form = useForm({
+    resolver: joiResolver(userSchema),
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+    },
+    mode: "onSubmit",
   });
 
-  // Handle form submission
-  function onSubmit(values: FormData) {
-    console.log(values);
+  function onSubmit(data: any) {
+    // Log submitted data
+    console.log("submit clicked", data);
   }
-
   return (
-    <>
-      <h1>Login Screen</h1>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="shadcn" {...field} />
-                </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="shadcn" {...field} />
-                </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">Submit</Button>
-        </form>
-      </Form>
-    </>
+    <div className="flex justify-center items-center mt-12">
+      <Card className="w-[400px] bg-[var(--color-background)]">
+        <CardHeader>
+          <CardTitle className="text-4xl text-[var(--color-primary)] text-center">
+            Register
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col gap-0">
+                    <FormLabel className="font-medium text-xs">
+                      Username
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="shadcn"
+                        {...field}
+                        className="border-[#6490BC] rounded-md placeholder-gray-200" // Add your desired placeholder color here
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs text-red-400" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col gap-0">
+                    <FormLabel className="font-medium text-xs">Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        placeholder="shadcn"
+                        {...field}
+                        className="border-[#6490BC] rounded-md placeholder-gray-200" // Add your desired placeholder color here
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs text-red-400" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col gap-0">
+                    <FormLabel className="font-medium text-xs">
+                      Password
+                    </FormLabel>
+                    <FormControl className="relative">
+                      <div className="flex flex-row items-center rounded-md">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Enter your password"
+                          {...field}
+                          className="placeholder-gray-200 border-[#6490BC] "
+                        />
+                        <button
+                          type="button"
+                          onClick={togglePasswordVisibility}
+                          className="ml-2 text-[var(--color-primary)] "
+                        >
+                          {showPassword ? <EyeOff /> : <Eye />}
+                        </button>
+                      </div>
+                    </FormControl>
+                    <FormMessage className="text-xs text-red-400" />
+                  </FormItem>
+                )}
+              />
+              <p className="text-xs text-gray-500">
+                Already have an account? Login{" "}
+                <Link to="/login" className="underline hover:font-bold">
+                  here
+                </Link>
+              </p>
+              <Button className="bg-[#536489] text-white" type="submit">
+                Login
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

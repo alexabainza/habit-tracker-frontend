@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-50 flex h-20 w-full items-center justify-between text-[var(--color-primary)] bg-white py-3 shadow-sm dark:bg-gray-950 sm:px-6 md:px-8 lg:px-10">
-      <Link to="#" className="flex items-center">
+      <Link to="/" className="flex items-center">
         <MountainIcon className="h-6 w-6" />
         <span className="sr-only text-[var(--color-primary)]">Acme Inc</span>
       </Link>
@@ -82,7 +82,7 @@ const Navbar: React.FC = () => {
           >
             Contact
           </Link>
-          <Link to="#" className="flex items-center">
+          <Link to="/login" className="flex items-center">
             <Button
               variant="outline"
               className="rounded-xl mt-4 hover:bg-[var(--color-primary)] hover:text-white"
@@ -93,8 +93,7 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Desktop Login Button */}
-      <Link to="#" className="hidden lg:flex items-center">
+      <Link to="/login" className="hidden lg:flex items-center">
         <Button
           variant="outline"
           className="rounded-xl hover:bg-[var(--color-primary)] hover:text-white"

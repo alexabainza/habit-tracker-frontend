@@ -1,12 +1,11 @@
-import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import WordPullUp from "@/components/ui/word-pull-up";
 import { ArrowRightIcon } from "lucide-react";
 import React from "react";
+import { Link } from "react-router-dom";
 const LandingPage: React.FC = () => {
   return (
     <div className="items-start lg:px-16 sm:px-8 px-8">
-      <Navbar />
       <div className="mt-8 bg-[var(--color-background)] lg:py-40 sm:py-12 py-12 lg:px-8 sm:px-6 px-6 rounded-2xl">
         <section className="font-medium lg:w-1/2 sm:w-full w-full text-[var(--color-primary)] flex flex-col gap-6">
           <WordPullUp
@@ -19,7 +18,7 @@ const LandingPage: React.FC = () => {
             voluptatum! Taciti deserunt.
           </p>
 
-          <div className="flex justify-start">
+          <Link to="/login" className="flex justify-start">
             <Button
               variant="outline"
               className="lg:py-6 sm:py-4 py-4 px-8 rounded-full border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
@@ -27,7 +26,7 @@ const LandingPage: React.FC = () => {
               Get started
               <ArrowRightIcon className="w-4 h-4" />
             </Button>
-          </div>
+          </Link>
         </section>
       </div>
     </div>
