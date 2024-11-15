@@ -1,15 +1,17 @@
-import { Button } from "@/components/ui/button";
-import WordPullUp from "@/components/ui/word-pull-up";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import LandingPage from "@/pages/auth/Landing";
+import LoginScreen from "@/pages/auth/Login";
+import RegisterScreen from "@/pages/auth/Register";
 
 function App() {
   return (
-    <>
-      <WordPullUp
-        className="text-4xl font-bold tracking-[-0.02em] text-black dark:text-white md:text-7xl md:leading-[5rem]"
-        words="Welcome to my youtube channel"
-      />
-      <Button variant="outline">click if you love pcy</Button>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginScreen />} />
+        <Route path="/register" element={<RegisterScreen />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
