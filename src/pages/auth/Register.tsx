@@ -13,11 +13,12 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { userSchema } from "@/utils/schemas";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const RegisterScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -34,8 +35,31 @@ const RegisterScreen: React.FC = () => {
   });
 
   function onSubmit(data: any) {
-    // Log submitted data
-    console.log("submit clicked", data);
+    setIsLoading(true);
+
+    fetch("/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then(async (response) => {
+        const result = await response.json();
+        if (response.ok) {
+          alert("Registration successful!");
+          console.log("Server Response:", result);
+        } else {
+          alert(result.message || "Registration failed.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred. Please try again.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
   return (
     <div className="flex justify-center items-center mt-12">
@@ -120,9 +144,16 @@ const RegisterScreen: React.FC = () => {
                   here
                 </Link>
               </p>
-              <Button className="bg-[#536489] text-white" type="submit">
-                Login
-              </Button>
+              {isLoading ? (
+                <Button disabled>
+                  <Loader2 className="animate-spin" />
+                  Loading{" "}
+                </Button>
+              ) : (
+                <Button className="bg-[#536489] text-white" type="submit">
+                  Login
+                </Button>
+              )}
             </form>
           </Form>
         </CardContent>

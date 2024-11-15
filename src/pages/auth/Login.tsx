@@ -12,12 +12,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { userSchema } from "@/utils/schemas";
 
 const LoginScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -32,13 +33,34 @@ const LoginScreen: React.FC = () => {
     mode: "onSubmit",
   });
 
-  // Debugging: Log form errors
-  const { errors } = form.formState;
-  console.log(errors);
-
   function onSubmit(data: any) {
-    // Log submitted data
-    console.log("submit clicked", data);
+    setIsLoading(true);
+    fetch("/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        identifier: data.username,
+        password: data.password,
+      }),
+    })
+      .then(async (response) => {
+        const result = await response.json();
+        if (response.ok) {
+          console.log("Login successful:", result);
+          localStorage.setItem("token", result.data);
+        } else {
+          console.error("Login failed:", result.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error during login:", error);
+        alert("Something went wrong. Please try again later.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
 
   return (
@@ -58,7 +80,7 @@ const LoginScreen: React.FC = () => {
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-0">
                     <FormLabel className="font-medium text-xs">
-                      Username
+                      Username / Email
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -106,9 +128,16 @@ const LoginScreen: React.FC = () => {
                   here
                 </Link>
               </p>
-              <Button className="bg-[#536489] text-white" type="submit">
-                Login
-              </Button>
+              {isLoading ? (
+                <Button disabled>
+                  <Loader2 className="animate-spin" />
+                  Loading{" "}
+                </Button>
+              ) : (
+                <Button className="bg-[#536489] text-white" type="submit">
+                  Login
+                </Button>
+              )}
             </form>
           </Form>
         </CardContent>
