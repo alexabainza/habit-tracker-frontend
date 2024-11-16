@@ -13,12 +13,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { userSchema } from "@/utils/schemas";
 
 const LoginScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -50,8 +51,15 @@ const LoginScreen: React.FC = () => {
         if (response.ok) {
           console.log("Login successful:", result);
           localStorage.setItem("token", result.data);
+          navigate("/dashboard");
         } else {
-          console.error("Login failed:", result.message);
+          if (result.error === "User not found") {
+            alert("User does not exist. Please register.");
+          } else if (result.error === "Invalid credentials") {
+            alert("Invalid credentials. Please try again.");
+          } else {
+            alert(result.message || "An error occurred. Please try again.");
+          }
         }
       })
       .catch((error) => {
@@ -134,7 +142,10 @@ const LoginScreen: React.FC = () => {
                   Loading{" "}
                 </Button>
               ) : (
-                <Button className="bg-[#536489] text-white" type="submit">
+                <Button
+                  className="bg-[#536489] hover:bg-[var(--color-primary)] text-white"
+                  type="submit"
+                >
                   Login
                 </Button>
               )}

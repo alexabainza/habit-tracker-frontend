@@ -14,11 +14,12 @@ import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { userSchema } from "@/utils/schemas";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const RegisterScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -48,7 +49,10 @@ const RegisterScreen: React.FC = () => {
         const result = await response.json();
         if (response.ok) {
           alert("Registration successful!");
+          navigate("/login");
           console.log("Server Response:", result);
+        } else if (response.status === 409) {
+          alert("User already exists. Please try logging in.");
         } else {
           alert(result.message || "Registration failed.");
         }
@@ -150,8 +154,11 @@ const RegisterScreen: React.FC = () => {
                   Loading{" "}
                 </Button>
               ) : (
-                <Button className="bg-[#536489] text-white" type="submit">
-                  Login
+                <Button
+                  className="bg-[#536489] hover:bg-[var(--color-primary)] text-white"
+                  type="submit"
+                >
+                  Register
                 </Button>
               )}
             </form>

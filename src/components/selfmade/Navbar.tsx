@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { MountainIcon } from "lucide-react";
-import { Button } from "./ui/button";
+import { MountainIcon, User } from "lucide-react";
+import { Button } from "../ui/button";
 import { MenuIcon, XIcon } from "lucide-react"; // Import icons for the hamburger and close icons
 
 const Navbar: React.FC = () => {
@@ -50,7 +50,6 @@ const Navbar: React.FC = () => {
         }`}
       >
         <div className="flex flex-col items-center justify-center h-full">
-          {/* Add a button to explicitly close the menu */}
           <button
             onClick={closeMenu}
             className="absolute top-4 right-4 p-2 text-xl font-bold text-[var(--color-primary)]"
@@ -95,9 +94,10 @@ const Navbar: React.FC = () => {
 
       <Link to="/login" className="hidden lg:flex items-center">
         <Button
-          variant="outline"
+          variant="ghost"
           className="rounded-xl hover:bg-[var(--color-primary)] hover:text-white"
         >
+          <User />
           Login
         </Button>
       </Link>
