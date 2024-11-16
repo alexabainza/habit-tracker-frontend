@@ -10,8 +10,14 @@ export const handleError = (response: any, dispatch: Function) => {
     } else if (status === 401) {
       dispatch(signInFailure(data.message));
       alert("Invalid credentials. Please try again.");
-    } else {
+    } 
+    else if (status === 409) {
+      dispatch(signInFailure(data.message));
+      alert("User already exists. Please try logging in.");
+    }
+    else {
       dispatch(signInFailure(data.message || "An error occurred."));
       alert(data.message || "An error occurred. Please try again.");
     }
-  };
+  }
+

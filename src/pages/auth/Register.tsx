@@ -5,6 +5,7 @@ import {
   signInStart,
   signInFailure,
   signInSuccess,
+  resetState,
 } from "@/redux/user/userSlice";
 import {
   Form,
@@ -17,17 +18,19 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod"
+import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterUserSchema } from "@/utils/schemas";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { handleError } from "@/utils/authErrorHandler";
 
 const RegisterScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoading = useSelector((state: any) => state.user.loading);
-
+  // dispatch(resetState());
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
@@ -42,35 +45,24 @@ const RegisterScreen: React.FC = () => {
     mode: "onSubmit",
   });
 
-  function onSubmit(data: any) {
-    dispatch(signInStart());
-    fetch("http://localhost:8080/api/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then(async (response) => {
-        const result = await response.json();
-        if (result.ok) {
-          dispatch(signInSuccess(result.data));
-          alert("Registration successful!");
-          navigate("/login");
-        } else if (result.status === 409) {
-          dispatch(signInFailure(result.message));
-          alert("User already exists. Please try logging in.");
-        } else {
-          dispatch(signInFailure(result.message));
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post("/api/auth/register", form.getValues());
+      const result = response.data;
+      if (result.status === 201) {
+        alert("Reister successful!");
+        dispatch(signInSuccess(result.data));
+        navigate("/login");
+      }
+    } catch (error: any) {
+      if (error.response) {
+        handleError(error.response, dispatch);
+      } else {
+        alert("An unexpected error occurred. Please try again later.");
+      }
+    }
+  };
 
-          alert(result.message || "Registration failed.");
-        }
-      })
-      .catch((error) => {
-        dispatch(signInFailure(error.message));
-        alert("An error occurred. Please try again.");
-      });
-  }
   return (
     <div className="flex justify-center items-center mt-12">
       <Card className="w-[400px] bg-[var(--color-background)]">
@@ -81,7 +73,10 @@ const RegisterScreen: React.FC = () => {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="space-y-6"
+            >
               <FormField
                 control={form.control}
                 name="username"

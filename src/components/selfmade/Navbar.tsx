@@ -35,15 +35,6 @@ const Navbar: React.FC = () => {
   const closeMenu = () => setIsOpen(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!currentUser) {
-      // navigate("/");
-    } else {
-      navigate("/dashboard");
-    }
-  }, [currentUser, navigate]);
-
   const onSignOut = async () => {
     dispatch(signOutUserStart());
 
