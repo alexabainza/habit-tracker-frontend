@@ -4,6 +4,7 @@ import LoginScreen from "@/pages/auth/Login";
 import RegisterScreen from "@/pages/auth/Register";
 import Navbar from "@/components/selfmade/Navbar";
 import Dashboard from "@/pages/habits/Dashboard";
+import PrivateRoute from "@/components/selfmade/PrivateRoute";
 
 function App() {
   return (
@@ -14,7 +15,9 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
