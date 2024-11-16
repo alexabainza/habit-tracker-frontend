@@ -22,10 +22,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { LoaderIcon } from "lucide-react";
 
 const Dashboard: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [isDialogOpen, setIsDialogOpen] = useState(false); // Control dialog open/close
+  const [loading, setLoading] = useState(false);
 
   const form = useForm({
     resolver: joiResolver(habitSchema),
@@ -40,30 +42,30 @@ const Dashboard: React.FC = () => {
     console.log(form.getValues());
     try {
       if (currentUser) {
-      }
-      setLoading(true);
-      const res = await fetch("/api/habits/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...form.getValues(),
-          userRef: currentUser._id,
-        }),
-      });
-      const data = await res.json();
-      if (data.success === false) {
-        alert("Habit already exists");
+        setLoading(true);
+        const res = await fetch("http://localhost:8080/api/habits/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...form.getValues(),
+            userRef: currentUser._id,
+          }),
+        });
+        const data = await res.json();
+        if (data.success === false) {
+          alert("Habit already exists");
 
-        console.log(data.message);
-      } else {
-        alert("Habit addde successfully");
-        setIsDialogOpen(false);
-        form.reset();
+          console.log(data.message);
+        } else {
+          alert("Habit addde successfully");
+          setIsDialogOpen(false);
+          form.reset();
+        }
       }
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   };
 
@@ -134,8 +136,16 @@ const Dashboard: React.FC = () => {
               <Button
                 className="hover:bg-[var(--color-primary)] hover:text-white"
                 type="submit"
+                disabled={loading}
               >
-                Add habit
+                {loading ? (
+                  <div className="flex items-center gap-x-1.5">
+                    <LoaderIcon className="w-6 h-6 animate-spin" />
+                    Loading...
+                  </div>
+                ) : (
+                  "Add habit"
+                )}
               </Button>
             </form>
           </Form>

@@ -17,8 +17,8 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { joiResolver } from "@hookform/resolvers/joi";
-import { userSchema } from "@/utils/schemas";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { RegisterUserSchema } from "@/utils/schemas";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -33,7 +33,7 @@ const RegisterScreen: React.FC = () => {
   };
 
   const form = useForm({
-    resolver: joiResolver(userSchema),
+    resolver: zodResolver(RegisterUserSchema),
     defaultValues: {
       username: "",
       email: "",
