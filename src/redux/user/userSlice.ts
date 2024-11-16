@@ -58,6 +58,8 @@ const userSlice = createSlice({
         state.currentUser = null;
         state.loading = false;
     },
+    resetState: () => initialState,
+
 }})
 
 export const { signInStart, signInSuccess, signInFailure, updateUserStart, updateUserSuccess, updateUserFailure, deleteUserStart, deleteUserFailure, deleteUserSuccess, signOutUserFailure, signOutUserStart, signOutUserSuccess} = userSlice.actions
