@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import WordPullUp from "@/components/ui/word-pull-up";
 import { ArrowRightIcon } from "lucide-react";
 import React from "react";
+import { Link } from "react-router-dom";
 const LandingPage: React.FC = () => {
   return (
     <div className="items-start lg:px-16 sm:px-8 px-8">
@@ -17,7 +18,7 @@ const LandingPage: React.FC = () => {
             voluptatum! Taciti deserunt.
           </p>
 
-          <div className="flex justify-start">
+          <Link to="/login" className="flex justify-start">
             <Button
               variant="outline"
               className="lg:py-6 sm:py-4 py-4 px-8 rounded-full border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
@@ -25,7 +26,7 @@ const LandingPage: React.FC = () => {
               Get started
               <ArrowRightIcon className="w-4 h-4" />
             </Button>
-          </div>
+          </Link>
         </section>
       </div>
     </div>
