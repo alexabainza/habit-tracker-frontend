@@ -43,7 +43,7 @@ const LoginScreen: React.FC = () => {
 
   function onSubmit(data: any) {
     dispatch(signInStart());
-    fetch("/api/auth/login", {
+    fetch("http://localhost:8080/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

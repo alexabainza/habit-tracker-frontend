@@ -44,7 +44,7 @@ const RegisterScreen: React.FC = () => {
 
   function onSubmit(data: any) {
     dispatch(signInStart());
-    fetch("/api/auth/register", {
+    fetch("http://localhost:8080/api/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
