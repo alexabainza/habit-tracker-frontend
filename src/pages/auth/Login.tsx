@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { joiResolver } from "@hookform/resolvers/joi";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { userSchema } from "@/utils/schemas";
+import { LoginSchema } from "@/utils/schemas";
 import axios from "axios";
 import { handleError } from "@/utils/authErrorHandler";
 
@@ -31,9 +31,9 @@ const LoginScreen: React.FC = () => {
   };
 
   const form = useForm({
-    resolver: joiResolver(userSchema),
+    resolver: zodResolver(LoginSchema),
     defaultValues: {
-      username: "",
+      identifier: "",
       password: "",
     },
     mode: "onSubmit",
@@ -42,7 +42,7 @@ const LoginScreen: React.FC = () => {
   const handleSubmit = async () => {
     try {
       const response = await axios.post("/api/auth/login", {
-        identifier: form.getValues().username,
+        identifier: form.getValues().identifier,
         password: form.getValues().password,
       });
 
@@ -78,11 +78,11 @@ const LoginScreen: React.FC = () => {
             >
               <FormField
                 control={form.control}
-                name="username"
+                name="identifier"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-0">
                     <FormLabel className="font-medium text-xs">
-                      Username / Email
+                      identifier / Email
                     </FormLabel>
                     <FormControl>
                       <Input

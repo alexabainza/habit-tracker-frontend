@@ -22,10 +22,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { LoaderIcon } from "lucide-react";
 
 const Dashboard: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [isDialogOpen, setIsDialogOpen] = useState(false); // Control dialog open/close
+  const [loading, setLoading] = useState(false);
 
   const form = useForm({
     resolver: joiResolver(habitSchema),
@@ -39,8 +41,6 @@ const Dashboard: React.FC = () => {
   const handleSubmit = async () => {
     console.log(form.getValues());
     try {
-      if (currentUser) {
-      }
       const res = await fetch("/api/habits/", {
         method: "POST",
         headers: {
@@ -62,7 +62,7 @@ const Dashboard: React.FC = () => {
         form.reset();
       }
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   };
 
@@ -133,8 +133,16 @@ const Dashboard: React.FC = () => {
               <Button
                 className="hover:bg-[var(--color-primary)] hover:text-white"
                 type="submit"
+                disabled={loading}
               >
-                Add habit
+                {loading ? (
+                  <div className="flex items-center gap-x-1.5">
+                    <LoaderIcon className="w-6 h-6 animate-spin" />
+                    Loading...
+                  </div>
+                ) : (
+                  "Add habit"
+                )}
               </Button>
             </form>
           </Form>
