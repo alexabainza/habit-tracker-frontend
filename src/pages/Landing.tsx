@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import WordPullUp from "@/components/ui/word-pull-up";
 import { ArrowRightIcon } from "lucide-react";
@@ -6,7 +5,6 @@ import React from "react";
 const LandingPage: React.FC = () => {
   return (
     <div className="items-start lg:px-16 sm:px-8 px-8">
-      <Navbar />
       <div className="mt-8 bg-[var(--color-background)] lg:py-40 sm:py-12 py-12 lg:px-8 sm:px-6 px-6 rounded-2xl">
         <section className="font-medium lg:w-1/2 sm:w-full w-full text-[var(--color-primary)] flex flex-col gap-6">
           <WordPullUp
