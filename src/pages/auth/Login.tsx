@@ -42,6 +42,7 @@ const LoginScreen: React.FC = () => {
   });
 
   function onSubmit(data: any) {
+    dispatch(signInStart());
     fetch("/api/auth/login", {
       method: "POST",
       headers: {
