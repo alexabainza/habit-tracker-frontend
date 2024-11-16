@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInStart,
+  signInFailure,
+  signInSuccess,
+} from "@/redux/user/userSlice";
 import {
   Form,
   FormControl,
@@ -18,8 +24,9 @@ import { Link, useNavigate } from "react-router-dom";
 
 const RegisterScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state: any) => state.user.loading);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -36,8 +43,7 @@ const RegisterScreen: React.FC = () => {
   });
 
   function onSubmit(data: any) {
-    setIsLoading(true);
-
+    dispatch(signInStart());
     fetch("/api/auth/register", {
       method: "POST",
       headers: {
@@ -47,22 +53,22 @@ const RegisterScreen: React.FC = () => {
     })
       .then(async (response) => {
         const result = await response.json();
-        if (response.ok) {
+        if (result.ok) {
+          dispatch(signInSuccess(result.data));
           alert("Registration successful!");
           navigate("/login");
-          console.log("Server Response:", result);
-        } else if (response.status === 409) {
+        } else if (result.status === 409) {
+          dispatch(signInFailure(result.message));
           alert("User already exists. Please try logging in.");
         } else {
+          dispatch(signInFailure(result.message));
+
           alert(result.message || "Registration failed.");
         }
       })
       .catch((error) => {
-        console.error("Error:", error);
+        dispatch(signInFailure(error.message));
         alert("An error occurred. Please try again.");
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
   }
   return (

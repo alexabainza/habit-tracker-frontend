@@ -3,6 +3,12 @@ import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInStart,
+  signInFailure,
+  signInSuccess,
+} from "@/redux/user/userSlice";
 import {
   Form,
   FormControl,
@@ -18,8 +24,9 @@ import { userSchema } from "@/utils/schemas";
 
 const LoginScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state: any) => state.user.loading);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -35,7 +42,6 @@ const LoginScreen: React.FC = () => {
   });
 
   function onSubmit(data: any) {
-    setIsLoading(true);
     fetch("/api/auth/login", {
       method: "POST",
       headers: {
@@ -48,16 +54,20 @@ const LoginScreen: React.FC = () => {
     })
       .then(async (response) => {
         const result = await response.json();
-        if (response.ok) {
-          console.log("Login successful:", result);
+        if (result.status === 200) {
+          dispatch(signInSuccess(result.data));
+          alert("Login successful!");
           localStorage.setItem("token", result.data);
           navigate("/dashboard");
         } else {
-          if (result.error === "User not found") {
+          if (result.status === 404) {
+            dispatch(signInFailure(result.message));
             alert("User does not exist. Please register.");
           } else if (result.error === "Invalid credentials") {
+            dispatch(signInFailure(result.message));
             alert("Invalid credentials. Please try again.");
           } else {
+            dispatch(signInFailure(result.message));
             alert(result.message || "An error occurred. Please try again.");
           }
         }
@@ -65,9 +75,6 @@ const LoginScreen: React.FC = () => {
       .catch((error) => {
         console.error("Error during login:", error);
         alert("Something went wrong. Please try again later.");
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
   }
 
