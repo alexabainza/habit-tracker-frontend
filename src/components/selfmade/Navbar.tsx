@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { MenuIcon, User2 } from "lucide-react";
@@ -35,6 +35,7 @@ const Navbar: React.FC = () => {
   const closeMenu = () => setIsOpen(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const onSignOut = async () => {
     dispatch(signOutUserStart());
 
@@ -118,17 +119,7 @@ const Navbar: React.FC = () => {
           >
             Contact
           </Link>
-          {currentUser ? (
-            <Link to="/login" className="flex items-center">
-              <Button
-                variant="ghost"
-                className="rounded-xl mt-4 hover:bg-[var(--color-primary)] hover:text-white"
-              >
-                <User />
-                Login
-              </Button>
-            </Link>
-          ) : (
+          {/* {currentUser?.token ? (
             <div className="flex items-center">
               <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
                 <DropdownMenuTrigger asChild>
@@ -149,10 +140,10 @@ const Navbar: React.FC = () => {
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium leading-none">
-                        John Doe
+                        {currentUser?.username}
                       </p>
                       <p className="text-xs leading-none text-muted-foreground">
-                        john@example.com
+                        {currentUser?.email}
                       </p>
                     </div>
                   </DropdownMenuLabel>
@@ -161,17 +152,14 @@ const Navbar: React.FC = () => {
                     <DropdownMenuItem>
                       <User className="mr-2 h-4 w-4" />
                       <span>Profile</span>
-                      <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                       <CreditCard className="mr-2 h-4 w-4" />
                       <span>Billing</span>
-                      <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                       <Settings className="mr-2 h-4 w-4" />
                       <span>Settings</span>
-                      <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                       <Bell className="mr-2 h-4 w-4" />
@@ -179,18 +167,27 @@ const Navbar: React.FC = () => {
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={onSignOut}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
-                    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-          )}
+          ) : (
+            <Link to="/login" className="flex items-center">
+              <Button
+                variant="ghost"
+                className="rounded-xl mt-4 hover:bg-[var(--color-primary)] hover:text-white"
+              >
+                <User />
+                Login
+              </Button>
+            </Link>
+          )} */}
         </div>
       </div>
-      {currentUser ? (
+      {currentUser?.token ? (
         <div className="flex items-center">
           <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
             <DropdownMenuTrigger asChild>
