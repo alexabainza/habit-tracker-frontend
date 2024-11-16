@@ -4,11 +4,7 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  signInStart,
-  signInFailure,
-  signInSuccess,
-} from "@/redux/user/userSlice";
+import { signInSuccess } from "@/redux/user/userSlice";
 import {
   Form,
   FormControl,
@@ -21,13 +17,15 @@ import { Input } from "@/components/ui/input";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { userSchema } from "@/utils/schemas";
+import axios from "axios";
+import { handleError } from "@/utils/authErrorHandler";
 
 const LoginScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoading = useSelector((state: any) => state.user.loading);
-
+  // dispatch(resetState());
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
@@ -41,43 +39,28 @@ const LoginScreen: React.FC = () => {
     mode: "onSubmit",
   });
 
-  function onSubmit(data: any) {
-    dispatch(signInStart());
-    fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        identifier: data.username,
-        password: data.password,
-      }),
-    })
-      .then(async (response) => {
-        const result = await response.json();
-        if (result.status === 200) {
-          dispatch(signInSuccess(result.data));
-          alert("Login successful!");
-          localStorage.setItem("token", result.data);
-          navigate("/dashboard");
-        } else {
-          if (result.status === 404) {
-            dispatch(signInFailure(result.message));
-            alert("User does not exist. Please register.");
-          } else if (result.error === "Invalid credentials") {
-            dispatch(signInFailure(result.message));
-            alert("Invalid credentials. Please try again.");
-          } else {
-            dispatch(signInFailure(result.message));
-            alert(result.message || "An error occurred. Please try again.");
-          }
-        }
-      })
-      .catch((error) => {
-        console.error("Error during login:", error);
-        alert("Something went wrong. Please try again later.");
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post("/api/auth/login", {
+        identifier: form.getValues().username,
+        password: form.getValues().password,
       });
-  }
+
+      const result = response.data;
+      if (result.status === 200) {
+        dispatch(signInSuccess(result.data));
+        alert("Login successful!");
+        localStorage.setItem("token", result.data);
+        navigate("/dashboard");
+      }
+    } catch (error: any) {
+      if (error.response) {
+        handleError(error.response, dispatch);
+      } else {
+        alert("An unexpected error occurred. Please try again later.");
+      }
+    }
+  };
 
   return (
     <div className="flex justify-center items-center mt-12">
@@ -89,7 +72,10 @@ const LoginScreen: React.FC = () => {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="space-y-6"
+            >
               <FormField
                 control={form.control}
                 name="username"

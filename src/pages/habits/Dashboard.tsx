@@ -41,7 +41,6 @@ const Dashboard: React.FC = () => {
     try {
       if (currentUser) {
       }
-      setLoading(true);
       const res = await fetch("/api/habits/", {
         method: "POST",
         headers: {
