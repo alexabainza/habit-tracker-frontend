@@ -17,13 +17,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterUserSchema } from "@/utils/schemas";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { handleError } from "@/utils/authErrorHandler";
+import { useFetch } from "@/hooks/use-fetch";
+import { useToast } from "@/hooks/use-toast";
 
 const RegisterScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { toast } = useToast();
   const isLoading = useSelector((state: any) => state.user.loading);
   // dispatch(resetState());
   const togglePasswordVisibility = () => {
@@ -42,19 +44,28 @@ const RegisterScreen: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post("/api/auth/register", form.getValues());
+      const response = await useFetch("/auth/register", "post", form.getValues());
       const result = response.data;
-      if (result.status === 201) {
-        alert("Reister successful!");
+
+      if (result.status == 201) {
+        toast({
+          title: "Registration successful!",
+          description: "Redirecting to login...",
+        });
         dispatch(signInSuccess(result.data));
         navigate("/login");
+      } else {
+        toast({
+          variant: "destructive",
+          title: handleError(response, dispatch),
+        });
       }
     } catch (error: any) {
-      if (error.response) {
-        handleError(error.response, dispatch);
-      } else {
-        alert("An unexpected error occurred. Please try again later.");
-      }
+      toast({
+        variant: "destructive",
+        title: "An error occurred.",
+        description: "Please try again.",
+      });
     }
   };
 
