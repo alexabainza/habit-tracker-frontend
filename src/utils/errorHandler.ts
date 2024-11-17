@@ -1,7 +1,7 @@
 
 import { signInFailure} from "@/redux/user/userSlice";
 
-export const handleError = (response: any, dispatch: Function) => {
+export const handleAuthError = (response: any, dispatch: Function) => {
     const { status, data } = response;
 
     if (status === 404) {

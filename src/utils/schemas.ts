@@ -1,4 +1,3 @@
-import Joi from "joi";
 import z from "zod";
 
 const LoginSchema = z.object({
@@ -12,9 +11,11 @@ const RegisterUserSchema = z.object({
     password: z.string({ message: "Password is required." }).min(8, { message: "Password should be at least 8 characters." }).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, { message: "Password must contain at least one uppercase letter, one lowercase letter, and one number." }),
 });
 
-const habitSchema = Joi.object({
-    name: Joi.string().min(3).max(30).required(),
-    goal: Joi.number().min(1).required(),
-});
+const habitSchema = z.object({
+    name: z.string({ message: "Habit name is required." }).min(3).max(30),
+    goal: z.preprocess(
+        (val) => (val ? Number(val) : undefined),
+        z.number().min(1, { message: "Goal must be at least 1." })
+      ),});
 
 export { habitSchema, RegisterUserSchema, LoginSchema };

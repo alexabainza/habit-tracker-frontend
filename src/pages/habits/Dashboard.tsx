@@ -12,8 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { joiResolver } from "@hookform/resolvers/joi";
-import { habitSchema } from "@/utils/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -23,14 +22,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { LoaderIcon } from "lucide-react";
+import { habitSchema } from "@/utils/schemas";
+import axios from "axios";
 
 const Dashboard: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
-  const [isDialogOpen, setIsDialogOpen] = useState(false); // Control dialog open/close
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
-    resolver: joiResolver(habitSchema),
+    resolver: zodResolver(habitSchema),
     defaultValues: {
       name: "",
       goal: 0,
@@ -39,30 +40,23 @@ const Dashboard: React.FC = () => {
   });
 
   const handleSubmit = async () => {
-    console.log(form.getValues());
+    setLoading(true);
     try {
-      const res = await fetch("/api/habits/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...form.getValues(),
-          userRef: currentUser._id,
-        }),
+      const response = await axios.post("api/habits/", {
+        ...form.getValues(),
+        userRef: currentUser!._id,
       });
-      const data = await res.json();
-      if (data.success === false) {
-        alert("Habit already exists");
-
-        console.log(data.message);
+      const result = response.data;
+      if (result.status === 400) {
+        alert(result.message);
       } else {
-        alert("Habit addde successfully");
+        alert("Habit added successfully");
         setIsDialogOpen(false);
-        form.reset();
       }
-    } catch (error) {
-      console.log(error);
+      setLoading(false);
+      form.reset();
+    } catch (error: any) {
+      alert(error.response.data.message || "An error occurred.");
     }
   };
 
@@ -116,7 +110,7 @@ const Dashboard: React.FC = () => {
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-0">
                     <FormLabel className="font-medium text-xs">
-                      Frequency
+                      Frequency per week
                     </FormLabel>
                     <FormControl>
                       <Input

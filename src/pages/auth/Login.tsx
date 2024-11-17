@@ -18,7 +18,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginSchema } from "@/utils/schemas";
 import axios from "axios";
-import { handleError } from "@/utils/authErrorHandler";
+import { handleAuthError } from "@/utils/errorHandler";
 
 const LoginScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -55,7 +55,7 @@ const LoginScreen: React.FC = () => {
       }
     } catch (error: any) {
       if (error.response) {
-        handleError(error.response, dispatch);
+        handleAuthError(error.response, dispatch);
       } else {
         alert("An unexpected error occurred. Please try again later.");
       }
