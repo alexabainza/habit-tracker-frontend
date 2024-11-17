@@ -78,7 +78,7 @@ const RegisterScreen: React.FC = () => {
 
   return (
     <div className="flex justify-center items-center mt-12">
-      <Card className="w-[400px] bg-[var(--color-background)]">
+      <Card className="w-[400px] bg-[var(--color-background)] sm:mx-5 mx-5">
         <CardHeader>
           <CardTitle className="text-4xl text-[var(--color-primary)] text-center">
             Register

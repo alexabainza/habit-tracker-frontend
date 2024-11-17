@@ -5,7 +5,7 @@ import RegisterScreen from "@/pages/auth/Register";
 import Navbar from "@/components/shared/Navbar";
 import Dashboard from "@/pages/habits/Dashboard";
 import PrivateRoute from "@/components/selfmade/PrivateRoute";
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster";
 
 function App() {
   return (

@@ -63,9 +63,9 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="items-start lg:px-16 sm:px-5 px-5 ">
       <div className="flex-1 flex flex-col">
-        <main className="p-4">
+        <main>
           <h1 className="text-2xl font-bold">Welcome to the Dashboard</h1>
         </main>
       </div>
@@ -75,7 +75,7 @@ const Dashboard: React.FC = () => {
             Add Habit
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] bg-slate-50">
+        <DialogContent className="sm:max-w-[400px] bg-slate-50">
           <DialogHeader>
             <DialogTitle>Add habit</DialogTitle>
           </DialogHeader>
