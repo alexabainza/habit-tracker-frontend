@@ -1,6 +1,6 @@
 import { RootState } from "@/redux/store";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Dialog,
   DialogContent,
@@ -24,12 +24,14 @@ import {
 import { LoaderIcon } from "lucide-react";
 import { habitSchema } from "@/utils/schemas";
 import axios from "axios";
+// import { resetState } from "@/redux/user/userSlice";
 
 const Dashboard: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  // const dispatch = useDispatch();
+  // dispatch(resetState());
   const form = useForm({
     resolver: zodResolver(habitSchema),
     defaultValues: {
@@ -42,7 +44,7 @@ const Dashboard: React.FC = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const response = await axios.post("api/habits/", {
+      const response = await axios.post("/api/habits/", {
         ...form.getValues(),
         userRef: currentUser!._id,
       });

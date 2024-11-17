@@ -8,7 +8,7 @@ interface User {
   }
   
   interface UserState {
-    currentUser: User | null;
+    currentUser: { user: User; token: string } | null;
     error: string | null;
     loading: boolean;
   }

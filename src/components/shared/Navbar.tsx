@@ -12,12 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  LogOut,
-  Settings,
-  MountainIcon,
-  User,
-} from "lucide-react";
+import { LogOut, Settings, MountainIcon, User } from "lucide-react";
 import { RootState } from "@/redux/store";
 import {
   signOutUserFailure,
@@ -26,10 +21,14 @@ import {
 } from "@/redux/user/userSlice";
 import { useFetch } from "@/hooks/use-fetch";
 const Navbar: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const { currentUser } = useSelector((state: RootState) => state.user);
-  const toggleMenu = () => setIsOpen(!isOpen);
-  const closeMenu = () => setIsOpen(false);
+  const toggleBurgerMenu = () => setIsBurgerOpen(!isBurgerOpen);
+  const toggleProfileDropdown = () =>
+    setIsProfileDropdownOpen(!isProfileDropdownOpen);
+  const closeProfileDropdown = () => setIsProfileDropdownOpen(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -53,7 +52,6 @@ const Navbar: React.FC = () => {
       );
     }
   };
-
   return (
     <header className="sticky top-0 z-50 flex h-20 w-full items-center justify-between text-[var(--color-primary)] bg-white py-3 shadow-sm dark:bg-gray-950 sm:px-6 md:px-8 lg:px-10">
       <Link to="/" className="flex items-center">
@@ -74,18 +72,24 @@ const Navbar: React.FC = () => {
           Contact
         </Link>
       </nav>
-      <button onClick={toggleMenu} className="lg:hidden p-2">
+
+      {/* Burger Menu Button */}
+      <button onClick={toggleBurgerMenu} className="lg:hidden p-2">
         <MenuIcon className="h-6 w-6 text-[var(--color-primary)]" />
         <span className="sr-only">Open</span>
       </button>
+
+      {/* Burger Menu for Small Screens */}
       <div
         className={`lg:hidden fixed top-0 left-0 w-full h-full bg-white z-40 transition-transform ${
-          isOpen ? "transform translate-x-0" : "transform -translate-x-full"
+          isBurgerOpen
+            ? "transform translate-x-0"
+            : "transform -translate-x-full"
         }`}
       >
         <div className="flex flex-col items-center justify-center h-full">
           <button
-            onClick={closeMenu}
+            onClick={toggleBurgerMenu}
             className="absolute top-4 right-4 p-2 text-xl font-bold text-[var(--color-primary)]"
           >
             X
@@ -115,61 +119,12 @@ const Navbar: React.FC = () => {
           >
             Contact
           </Link>
-          {/* {currentUser?.token ? (
-            <div className="flex items-center">
-              <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="relative h-8 w-8 rounded-full"
-                  >
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage
-                        src="/placeholder-avatar.jpg"
-                        alt="@johndoe"
-                      />
-                      <AvatarFallback>JD</AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
-                  <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">
-                        {currentUser?.username}
-                      </p>
-                      <p className="text-xs leading-none text-muted-foreground">
-                        {currentUser?.email}
-                      </p>
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                      <User className="mr-2 h-4 w-4" />
-                      <span>Profile</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <CreditCard className="mr-2 h-4 w-4" />
-                      <span>Billing</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Settings className="mr-2 h-4 w-4" />
-                      <span>Settings</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Bell className="mr-2 h-4 w-4" />
-                      <span>Notifications</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={onSignOut}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Log out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+
+          {currentUser?.token ? (
+            <Button className="relative rounded-full hover:bg-gray-200">
+              <User2 />
+              {currentUser.user.username}
+            </Button>
           ) : (
             <Link to="/login" className="flex items-center">
               <Button
@@ -180,12 +135,13 @@ const Navbar: React.FC = () => {
                 Login
               </Button>
             </Link>
-          )} */}
+          )}
         </div>
       </div>
+
       {currentUser?.token ? (
-        <div className="flex items-center">
-          <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+        <div className="items-center hidden lg:block">
+          <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button className="relative h-12 w-12 rounded-full hover:bg-gray-200">
                 <User2 />
@@ -194,7 +150,9 @@ const Navbar: React.FC = () => {
             <DropdownMenuContent className="w-56" align="end" forceMount>
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">laef</p>
+                  <p className="text-sm font-medium leading-none">
+                    {currentUser.user.username}
+                  </p>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
@@ -217,7 +175,7 @@ const Navbar: React.FC = () => {
           </DropdownMenu>
         </div>
       ) : (
-        <Link to="/login" className="flex items-center">
+        <Link to="/login" className="flex items-center hidden lg:block">
           <Button
             variant="ghost"
             className="rounded-xl mt-4 hover:bg-[var(--color-primary)] hover:text-white"
