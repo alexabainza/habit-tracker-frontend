@@ -17,11 +17,13 @@ import { Input } from "@/components/ui/input";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginSchema } from "@/utils/schemas";
-import axios from "axios";
 import { handleAuthError } from "@/utils/errorHandler";
+import { useToast } from "@/hooks/use-toast";
+import { useFetch } from "@/hooks/use-fetch";
 
 const LoginScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const { toast } = useToast();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoading = useSelector((state: any) => state.user.loading);
@@ -39,25 +41,33 @@ const LoginScreen: React.FC = () => {
     mode: "onSubmit",
   });
 
-  const handleSubmit = async () => {
+  const onSubmit = async () => {
     try {
-      const response = await axios.post("/api/auth/login", {
-        identifier: form.getValues().identifier,
-        password: form.getValues().password,
-      });
+      const response = await useFetch("/auth/login", "post", form.getValues());
 
       const result = response.data;
       if (result.status === 200) {
         dispatch(signInSuccess(result.data));
-        alert("Login successful!");
+        toast({
+          title: "Login successful!",
+          description: "Redirecting to dashboard...",
+        });
         localStorage.setItem("token", result.data);
         navigate("/dashboard");
       }
     } catch (error: any) {
       if (error.response) {
-        handleAuthError(error.response, dispatch);
+        const errorMessage = handleAuthError(error.response, dispatch);
+        toast({
+          variant: "destructive",
+          title: errorMessage,
+        });
       } else {
-        alert("An unexpected error occurred. Please try again later.");
+        toast({
+          variant: "destructive",
+          title: "An unexpected error occurred.",
+          description: "Please try again later.",
+        });
       }
     }
   };
@@ -72,17 +82,14 @@ const LoginScreen: React.FC = () => {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleSubmit)}
-              className="space-y-6"
-            >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
                 control={form.control}
                 name="identifier"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-0">
                     <FormLabel className="font-medium text-xs">
-                      identifier / Email
+                      Email/Username
                     </FormLabel>
                     <FormControl>
                       <Input
