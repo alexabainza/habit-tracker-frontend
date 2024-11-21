@@ -25,6 +25,7 @@
     "clsx": "^2.1.1",
     "framer-motion": "^11.11.17",
     "joi": "^17.13.3",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.456.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^22.9.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
