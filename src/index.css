@@ -12,3 +12,12 @@
   --destructive: 0, 100%, 50%; /* Example HSL values for red */
   --destructive-foreground: 0, 0%, 100%; /* White for text */
 }
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
