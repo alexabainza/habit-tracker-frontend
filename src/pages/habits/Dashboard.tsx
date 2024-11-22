@@ -25,15 +25,15 @@ import {
 import { LoaderIcon } from "lucide-react";
 import { habitSchema } from "@/utils/schemas";
 import axios from "axios";
-import { resetState } from "@/redux/user/userSlice";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useFetch } from "@/hooks/use-fetch";
+import { toast } from "@/hooks/use-toast";
 
 const Dashboard: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
@@ -63,12 +63,11 @@ const Dashboard: React.FC = () => {
     const fetchHabits = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("/api/habits");
+        const response = await useFetch("/habits", "get");
         const result = response.data;
         setHabits(result.data);
-        console.log("Fetched Habits:", result.data); // Log habits here
       } catch (error) {
-        alert(error.response.data.message || "An error occurred.");
+        toast({ title: "An error occurred.", variant: "destructive" });
       } finally {
         setLoading(false);
       }

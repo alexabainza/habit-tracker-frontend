@@ -55,6 +55,7 @@ const RegisterScreen: React.FC = () => {
         toast({
           title: "Registration successful!",
           description: "Redirecting to login...",
+          duration: 1500,
         });
         dispatch(signInSuccess(result.data));
         navigate("/login");

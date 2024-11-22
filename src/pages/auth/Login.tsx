@@ -49,11 +49,15 @@ const LoginScreen: React.FC = () => {
       const result = response.data;
       if (result.status === 200) {
         dispatch(signInSuccess(result.data));
+        
         toast({
           title: "Login successful!",
           description: "Redirecting to dashboard...",
+          duration: 1500,
         });
+
         Cookies.set("token", result.data.token, { expires: 7, secure: true });
+
         navigate("/dashboard");
       }
     } catch (error: any) {
