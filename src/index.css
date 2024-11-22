@@ -9,4 +9,6 @@
   --color-primary: #254baa;
   --color-background: #f2f6ff;
   --color-accent: #262662;
+  --destructive: 0, 100%, 50%; /* Example HSL values for red */
+  --destructive-foreground: 0, 0%, 100%; /* White for text */
 }

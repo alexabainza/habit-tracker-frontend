@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDispatch, useSelector } from "react-redux";
-import { signInSuccess } from "@/redux/user/userSlice";
+import { resetState, signInSuccess } from "@/redux/user/userSlice";
 import {
   Form,
   FormControl,
@@ -20,6 +20,8 @@ import { LoginSchema } from "@/utils/schemas";
 import { handleAuthError } from "@/utils/errorHandler";
 import { useToast } from "@/hooks/use-toast";
 import { useFetch } from "@/hooks/use-fetch";
+import Cookies from "js-cookie";
+import { z } from "zod";
 
 const LoginScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,12 +29,12 @@ const LoginScreen: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoading = useSelector((state: any) => state.user.loading);
-  // dispatch(resetState());
+  dispatch(resetState());
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
 
-  const form = useForm({
+  const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       identifier: "",
@@ -48,11 +50,15 @@ const LoginScreen: React.FC = () => {
       const result = response.data;
       if (result.status === 200) {
         dispatch(signInSuccess(result.data));
+
         toast({
           title: "Login successful!",
           description: "Redirecting to dashboard...",
+          duration: 1500,
         });
-        localStorage.setItem("token", result.data);
+
+        Cookies.set("token", result.data.token, { expires: 7, secure: true });
+
         navigate("/dashboard");
       }
     } catch (error: any) {
@@ -74,7 +80,7 @@ const LoginScreen: React.FC = () => {
 
   return (
     <div className="flex justify-center items-center mt-12">
-      <Card className="w-[400px] bg-[var(--color-background)]">
+      <Card className="w-[400px] bg-[var(--color-background)] sm:mx-5 mx-5">
         <CardHeader>
           <CardTitle className="text-4xl text-[var(--color-primary)] text-center">
             Login

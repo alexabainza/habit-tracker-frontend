@@ -20,6 +20,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFetch } from "@/hooks/use-fetch";
 import { useToast } from "@/hooks/use-toast";
 import { handleAuthError } from "@/utils/errorHandler";
+import { z } from "zod";
 
 const RegisterScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -32,7 +33,7 @@ const RegisterScreen: React.FC = () => {
     setShowPassword((prev) => !prev);
   };
 
-  const form = useForm({
+  const form = useForm<z.infer<typeof RegisterUserSchema>>({
     resolver: zodResolver(RegisterUserSchema),
     defaultValues: {
       username: "",
@@ -55,6 +56,7 @@ const RegisterScreen: React.FC = () => {
         toast({
           title: "Registration successful!",
           description: "Redirecting to login...",
+          duration: 1500,
         });
         dispatch(signInSuccess(result.data));
         navigate("/login");
@@ -78,7 +80,7 @@ const RegisterScreen: React.FC = () => {
 
   return (
     <div className="flex justify-center items-center mt-12">
-      <Card className="w-[400px] bg-[var(--color-background)]">
+      <Card className="w-[400px] bg-[var(--color-background)] sm:mx-5 mx-5">
         <CardHeader>
           <CardTitle className="text-4xl text-[var(--color-primary)] text-center">
             Register

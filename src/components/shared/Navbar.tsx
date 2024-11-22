@@ -22,12 +22,8 @@ import {
 import { useFetch } from "@/hooks/use-fetch";
 const Navbar: React.FC = () => {
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
-  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const { currentUser } = useSelector((state: RootState) => state.user);
   const toggleBurgerMenu = () => setIsBurgerOpen(!isBurgerOpen);
-  const toggleProfileDropdown = () =>
-    setIsProfileDropdownOpen(!isProfileDropdownOpen);
-  const closeProfileDropdown = () => setIsProfileDropdownOpen(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -53,8 +49,11 @@ const Navbar: React.FC = () => {
     }
   };
   return (
-    <header className="sticky top-0 z-50 flex h-20 w-full items-center justify-between text-[var(--color-primary)] bg-white py-3 shadow-sm dark:bg-gray-950 sm:px-6 md:px-8 lg:px-10">
-      <Link to="/" className="flex items-center">
+    <header className="sticky top-0 z-50 flex h-20 w-full items-center justify-between text-[var(--color-primary)] bg-white py-3 shadow-sm dark:bg-gray-950 sm:px-6 md:px-8 lg:px-10 px-6">
+      <Link
+        to={currentUser?.token ? "/dashboard" : "/"}
+        className="flex items-center"
+      >
         <MountainIcon className="h-6 w-6" />
         <span className="sr-only text-[var(--color-primary)]">Acme Inc</span>
       </Link>
@@ -73,13 +72,11 @@ const Navbar: React.FC = () => {
         </Link>
       </nav>
 
-      {/* Burger Menu Button */}
-      <button onClick={toggleBurgerMenu} className="lg:hidden p-2">
+      <button type="button" onClick={toggleBurgerMenu} className="lg:hidden p-2">
         <MenuIcon className="h-6 w-6 text-[var(--color-primary)]" />
         <span className="sr-only">Open</span>
       </button>
 
-      {/* Burger Menu for Small Screens */}
       <div
         className={`lg:hidden fixed top-0 left-0 w-full h-full bg-white z-40 transition-transform ${
           isBurgerOpen
@@ -175,7 +172,7 @@ const Navbar: React.FC = () => {
           </DropdownMenu>
         </div>
       ) : (
-        <Link to="/login" className="flex items-center hidden lg:block">
+        <Link to="/login" className="items-center hidden lg:block">
           <Button
             variant="ghost"
             className="rounded-xl mt-4 hover:bg-[var(--color-primary)] hover:text-white"
