@@ -4,5 +4,10 @@ import { RootState } from "@/redux/store";
 
 export default function PrivateRoute() {
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
-  return currentUser?.token ? <Outlet /> : <Navigate to="/" />;
+
+  if (!currentUser || !currentUser.token) {
+    return <Navigate to="/login" />;
+  }
+  
+  return currentUser && currentUser.token ? <Outlet /> : <Navigate to="/login" />;
 }

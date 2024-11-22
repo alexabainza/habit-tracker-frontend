@@ -20,6 +20,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFetch } from "@/hooks/use-fetch";
 import { useToast } from "@/hooks/use-toast";
 import { handleAuthError } from "@/utils/errorHandler";
+import { z } from "zod";
 
 const RegisterScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -32,7 +33,7 @@ const RegisterScreen: React.FC = () => {
     setShowPassword((prev) => !prev);
   };
 
-  const form = useForm({
+  const form = useForm<z.infer<typeof RegisterUserSchema>>({
     resolver: zodResolver(RegisterUserSchema),
     defaultValues: {
       username: "",

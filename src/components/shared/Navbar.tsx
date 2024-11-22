@@ -72,7 +72,7 @@ const Navbar: React.FC = () => {
         </Link>
       </nav>
 
-      <button onClick={toggleBurgerMenu} className="lg:hidden p-2">
+      <button type="button" onClick={toggleBurgerMenu} className="lg:hidden p-2">
         <MenuIcon className="h-6 w-6 text-[var(--color-primary)]" />
         <span className="sr-only">Open</span>
       </button>
