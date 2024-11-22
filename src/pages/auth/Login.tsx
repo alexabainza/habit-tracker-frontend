@@ -21,6 +21,7 @@ import { handleAuthError } from "@/utils/errorHandler";
 import { useToast } from "@/hooks/use-toast";
 import { useFetch } from "@/hooks/use-fetch";
 import Cookies from "js-cookie";
+import { z } from "zod";
 
 const LoginScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -33,7 +34,7 @@ const LoginScreen: React.FC = () => {
     setShowPassword((prev) => !prev);
   };
 
-  const form = useForm({
+  const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       identifier: "",
@@ -49,7 +50,7 @@ const LoginScreen: React.FC = () => {
       const result = response.data;
       if (result.status === 200) {
         dispatch(signInSuccess(result.data));
-        
+
         toast({
           title: "Login successful!",
           description: "Redirecting to dashboard...",

@@ -33,11 +33,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useFetch } from "@/hooks/use-fetch";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const Dashboard: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [habits, setHabits] = useState([]);
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
@@ -66,6 +67,10 @@ const Dashboard: React.FC = () => {
         const response = await useFetch("/habits", "get");
         const result = response.data;
         setHabits(result.data || []);
+
+        if (response.status === 204) {
+          toast({ title: "No habits found.", duration: 2000 });
+        }
       } catch (error) {
         toast({ title: "An error occurred.", variant: "destructive" });
       } finally {
@@ -91,9 +96,9 @@ const Dashboard: React.FC = () => {
       });
       const result = response.data;
       if (result.status === 400) {
-        alert(result.message);
+        toast({ title: result.message, variant: "destructive" });
       } else {
-        alert("Habit added successfully");
+        toast({ title: "Habit added successfully." });
         setHabits((prevHabits) => [...prevHabits, result.data]);
 
         setIsDialogOpen(false);
@@ -101,7 +106,7 @@ const Dashboard: React.FC = () => {
       setLoading(false);
       form.reset();
     } catch (error: any) {
-      alert(error.response.data.message || "An error occurred.");
+      toast({ title: error.response?.data?.message || "An error occurred." });
     }
   };
   const handleUpdateHabit = async () => {
@@ -145,9 +150,13 @@ const Dashboard: React.FC = () => {
     try {
       await useFetch("/habits", "delete", { id: habitId });
       setHabits((prev) => prev.filter((habit) => habit.habit._id !== habitId));
-      alert("Habit deleted successfully.");
+      toast({ title: "Habit deleted successfully." });
     } catch (error: any) {
-      alert(error.response?.data?.message || "Failed to delete the habit.");
+      toast({
+        title: "An error occurred.",
+        description: error.response?.data?.message,
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -172,7 +181,7 @@ const Dashboard: React.FC = () => {
             Add Habit
           </Button>
         </DialogTrigger>
-        {habits.length === 0 ? (
+        {!habits || habits.length === 0 ? (
           <div className="text-center text-gray-500">No habits found.</div>
         ) : (
           habits.map((habit, index) => (
