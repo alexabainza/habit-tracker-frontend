@@ -65,7 +65,7 @@ const Dashboard: React.FC = () => {
       try {
         const response = await useFetch("/habits", "get");
         const result = response.data;
-        setHabits(result.data);
+        setHabits(result.data || []);
       } catch (error) {
         toast({ title: "An error occurred.", variant: "destructive" });
       } finally {
@@ -85,7 +85,7 @@ const Dashboard: React.FC = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const response = await axios.post("/api/habits", {
+      const response = await useFetch("/habits", "post", {
         ...form.getValues(),
         userRef: currentUser!._id,
       });
@@ -110,7 +110,7 @@ const Dashboard: React.FC = () => {
     setLoading(true);
     try {
       const { name, goal } = form.getValues();
-      const response = await axios.put("/api/habits", {
+      const response = await useFetch("/habits", "put", {
         id: habitToUpdate.id,
         name,
         goal,
@@ -143,7 +143,7 @@ const Dashboard: React.FC = () => {
   const handleDelete = async (habitId: string) => {
     setLoading(true);
     try {
-      await axios.delete("/api/habits", { data: { id: habitId } });
+      await useFetch("/habits", "delete", { id: habitId });
       setHabits((prev) => prev.filter((habit) => habit.habit._id !== habitId));
       alert("Habit deleted successfully.");
     } catch (error: any) {
