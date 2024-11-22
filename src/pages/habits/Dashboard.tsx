@@ -1,6 +1,6 @@
 import { RootState } from "@/redux/store";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   Dialog,
   DialogContent,
@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { formatDate } from "@/utils/dateFormatter";
 import {
   Form,
   FormControl,
@@ -24,7 +23,6 @@ import {
 } from "@/components/ui/form";
 import { LoaderIcon } from "lucide-react";
 import { habitSchema } from "@/utils/schemas";
-import axios from "axios";
 import {
   Card,
   CardContent,
@@ -34,23 +32,19 @@ import {
 } from "@/components/ui/card";
 import { useFetch } from "@/hooks/use-fetch";
 import { useToast } from "@/hooks/use-toast";
+import { Habit } from "@/utils/types";
 
 const Dashboard: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const [habits, setHabits] = useState([]);
-  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
+  const [habits, setHabits] = useState<Habit[]>([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [habitToUpdate, setHabitToUpdate] = useState<{
-    id: string;
-    name: string;
-    goal: number;
-  } | null>(null);
+  const [habitToUpdate, setHabitToUpdate] = useState<Habit["habit"] | null>(
+    null
+  );
 
-  const dispatch = useDispatch();
-  // dispatch(resetState());
   const form = useForm({
     resolver: zodResolver(habitSchema),
     defaultValues: {
@@ -92,7 +86,7 @@ const Dashboard: React.FC = () => {
     try {
       const response = await useFetch("/habits", "post", {
         ...form.getValues(),
-        userRef: currentUser!._id,
+        userRef: currentUser?.user._id, // Access _id properly here
       });
       const result = response.data;
       if (result.status === 400) {
@@ -116,16 +110,12 @@ const Dashboard: React.FC = () => {
     try {
       const { name, goal } = form.getValues();
       const response = await useFetch("/habits", "put", {
-        id: habitToUpdate.id,
+        id: habitToUpdate._id,
         name,
         goal,
       });
 
-      const updatedHabit = response.data.data; // Assuming updated habit is inside the 'data' field
-
-      console.log("updated habit: ", updatedHabit.created_at);
-
-      // Update the habits state directly with the updated habit data
+      const updatedHabit = response.data.data;
       setHabits((prevHabits) =>
         prevHabits.map((habit) =>
           habit.habit._id === updatedHabit._id
@@ -191,9 +181,6 @@ const Dashboard: React.FC = () => {
                 <CardDescription>Goal: {habit.habit.goal}</CardDescription>
               </CardHeader>
               <CardContent>
-                {/* <p>Created at: {formatDate(habit.habit.created_at)}</p>
-              <p>Modified at: {formatDate(habit.habit.updated_at)}</p> */}
-
                 <Button
                   variant="destructive"
                   onClick={() => handleDelete(habit.habit._id)}
@@ -205,9 +192,13 @@ const Dashboard: React.FC = () => {
                   variant="outline"
                   onClick={() => {
                     setHabitToUpdate({
-                      id: habit.habit._id,
+                      _id: habit.habit._id,
                       name: habit.habit.name,
                       goal: habit.habit.goal,
+                      user_id: habit.habit.user_id || "",
+                      deleted_at: habit.habit.deleted_at || null,
+                      created_at: habit.habit.created_at || "",
+                      updated_at: habit.habit.updated_at || "",
                     });
 
                     setIsEditing(true);
@@ -271,7 +262,7 @@ const Dashboard: React.FC = () => {
                         type="number"
                         placeholder="shadcn"
                         {...field}
-                        className="border-[#6490BC] rounded-md placeholder-gray-200" // Add your desired placeholder color here
+                        className="border-[#6490BC] rounded-md placeholder-gray-200"
                       />
                     </FormControl>
                     <FormMessage className="text-xs text-red-400" />
