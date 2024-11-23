@@ -21,18 +21,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { LoaderIcon } from "lucide-react";
+import { LoaderIcon, Plus } from "lucide-react";
 import { habitSchema } from "@/utils/schemas";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { useFetch } from "@/hooks/use-fetch";
 import { useToast } from "@/hooks/use-toast";
 import { Habit } from "@/utils/types";
+import HabitCard from "@/components/custom/HabitCard";
 
 const Dashboard: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
@@ -153,69 +147,54 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="items-start lg:px-16 sm:px-5 px-5 ">
-      <div className="flex-1 flex flex-col">
-        <main>
-          <h1 className="text-2xl font-bold">Welcome to the Dashboard</h1>
-        </main>
-      </div>
+    <div className="items-start lg:px-16 sm:px-5 px-5 mt-6">
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogTrigger asChild>
-          <Button
-            variant="outline"
-            onClick={() => {
-              setIsDialogOpen(true);
-              setIsEditing(false); // Reset isEditing to false
-            }}
-          >
-            Add Habit
-          </Button>
-        </DialogTrigger>
-        {!habits || habits.length === 0 ? (
-          <div className="text-center text-gray-500">No habits found.</div>
-        ) : (
-          habits.map((habit, index) => (
-            <Card key={index} className="my-2">
-              <CardHeader>
-                <CardTitle>{habit.habit.name}</CardTitle>
-                <CardDescription>Goal: {habit.habit.goal}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button
-                  variant="destructive"
-                  onClick={() => handleDelete(habit.habit._id)}
-                  disabled={loading}
-                >
-                  Delete
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setHabitToUpdate({
-                      _id: habit.habit._id,
-                      name: habit.habit.name,
-                      goal: habit.habit.goal,
-                      user_id: habit.habit.user_id || "",
-                      deleted_at: habit.habit.deleted_at || null,
-                      created_at: habit.habit.created_at || "",
-                      updated_at: habit.habit.updated_at || "",
-                    });
+        <div className="flex lg:flex-row sm:flex-col flex-col sm:gap-4 justify-between">
+          <main>
+            <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold mb-4">
+              Your habits
+            </h1>
+          </main>
+          <DialogTrigger asChild>
+            <Button
+              className="px-20 bg-sageGreen text-white hover:bg-mutedGreen"
+              onClick={() => {
+                setIsDialogOpen(true);
+                setIsEditing(false); // Reset isEditing to false
+              }}
+            >
+              <Plus />
+              Create New Habit
+            </Button>
+          </DialogTrigger>
+        </div>
 
+        <div className="mt-6 grid gap-4">
+          {habits.length === 0 ? (
+            <div className="text-center text-gray-500">No habits found.</div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {habits.map((habit) => (
+                <HabitCard
+                  key={habit.habit._id}
+                  habit={habit.habit}
+                  onDelete={handleDelete}
+                  onEdit={(habit) => {
+                    setHabitToUpdate(habit);
                     setIsEditing(true);
                     setIsDialogOpen(true);
                   }}
-                >
-                  Update
-                </Button>
-              </CardContent>
-            </Card>
-          ))
-        )}
+                  loading={loading}
+                />
+              ))}
+            </div>
+          )}
+        </div>
 
-        <DialogContent className="sm:max-w-[400px] bg-slate-50">
+        <DialogContent className="sm:max-w-[400px] py-12 bg-slate-50">
           <DialogHeader>
-            <DialogTitle>
-              {isEditing ? "Update Habit" : "Add Habit"}
+            <DialogTitle className="text-3xl">
+              {isEditing ? "Update Habit" : "Create New Habit"}
             </DialogTitle>
           </DialogHeader>
           <DialogDescription>
@@ -235,12 +214,9 @@ const Dashboard: React.FC = () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-0">
-                    <FormLabel className="font-medium text-xs">
-                      Habit name
-                    </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="shadcn"
+                        placeholder="Habit name"
                         {...field}
                         className="border-[#6490BC] rounded-md placeholder-gray-200" // Add your desired placeholder color here
                       />
@@ -254,23 +230,38 @@ const Dashboard: React.FC = () => {
                 name="goal"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-0">
-                    <FormLabel className="font-medium text-xs">
-                      Frequency per week
+                    <FormLabel className="font-bold text-xs text-deepOlive">
+                      Repetitions per week
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="shadcn"
-                        {...field}
-                        className="border-[#6490BC] rounded-md placeholder-gray-200"
-                      />
+                      <div className="flex justify-between">
+                        {[1, 2, 3, 4, 5, 6, 7].map((value) => (
+                          <label
+                            key={value}
+                            className={`px-4 py-1 rounded-full cursor-pointer border-2 border-black ${
+                              field.value === value ? "bg-softGreen" : ""
+                            }`}
+                          >
+                            <input
+                              type="radio"
+                              {...field}
+                              value={value}
+                              checked={field.value === value}
+                              onChange={() => field.onChange(value)}
+                              className="hidden"
+                            />
+                            <span className="text-sm">{value}</span>
+                          </label>
+                        ))}
+                      </div>
                     </FormControl>
+
                     <FormMessage className="text-xs text-red-400" />
                   </FormItem>
                 )}
               />
               <Button
-                className="hover:bg-[var(--color-primary)] hover:text-white"
+                className="bg-sageGreen hover:bg-mutedGreen w-full text-white text-sm"
                 type="submit"
                 disabled={loading}
               >

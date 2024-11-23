@@ -5,6 +5,14 @@ export default {
   theme: {
     extend: {
       colors: {
+        lightGreen: "#e1f4d3",
+        softGreen: "#c1e1a6",
+        paleGreen: "#b4d19d",
+        mutedGreen: "#98b67f",
+        sageGreen: "#6b8c4e",
+        oliveGreen: "#556b2f",
+        mossGreen: "#4a5d2a",
+        deepOlive: "#3d4a29",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
