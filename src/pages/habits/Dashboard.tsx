@@ -26,7 +26,7 @@ import { habitSchema } from "@/utils/schemas";
 import { useFetch } from "@/hooks/use-fetch";
 import { useToast } from "@/hooks/use-toast";
 import { Habit } from "@/utils/types";
-import HabitCard from "@/components/custom/HabitCard";
+import HabitCard from "@/components/custom/habit/HabitCard";
 
 const Dashboard: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
@@ -147,7 +147,7 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="items-start lg:px-16 sm:px-5 px-5 mt-6">
+    <div className="w-full flex-1 h-full lg:px-16 sm:px-5 px-5 mt-6">
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <div className="flex lg:flex-row sm:flex-col flex-col sm:gap-4 justify-between">
           <main>
