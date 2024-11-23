@@ -26,8 +26,8 @@ import { habitSchema } from "@/utils/schemas";
 import { useFetch } from "@/hooks/use-fetch";
 import { useToast } from "@/hooks/use-toast";
 import { Habit } from "@/utils/types";
-import HabitCard from "@/components/custom/habit/HabitCard";
-import ConfirmationDialog from "@/components/custom/habit/ConfirmationDialog";
+import HabitCard from "@/pages/habits/HabitCard";
+import ConfirmationDialog from "@/components/custom/ConfirmationDialog";
 
 const Habits: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
@@ -62,6 +62,7 @@ const Habits: React.FC = () => {
           toast({ title: "No habits found.", duration: 2000 });
         }
       } catch (error) {
+        console.error(error);
         toast({ title: "An error occurred.", variant: "destructive" });
       } finally {
         setLoading(false);

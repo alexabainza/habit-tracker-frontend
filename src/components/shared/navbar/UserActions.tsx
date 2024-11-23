@@ -37,8 +37,8 @@ const UserActions = () => {
                 </Link>
             </li>
             <li>
-                <Link to="/profile" className="border border-dashed rounded-md hover:border-gray-600 flex-shrink-0 flex items-center gap-2 p-2.5 hover:rounded-lg hover:bg-gray-100 transition-all duration-300">
-                    <CogIcon className="h-6 w-6 flex-shrink-0" />
+                <Link to="/profile" className="group border border-dashed rounded-md hover:border-gray-600 flex-shrink-0 flex items-center gap-2 p-2.5 hover:rounded-lg hover:bg-gray-100 transition-all duration-300">
+                    <CogIcon className="h-6 w-6 flex-shrink-0 group-hover:animate-spin-once" />
                 </Link>
             </li>
             <li>

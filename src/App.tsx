@@ -3,13 +3,13 @@ import LandingPage from "@/pages/Landing";
 import LoginScreen from "@/pages/auth/Login";
 import RegisterScreen from "@/pages/auth/Register";
 import Navbar from "@/components/shared/navbar/Navbar";
-import Dashboard from "@/pages/navigation/Dashboard";
+import Dashboard from "@/pages/dashboard/Dashboard";
 import PrivateRoute from "@/components/shared/routing/PrivateRoute";
 import { Toaster } from "@/components/ui/toaster";
 import GuestRoute from "./components/shared/routing/AuthRedirectRoute";
-import Analytics from "@/pages/navigation/Analytics";
-import Streaks from "@/pages/navigation/Streaks";
-import Habits from "@/pages/navigation/Habits";
+import Analytics from "@/pages/analytics/Analytics";
+import Streaks from "@/pages/streaks/Streaks";
+import Habits from "@/pages/habits/Habits";
 
 function App() {
   return (

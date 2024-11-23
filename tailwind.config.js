@@ -58,9 +58,14 @@ export default {
         "shimmer-slide":
           "shimmer-slide var(--speed) ease-in-out infinite alternate",
         "spin-around": "spin-around calc(var(--speed) * 2) infinite linear",
+        'spin-once': 'spin-once 1s linear',
         meteor: "meteor 5s linear infinite",
       },
       keyframes: {
+        'spin-once': {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
         "shimmer-slide": {
           to: {
             transform: "translate(calc(100cqw - 100%), 0)",
