@@ -3,10 +3,13 @@ import LandingPage from "@/pages/Landing";
 import LoginScreen from "@/pages/auth/Login";
 import RegisterScreen from "@/pages/auth/Register";
 import Navbar from "@/components/shared/navbar/Navbar";
-import Dashboard from "@/pages/habits/Dashboard";
+import Dashboard from "@/pages/navigation/Dashboard";
 import PrivateRoute from "@/components/shared/routing/PrivateRoute";
 import { Toaster } from "@/components/ui/toaster";
 import GuestRoute from "./components/shared/routing/AuthRedirectRoute";
+import Analytics from "@/pages/navigation/Analytics";
+import Streaks from "@/pages/navigation/Streaks";
+import Habits from "@/pages/navigation/Habits";
 
 function App() {
   return (
@@ -22,6 +25,9 @@ function App() {
           </Route>
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/habits" element={<Habits />} />
+            <Route path="/analytics" element={<Analytics />} />{" "}
+            <Route path="/streaks" element={<Streaks />} />
           </Route>
         </Routes>
       </BrowserRouter>

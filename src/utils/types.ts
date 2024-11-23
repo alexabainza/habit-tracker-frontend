@@ -21,3 +21,14 @@ export interface User{
     deleted_at: Date;
 
 }
+
+export interface ConfirmationDialogProps {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  description: string;
+  confirmButtonText: string;
+  cancelButtonText: string;
+  onConfirm: () => void;
+  isDestructive?: boolean;
+}

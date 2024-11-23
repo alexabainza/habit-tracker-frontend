@@ -27,8 +27,9 @@ import { useFetch } from "@/hooks/use-fetch";
 import { useToast } from "@/hooks/use-toast";
 import { Habit } from "@/utils/types";
 import HabitCard from "@/components/custom/habit/HabitCard";
+import ConfirmationDialog from "@/components/custom/habit/ConfirmationDialog";
 
-const Dashboard: React.FC = () => {
+const Habits: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
@@ -38,7 +39,8 @@ const Dashboard: React.FC = () => {
   const [habitToUpdate, setHabitToUpdate] = useState<Habit["habit"] | null>(
     null
   );
-
+  const [habitToDelete, setHabitToDelete] = useState<string | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const form = useForm({
     resolver: zodResolver(habitSchema),
     defaultValues: {
@@ -80,7 +82,7 @@ const Dashboard: React.FC = () => {
     try {
       const response = await useFetch("/habits", "post", {
         ...form.getValues(),
-        userRef: currentUser?.user._id, // Access _id properly here
+        userRef: currentUser?.user._id,
       });
       const result = response.data;
       if (result.status === 400) {
@@ -117,8 +119,6 @@ const Dashboard: React.FC = () => {
             : habit
         )
       );
-
-      alert("Habit updated successfully.");
       setIsDialogOpen(false);
       setHabitToUpdate(null);
       form.reset();
@@ -129,20 +129,26 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const handleDelete = async (habitId: string) => {
+  const handleDelete = (habitId: string) => {
+    setHabitToDelete(habitId);
+    setIsDeleteDialogOpen(true); // Open confirmation dialog
+  };
+
+  const confirmDelete = async () => {
+    if (!habitToDelete) return;
+
     setLoading(true);
     try {
-      await useFetch("/habits", "delete", { id: habitId });
-      setHabits((prev) => prev.filter((habit) => habit.habit._id !== habitId));
+      await useFetch("/habits", "delete", { id: habitToDelete });
+      setHabits((prev) =>
+        prev.filter((habit) => habit.habit._id !== habitToDelete)
+      );
       toast({ title: "Habit deleted successfully." });
-    } catch (error: any) {
-      toast({
-        title: "An error occurred.",
-        description: error.response?.data?.message,
-        variant: "destructive",
-      });
+    } catch (error) {
+      toast({ title: "An error occurred.", variant: "destructive" });
     } finally {
       setLoading(false);
+      form.reset();
     }
   };
 
@@ -178,7 +184,7 @@ const Dashboard: React.FC = () => {
                 <HabitCard
                   key={habit.habit._id}
                   habit={habit.habit}
-                  onDelete={handleDelete}
+                  onDelete={() => handleDelete(habit.habit._id)}
                   onEdit={(habit) => {
                     setHabitToUpdate(habit);
                     setIsEditing(true);
@@ -190,7 +196,16 @@ const Dashboard: React.FC = () => {
             </div>
           )}
         </div>
-
+        <ConfirmationDialog
+          open={isDeleteDialogOpen}
+          onClose={() => setIsDeleteDialogOpen(false)}
+          title="Confirm Delete"
+          description="Are you sure you want to delete this habit?"
+          confirmButtonText="Delete"
+          cancelButtonText="Cancel"
+          onConfirm={confirmDelete}
+          isDestructive={true}
+        />
         <DialogContent className="sm:max-w-[400px] py-12 bg-slate-50">
           <DialogHeader>
             <DialogTitle className="text-3xl">
@@ -284,4 +299,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default Habits;
