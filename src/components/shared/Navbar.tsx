@@ -72,7 +72,11 @@ const Navbar: React.FC = () => {
         </Link>
       </nav>
 
-      <button type="button" onClick={toggleBurgerMenu} className="lg:hidden p-2">
+      <button
+        type="button"
+        onClick={toggleBurgerMenu}
+        className="lg:hidden p-2"
+      >
         <MenuIcon className="h-6 w-6 text-[var(--color-primary)]" />
         <span className="sr-only">Open</span>
       </button>
@@ -144,7 +148,11 @@ const Navbar: React.FC = () => {
                 <User2 />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
+            <DropdownMenuContent
+              className="w-56 bg-white"
+              align="end"
+              forceMount
+            >
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium leading-none">
