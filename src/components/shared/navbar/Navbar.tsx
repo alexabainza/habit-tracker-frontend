@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
           />
         )}
         <nav
-          className={`border-r border-opacity-30 border-gray-700 fixed md:sticky md:translate-x-0 top-0 min-h-dvh max-w-44 md:max-w-16 lg:max-w-20 flex flex-col items-center justify-between text-[var(--color-primary)] bg-white p-5 shadow-sm dark:bg-gray-950 transition-all duration-300 z-50 ${isBurgerOpen ? "translate-x-0" : "-translate-x-44"
+          className={`border-r border-opacity-30 border-gray-700 fixed md:sticky md:translate-x-0 top-0 h-dvh max-w-44 md:max-w-16 lg:max-w-20 flex flex-col items-center justify-between text-[var(--color-primary)] bg-white p-5 shadow-sm dark:bg-gray-950 transition-all duration-300 z-50 ${isBurgerOpen ? "translate-x-0" : "-translate-x-44"
             }`}
         >
           <Link to="/" className="flex items-center">

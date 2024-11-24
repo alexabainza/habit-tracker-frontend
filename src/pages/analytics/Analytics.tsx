@@ -28,7 +28,7 @@ const Analytics: React.FC = () => {
         <Separator className="bg-gray-500 opacity-25 mb-4" />
       </main>
       <Overview selected={selected} />
-      <div className="flex flex-col md:flex-row md:flex-wrap items-start justify-between gap-2">
+      <div className="flex flex-col md:flex-row flex-wrap lg:flex-nowrap items-start justify-between gap-2 md:gap-5 lg:gap-8">
         <ChartOverview />
         <RecentHabits />
       </div>
