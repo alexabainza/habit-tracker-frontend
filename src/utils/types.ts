@@ -12,13 +12,13 @@ export interface Habit {
   streak: number;
 }
 export interface User{
-    _id: string;
+    _id?: string;
     username: string;
-    password: string;
-    email: string;
-    created_at: Date;
-    updated_at: Date;
-    deleted_at: Date;
+    password?: string;
+    email?: string;
+    created_at?: Date;
+    updated_at?: Date;
+    deleted_at?: Date;
 
 }
 

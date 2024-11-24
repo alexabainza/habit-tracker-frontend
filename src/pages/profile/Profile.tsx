@@ -79,9 +79,13 @@ export default function Profile() {
     setLoading(true);
     try {
       const response = await useFetch("/profile", "delete");
+      dispatch(signOutUserStart());
+
       if (response.status === 200) {
         toast({ title: "User deleted successfully." });
       }
+      dispatch(signOutUserSuccess());
+
       navigate("/login");
     } catch (error) {
       toast({ title: "An error occurred.", variant: "destructive" });

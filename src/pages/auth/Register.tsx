@@ -58,7 +58,7 @@ const RegisterScreen: React.FC = () => {
           description: "Redirecting to login...",
           duration: 1500,
         });
-        dispatch(signInSuccess(result.data));
+        // dispatch(signInSuccess(result.data));
         navigate("/login");
       }
     } catch (error: any) {
