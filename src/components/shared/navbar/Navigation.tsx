@@ -27,7 +27,7 @@ const Navigation = () => {
                 <li key={index}>
                     <TooltipProvider delayDuration={300}>
                         <Tooltip>
-                            <TooltipTrigger>
+                            <TooltipTrigger className="w-full">
                                 <Link to={item.link} className={`border border-dashed rounded-md border-gray-600 flex-shrink-0 flex items-center gap-2 p-2.5 hover:rounded-2xl transition-all duration-300 ${location.pathname === item.link ? 'bg-blue-700 text-white' : 'hover:bg-gray-100'}`}>
                                     <item.icon className="h-6 w-6" />
                                     <span className="md:hidden">{item.name}</span>
