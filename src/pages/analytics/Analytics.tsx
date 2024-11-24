@@ -21,8 +21,8 @@ const Analytics: React.FC = () => {
           <Button variant="link" onClick={() => setSelected("monthly")}>
             <span className={`${selected === "monthly" ? 'underline text-black' : "text-black/60"}`}>Monthly</span>
           </Button>
-          <Button variant="link" onClick={() => setSelected("all")}>
-            <span className={`${selected === "all" ? 'underline text-black' : "text-black/60"}`}>All Time</span>
+          <Button variant="link" onClick={() => setSelected("all time")}>
+            <span className={`${selected === "all time" ? 'underline text-black' : "text-black/60"}`}>All Time</span>
           </Button>
         </div>
         <Separator className="bg-gray-500 opacity-25 mb-4" />

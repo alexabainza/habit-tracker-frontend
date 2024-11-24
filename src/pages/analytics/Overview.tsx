@@ -1,5 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { PropsWithChildren } from "react"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useFetch } from "@/hooks/use-fetch"
+import { useToast } from "@/hooks/use-toast"
+import { PropsWithChildren, useEffect, useState } from "react"
 
 type OverviewProps = {
     selected: string
@@ -7,32 +10,82 @@ type OverviewProps = {
 
 type OverviewCardProps = {
     title: string
-    value: string
+    value: number | string
     frequency?: string
     description?: string
 }
 
-const Overview: React.FC<OverviewProps> = () => {
+const Overview: React.FC<OverviewProps> = ({ selected }) => {
+    const { toast } = useToast();
+    const [loading, setLoading] = useState(true);
+    const [data, setData] = useState({
+        currentStreak: {
+            days: 0,
+            interval: "",
+        },
+        bestStreak: {
+            days: 0,
+            interval: "",
+        },
+    });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                const response = await useFetch(`/analytics/user-streak/${selected}`, "get");
+                const result = response.data;
+
+                if (result.status === 200) {
+                    setData((prev) => {
+                        return {
+                            ...prev,
+                            currentStreak: { days: result.data.currentStreak, interval: result.data.currentStreakInterval },
+                            bestStreak: { days: result.data.bestStreak, interval: result.data.bestStreakInterval },
+                        };
+                    });
+
+                    toast({ title: "Streak data fetched.", duration: 2000 });
+                }
+            } catch (error) {
+                toast({ title: "An error occurred.", variant: "destructive" });
+            }
+        };
+
+        fetchData().finally(() => setLoading(false));
+    }, [selected]);
+
     return (
         <Card>
             <CardHeader className="p-3 pb-0">
                 <CardTitle>Streak Overview</CardTitle>
             </CardHeader>
-            <CardContent className="flex items-center justify-between overflow-x-auto max-w-full py-3 md:py-1 lg:py-3 gap-3">
-                <OverviewCard title="ALL TIME CONSISTENCY" value="85">
-                    <p className="font-semibold text-xl">%</p>
-                </OverviewCard>
-                <OverviewCard title="CURRENT STREAK" value="3" frequency="days" description="Nov 20 - 23" />
-                <OverviewCard title="BEST STREAK" value="5" frequency="days" description="Nov 20 - 23" />
-                <OverviewCard title="Skipped Days this week" value="2" frequency="days" description="Nov 20 - 23" />
-            </CardContent>
-        </Card>
+            <CardContent className="flex items-center justify-between overflow-x-auto max-w-full py-3 lg:py-3 gap-3">
+                {loading ? (
+                    <>
+                        <Skeleton className="w-full max-w-72 h-24 bg-gray-400" />
+                        <Skeleton className="w-full max-w-72 h-24 bg-gray-400" />
+                        <Skeleton className="w-full max-w-72 h-24 bg-gray-400" />
+                        <Skeleton className="w-full max-w-72 h-24 bg-gray-400" />
+                    </>
+                ) : (
+                    <>
+                        <OverviewCard title="ALL TIME CONSISTENCY" value="85">
+                            <p className="font-semibold text-xl">%</p>
+                        </OverviewCard>
+                        <OverviewCard title="CURRENT STREAK" value={data.currentStreak.days} frequency="days" description={data.currentStreak.interval} />
+                        <OverviewCard title="BEST STREAK" value={data.bestStreak.days} frequency="days" description={data.bestStreak.interval} />
+                        <OverviewCard title="Skipped Days this week" value="2" frequency="days" description="Nov 20 - 23" />
+                    </>
+                )}
+            </CardContent >
+        </Card >
     )
 }
 
 const OverviewCard: React.FC<OverviewCardProps & PropsWithChildren> = ({ title, description, frequency, value, children }) => {
     return (
-        <Card className="w-full max-w-[190px] md:max-w-64 lg:max-w-[300px] h-24 flex flex-col md:flex-row items-center justify-center md:gap-3 flex-shrink-0">
+        <Card className="w-full max-w-[190px] md:max-w-64 lg:max-w-[300px] h-24 flex flex-col md:flex-row items-center justify-center md:gap-3 flex-shrink-0 transition-all duration-300 translate-x-[-2px] translate-y-[-2px] shadow-[4px_4px_0px_black] hover:translate-x-0 hover:translate-y-0 hover:rounded-md hover:shadow-none">
             <CardContent className="pt-4 p-0 flex items-center justify-center gap-1.5">
                 <h1 className="text-xl md:text-5xl font-bold text-center">{value}</h1>
                 {children}
