@@ -12,13 +12,11 @@ import {
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  signOutUserFailure,
   signOutUserStart,
   signOutUserSuccess,
 } from "@/redux/user/userSlice";
 import { useFetch } from "@/hooks/use-fetch";
 import { User } from "@/utils/types";
-import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EditUserSchema } from "@/utils/schemas";
@@ -41,13 +39,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
+
 export default function Profile() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [user, setUser] = useState<User>();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
 
   const form = useForm({
     resolver: zodResolver(EditUserSchema),
@@ -67,7 +66,7 @@ export default function Profile() {
         setUser(result.data || []);
       } catch (error) {
         console.error(error);
-        toast({ title: "An error occurred.", variant: "destructive" });
+        toast.error("Failed to fetch user data.");
       } finally {
         setLoading(false);
       }
@@ -82,13 +81,13 @@ export default function Profile() {
       dispatch(signOutUserStart());
 
       if (response.status === 200) {
-        toast({ title: "User deleted successfully." });
+        toast.success("Account deleted successfully.");
       }
       dispatch(signOutUserSuccess());
 
       navigate("/login");
     } catch (error) {
-      toast({ title: "An error occurred.", variant: "destructive" });
+      toast.error("Failed to delete account.");
     } finally {
       setLoading(false);
       navigate("/login");
@@ -108,36 +107,16 @@ export default function Profile() {
           ...prevUser,
           username,
         }));
-        toast({ title: "Updated profile successfully" });
+        toast.success("Profile updated successfully.");
       }
     } catch (error: any) {
-      toast({ title: "Error updating profile", variant: "destructive" });
+      toast.error("Failed to update profile.");
     } finally {
       setIsEditing(false);
       setLoading(false);
     }
   };
 
-  const onSignOut = async () => {
-    dispatch(signOutUserStart());
-
-    try {
-      const response = await useFetch("/auth/logout", "post");
-      const result = response.data;
-
-      if (result.status === 200) {
-        dispatch(signOutUserSuccess());
-        navigate("/login");
-      } else {
-        const data = await result.json();
-        dispatch(signOutUserFailure(data.message || "Logout failed"));
-      }
-    } catch (error: any) {
-      dispatch(
-        signOutUserFailure(error.message || "An unexpected error occurred")
-      );
-    }
-  };
   return (
     <div className="w-full py-12 flex-1 h-full lg:px-16 sm:px-5 px-5 mt-6 space-y-4">
       <Card className="max-w-md mx-auto">
@@ -239,14 +218,6 @@ export default function Profile() {
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
-              <br />
-              <Button
-                onClick={onSignOut}
-                variant="outline"
-                className="w-full hover:bg-black hover:text-white"
-              >
-                LOGOUT
-              </Button>
             </>
           )}
         </CardFooter>

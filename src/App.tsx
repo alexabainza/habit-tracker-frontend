@@ -5,19 +5,19 @@ import RegisterScreen from "@/pages/auth/Register";
 import Navbar from "@/components/shared/navbar/Navbar";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import PrivateRoute from "@/components/shared/routing/PrivateRoute";
-import { Toaster } from "@/components/ui/toaster";
 import GuestRoute from "./components/shared/routing/AuthRedirectRoute";
 import Analytics from "@/pages/analytics/Analytics";
 import Streaks from "@/pages/streaks/Streaks";
 import Habits from "@/pages/habits/Habits";
 import Profile from "@/pages/profile/Profile";
+import { Toaster as Sonner } from "@/components/ui/sonner"
 
 function App() {
   return (
     <main className="min-h-dvh w-full flex justify-between">
       <BrowserRouter>
         <Navbar />
-        <Toaster />
+        <Sonner duration={1500} />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route element={<GuestRoute />}>

@@ -2,14 +2,13 @@ import StreakCard from "@/components/custom/StreakCard";
 import { useFetch } from "@/hooks/use-fetch";
 import { Habit } from "@/utils/types";
 import React, { useEffect, useState } from "react";
-import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import ChallengeCard from "@/pages/dashboard/Challenges";
+import { toast } from "sonner";
 
 const Dashboard: React.FC = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [habitStates, setHabitStates] = useState<{ [id: string]: boolean }>({});
-  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -35,10 +34,10 @@ const Dashboard: React.FC = () => {
           setHabitStates(validStates);
         } else {
           setHabits([]);
-          toast({ title: "No habits found.", duration: 2000 });
+          toast.warning("No habits found.");
         }
       } catch (error) {
-        toast({ title: "An error occurred.", variant: "destructive" });
+        toast.error("Failed to fetch habits.");
       } finally {
         setLoading(false);
       }

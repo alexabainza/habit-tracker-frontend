@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { signInSuccess } from "@/redux/user/userSlice";
 import {
   Form,
   FormControl,
@@ -18,15 +17,14 @@ import { RegisterUserSchema } from "@/utils/schemas";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFetch } from "@/hooks/use-fetch";
-import { useToast } from "@/hooks/use-toast";
 import { handleAuthError } from "@/utils/errorHandler";
 import { z } from "zod";
+import { toast } from "sonner";
 
 const RegisterScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { toast } = useToast();
   const isLoading = useSelector((state: any) => state.user.loading);
   // dispatch(resetState());
   const togglePasswordVisibility = () => {
@@ -53,27 +51,16 @@ const RegisterScreen: React.FC = () => {
       const result = response.data;
 
       if (result.status == 201) {
-        toast({
-          title: "Registration successful!",
-          description: "Redirecting to login...",
-          duration: 1500,
-        });
+        toast.success("Registration successful.");
         // dispatch(signInSuccess(result.data));
         navigate("/login");
       }
     } catch (error: any) {
       if (error.response) {
         const errorMessage = handleAuthError(error.response, dispatch);
-        toast({
-          variant: "destructive",
-          title: errorMessage,
-        });
+        toast.error(errorMessage);
       } else {
-        toast({
-          variant: "destructive",
-          title: "An unexpected error occurred.",
-          description: "Please try again later.",
-        });
+        toast.error("Failed to register.");
       }
     }
   };

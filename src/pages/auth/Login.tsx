@@ -18,14 +18,13 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginSchema } from "@/utils/schemas";
 import { handleAuthError } from "@/utils/errorHandler";
-import { useToast } from "@/hooks/use-toast";
 import { useFetch } from "@/hooks/use-fetch";
 import Cookies from "js-cookie";
 import { z } from "zod";
+import { toast } from "sonner";
 
 const LoginScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { toast } = useToast();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoading = useSelector((state: any) => state.user.loading);
@@ -51,11 +50,7 @@ const LoginScreen: React.FC = () => {
       if (result.status === 200) {
         dispatch(signInSuccess(result.data));
 
-        toast({
-          title: "Login successful!",
-          description: "Redirecting to dashboard...",
-          duration: 1500,
-        });
+        toast.success("Login successful.");
 
         Cookies.set("token", result.data.token, { expires: 7, secure: true });
 
@@ -64,16 +59,9 @@ const LoginScreen: React.FC = () => {
     } catch (error: any) {
       if (error.response) {
         const errorMessage = handleAuthError(error.response, dispatch);
-        toast({
-          variant: "destructive",
-          title: errorMessage,
-        });
+        toast.error(errorMessage);
       } else {
-        toast({
-          variant: "destructive",
-          title: "An unexpected error occurred.",
-          description: "Please try again later.",
-        });
+        toast.error("An error occurred. Please try again.");
       }
     }
   };

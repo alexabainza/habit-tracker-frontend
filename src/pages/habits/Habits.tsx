@@ -24,16 +24,15 @@ import {
 import { LoaderIcon, Plus } from "lucide-react";
 import { habitSchema } from "@/utils/schemas";
 import { useFetch } from "@/hooks/use-fetch";
-import { useToast } from "@/hooks/use-toast";
 import { Habit } from "@/utils/types";
 import HabitCard from "@/pages/habits/HabitCard";
 import ConfirmationDialog from "@/components/custom/ConfirmationDialog";
 import Loading from "@/components/ui/loading";
+import { toast } from "sonner";
 
 const Habits: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [habits, setHabits] = useState<Habit[]>([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -60,11 +59,11 @@ const Habits: React.FC = () => {
         setHabits(result.data || []);
 
         if (response.status === 204) {
-          toast({ title: "No habits found.", duration: 2000 });
+          toast.info("No habits found.");
         }
       } catch (error) {
         console.error(error);
-        toast({ title: "An error occurred.", variant: "destructive" });
+        toast.error("Failed to fetch habits.");
       } finally {
         setLoading(false);
       }
@@ -88,9 +87,9 @@ const Habits: React.FC = () => {
       });
       const result = response.data;
       if (result.status === 400) {
-        toast({ title: result.message, variant: "destructive" });
+        toast.error(result.message);
       } else {
-        toast({ title: "Habit added successfully." });
+        toast.success("Habit created successfully.");
         setHabits((prevHabits) => [...prevHabits, result.data]);
 
         setIsDialogOpen(false);
@@ -98,7 +97,7 @@ const Habits: React.FC = () => {
       setLoading(false);
       form.reset();
     } catch (error: any) {
-      toast({ title: error.response?.data?.message || "An error occurred." });
+      toast.error(error.response?.data?.message || "Error creating habit.");
     }
   };
   const handleUpdateHabit = async () => {
@@ -123,6 +122,7 @@ const Habits: React.FC = () => {
       );
       setIsDialogOpen(false);
       setHabitToUpdate(null);
+      toast.success("Habit updated successfully.");
       form.reset();
     } catch (error: any) {
       alert(error.response?.data?.message || "Error updating habit.");
@@ -145,9 +145,9 @@ const Habits: React.FC = () => {
       setHabits((prev) =>
         prev.filter((habit) => habit.habit._id !== habitToDelete)
       );
-      toast({ title: "Habit deleted successfully." });
+      toast.success("Habit deleted successfully.");
     } catch (error) {
-      toast({ title: "An error occurred.", variant: "destructive" });
+      toast.error("Error deleting habit.");
     } finally {
       setLoading(false);
       form.reset();

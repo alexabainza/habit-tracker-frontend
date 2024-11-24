@@ -27,7 +27,7 @@ const HabitCard: React.FC<HabitCardProps> = ({
     loading ? (
       <div className="animate-pulse flex justify-between bg-softGreen" />
     ) : (
-      <Card className="flex justify-between bg-softGreen shadow shadow-green-900">
+      <Card className="flex justify-between lg:col-span-2 xl:col-span-1 bg-softGreen shadow shadow-green-900">
         <CardHeader className="space-y-0 ">
           <CardTitle className="lg:text-2xl sm:text-xl text-xl">
             {habit.name

@@ -1,8 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useFetch } from "@/hooks/use-fetch"
-import { useToast } from "@/hooks/use-toast"
 import { PropsWithChildren, useEffect, useState } from "react"
+import { toast } from "sonner"
 
 type OverviewProps = {
     selected: string
@@ -16,7 +16,6 @@ type OverviewCardProps = {
 }
 
 const Overview: React.FC<OverviewProps> = ({ selected }) => {
-    const { toast } = useToast();
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState({
         currentStreak: {
@@ -44,11 +43,9 @@ const Overview: React.FC<OverviewProps> = ({ selected }) => {
                             bestStreak: { days: result.data.bestStreak, interval: result.data.bestStreakInterval },
                         };
                     });
-
-                    toast({ title: "Streak data fetched.", duration: 2000 });
                 }
             } catch (error) {
-                toast({ title: "An error occurred.", variant: "destructive" });
+                toast.error("Failed to fetch data.");
             }
         };
 
