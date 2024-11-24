@@ -32,3 +32,8 @@ export interface ConfirmationDialogProps {
   onConfirm: () => void;
   isDestructive?: boolean;
 }
+
+export interface StreakCardProps {
+  amount: number;
+  label: string;
+}

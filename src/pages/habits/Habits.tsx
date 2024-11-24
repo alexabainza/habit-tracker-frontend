@@ -154,7 +154,7 @@ const Habits: React.FC = () => {
   };
 
   return (
-    <div className="w-full flex-1 h-full lg:px-16 sm:px-5 px-5 mt-6">
+    <div className="w-full py-12 flex-1 h-full lg:px-16 sm:px-5 px-5 mt-6 space-y-4">
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <div className="flex lg:flex-row sm:flex-col flex-col sm:gap-4 justify-between">
           <main>
