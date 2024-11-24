@@ -10,6 +10,7 @@ import GuestRoute from "./components/shared/routing/AuthRedirectRoute";
 import Analytics from "@/pages/analytics/Analytics";
 import Streaks from "@/pages/streaks/Streaks";
 import Habits from "@/pages/habits/Habits";
+import Profile from "@/pages/profile/Profile";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="/habits" element={<Habits />} />
             <Route path="/analytics" element={<Analytics />} />{" "}
             <Route path="/streaks" element={<Streaks />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
         </Routes>
       </BrowserRouter>

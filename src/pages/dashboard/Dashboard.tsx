@@ -18,19 +18,23 @@ const Dashboard: React.FC = () => {
       try {
         const response = await useFetch("/habits", "get");
         const result = response.data;
-        setHabits(result.data || []);
+        if (result.data && result.data.length > 0) {
+          setHabits(result.data);
 
-        const savedStates = JSON.parse(
-          localStorage.getItem("habitStates") || "{}"
-        );
+          // Only set habit states if there are habits
+          const savedStates = JSON.parse(
+            localStorage.getItem("habitStates") || "{}"
+          );
 
-        const validStates: { [key: string]: boolean } = {};
-        result.data.forEach((habit: Habit) => {
-          validStates[habit.habit._id] = savedStates[habit.habit._id] || false;
-        });
+          const validStates: { [key: string]: boolean } = {};
+          result.data.forEach((habit: Habit) => {
+            validStates[habit.habit._id] =
+              savedStates[habit.habit._id] || false;
+          });
 
-        setHabitStates(validStates);
-        if (response.status === 204) {
+          setHabitStates(validStates);
+        } else {
+          setHabits([]);
           toast({ title: "No habits found.", duration: 2000 });
         }
       } catch (error) {
@@ -73,6 +77,8 @@ const Dashboard: React.FC = () => {
           <div>
             <Loader2 className="animate-spin" />
           </div>
+        ) : habits.length === 0 ? (
+          <p>No habits found</p>
         ) : (
           <div className="space-y-4">
             {habits.map((habit) => (

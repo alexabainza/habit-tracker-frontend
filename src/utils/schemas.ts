@@ -26,4 +26,8 @@ const habitSchema = z.object({
         z.number().min(1, { message: "Goal must be at least 1." })
       ),});
 
-export { habitSchema, RegisterUserSchema, LoginSchema };
+const EditUserSchema = z.object({
+    username: z.string({ message: "Username is required." }).min(3, { message: "Username is required 3 characters." }).max(30, { message: "Username is too long." }),
+});
+    
+export { habitSchema, RegisterUserSchema, LoginSchema, EditUserSchema };
