@@ -28,12 +28,13 @@ import { useToast } from "@/hooks/use-toast";
 import { Habit } from "@/utils/types";
 import HabitCard from "@/pages/habits/HabitCard";
 import ConfirmationDialog from "@/components/custom/ConfirmationDialog";
+import Loading from "@/components/ui/loading";
 
 const Habits: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [habits, setHabits] = useState<Habit[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [habitToUpdate, setHabitToUpdate] = useState<Habit["habit"] | null>(
@@ -167,7 +168,7 @@ const Habits: React.FC = () => {
               className="px-20 bg-sageGreen text-white hover:bg-mutedGreen"
               onClick={() => {
                 setIsDialogOpen(true);
-                setIsEditing(false); // Reset isEditing to false
+                setIsEditing(false);
               }}
             >
               <Plus />
@@ -177,24 +178,28 @@ const Habits: React.FC = () => {
         </div>
 
         <div className="mt-6 grid gap-4">
-          {habits.length === 0 ? (
-            <div className="text-center text-gray-500">No habits found.</div>
+          {loading ? (
+            <Loading />
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {habits.map((habit) => (
-                <HabitCard
-                  key={habit.habit._id}
-                  habit={habit.habit}
-                  onDelete={() => handleDelete(habit.habit._id)}
-                  onEdit={(habit) => {
-                    setHabitToUpdate(habit);
-                    setIsEditing(true);
-                    setIsDialogOpen(true);
-                  }}
-                  loading={loading}
-                />
-              ))}
-            </div>
+            habits.length === 0 ? (
+              <div className="text-center text-gray-500">No habits found.</div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {habits.map((habit) => (
+                  <HabitCard
+                    key={habit.habit._id}
+                    habit={habit.habit}
+                    onDelete={() => handleDelete(habit.habit._id)}
+                    onEdit={(habit) => {
+                      setHabitToUpdate(habit);
+                      setIsEditing(true);
+                      setIsDialogOpen(true);
+                    }}
+                    loading={loading}
+                  />
+                ))}
+              </div>
+            )
           )}
         </div>
         <ConfirmationDialog
@@ -234,7 +239,7 @@ const Habits: React.FC = () => {
                       <Input
                         placeholder="Habit name"
                         {...field}
-                        className="border-[#6490BC] rounded-md placeholder-gray-200" // Add your desired placeholder color here
+                        className="border-[#6490BC] rounded-md placeholder-gray-200"
                       />
                     </FormControl>
                     <FormMessage className="text-xs text-red-400" />
@@ -254,9 +259,8 @@ const Habits: React.FC = () => {
                         {[1, 2, 3, 4, 5, 6, 7].map((value) => (
                           <label
                             key={value}
-                            className={`px-4 py-1 rounded-full cursor-pointer border-2 border-black ${
-                              field.value === value ? "bg-softGreen" : ""
-                            }`}
+                            className={`px-4 py-1 rounded-full cursor-pointer border-2 border-black ${field.value === value ? "bg-softGreen" : ""
+                              }`}
                           >
                             <input
                               type="radio"
