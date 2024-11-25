@@ -1,6 +1,7 @@
+import { Input } from "@/components/ui/input";
 import { useFetch } from "@/hooks/use-fetch";
 import { Habit } from "@/utils/types";
-import { Dumbbell } from "lucide-react";
+import { Dumbbell, LoaderIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -36,21 +37,27 @@ const ChallengeCard: React.FC<{
         <span className="text-xl font-medium">{habit.name}</span>
       </div>
       <div className="flex items-center gap-4">
-        <input
-          type="checkbox"
-          id={habit._id}
-          checked={checked}
-          onChange={(e) => onCheck(habit._id, e.target.checked)}
-          disabled={loading}
-          className="hidden"
-        />
-        <label
-          htmlFor={habit._id}
-          className={`cursor-pointer w-6 h-6 rounded-lg ${checked ? "bg-sageGreen" : "bg-gray-200"
-            } flex items-center justify-center`}
-        >
-          {checked && <span className="text-white font-bold">✔</span>}
-        </label>
+        {loading ? (
+          <LoaderIcon className="flex-shrink-0 w-6 h-6 animate-spin" />
+        ) : (
+          <>
+            <Input
+              type="checkbox"
+              id={habit._id}
+              checked={checked}
+              onChange={(e) => onCheck(habit._id, e.target.checked)}
+              disabled={loading}
+              className="hidden"
+            />
+            <label
+              htmlFor={habit._id}
+              className={`cursor-pointer w-6 h-6 rounded-lg ${checked ? "bg-sageGreen" : "bg-gray-200"
+                } flex items-center justify-center`}
+            >
+              {checked && <span className="text-white font-bold">✔</span>}
+            </label>
+          </>
+        )}
       </div>
     </div>
   );
