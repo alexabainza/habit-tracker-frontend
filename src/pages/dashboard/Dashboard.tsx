@@ -10,6 +10,9 @@ const Dashboard: React.FC = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [habitStates, setHabitStates] = useState<{ [id: string]: boolean }>({});
   const [loading, setLoading] = useState(false);
+  const [numHabits, setNumHabits] = useState(0);
+  const completed = Object.values(habitStates).filter(Boolean).length;
+  const percentage = numHabits === 0 ? 0 : (completed / numHabits) * 100;
 
   useEffect(() => {
     const fetchHabits = async () => {
@@ -19,6 +22,11 @@ const Dashboard: React.FC = () => {
         const result = response.data;
         if (result.data && result.data.length > 0) {
           setHabits(result.data);
+          setNumHabits(result.data.length);
+
+          const savedStates = JSON.parse(
+            localStorage.getItem("habitStates") || "{}"
+          );
 
           const validStates: { [key: string]: boolean } = {};
           result.data.forEach((habit: Habit) => {
@@ -45,6 +53,12 @@ const Dashboard: React.FC = () => {
 
   console.log(habits)
 
+  const sortedHabits = habits.sort((a, b) => {
+    const aChecked = habitStates[a.habit._id] || false;
+    const bChecked = habitStates[b.habit._id] || false;
+    return aChecked === bChecked ? 0 : aChecked ? 1 : -1; // Checked habits go to the bottom
+  });
+
   return (
     <div className="w-full py-12 flex-1 h-full lg:px-16 sm:px-5 px-5 mt-6 space-y-4">
       <main>
@@ -62,6 +76,7 @@ const Dashboard: React.FC = () => {
       </section>
       <section className="border-sageGreen border lg:px-8 sm:px-4 px-4 py-6 rounded-xl lg:w-1/2 sm:w-full w-full space-y-3">
         <h1 className="font-semibold text-2xl">Today's Challenges</h1>
+
         {loading ? (
           <div>
             <Loader2 className="animate-spin" />
@@ -69,16 +84,43 @@ const Dashboard: React.FC = () => {
         ) : habits.length === 0 ? (
           <p>No habits found</p>
         ) : (
-          <div className="space-y-4">
-            {habits.map((habit) => (
-              <ChallengeCard
-                key={habit.habit._id}
-                habit={habit.habit}
-                checked={habit.accomplished}
-                onCheck={handleCheck}
-              />
-            ))}
-          </div>
+          <>
+            <div className="space-y-4">
+              {habits.map((habit) => (
+                <ChallengeCard
+                  key={habit.habit._id}
+                  habit={habit.habit}
+                  checked={habit.accomplished}
+                  onCheck={handleCheck}
+                />
+              ))}
+            </div>
+            <div className="w-full h-2 bg-gray-200 rounded-full mb-2">
+              <div
+                className="h-full bg-green-500 rounded-full transition-all duration-500 ease-in-out"
+                style={{ width: `${percentage}%` }}
+              ></div>
+            </div>
+            <div className="flex justify-between">
+              <p className="text-sm text-gray-700">
+                You have completed <strong>{completed}</strong> out of{" "}
+                <strong>{numHabits}</strong> habits
+              </p>
+              <p className="text-sm text-green-600">{percentage.toFixed()}%</p>
+            </div>
+
+            <div className="space-y-4">
+              {sortedHabits.map((habit) => (
+                <ChallengeCard
+                  key={habit.habit._id}
+                  habit={habit.habit}
+                  checked={habitStates[habit.habit._id] || false}
+                  onCheck={handleCheck}
+                  className="transition-all duration-300 ease-in-out transform"
+                />
+              ))}
+            </div>
+          </>
         )}
       </section>
     </div>
