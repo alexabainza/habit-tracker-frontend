@@ -33,7 +33,7 @@ const Navigation = () => {
                                     <span className="md:hidden">{item.name}</span>
                                 </Link>
                             </TooltipTrigger>
-                            <TooltipContent side="right" className="bg-black text-white text-md font-semibold flex items-center gap-x-1">
+                            <TooltipContent side="right" className="hidden bg-black text-white text-md font-semibold md:flex items-center gap-x-1">
                                 To
                                 <p className="font-bold">{item.name}</p>
                                 <ChevronRightIcon className="h-4 w-4" />

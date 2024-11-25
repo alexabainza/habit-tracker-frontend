@@ -26,24 +26,35 @@ const Overview: React.FC<OverviewProps> = ({ selected }) => {
             days: 0,
             interval: "",
         },
+        consistency: 0,
     });
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const response = await useFetch(`/analytics/user-streak/${selected}`, "get");
-                const result = response.data;
+                const [streakData, consistencyData] = await Promise.all([
+                    useFetch(`/analytics/user-streak/${selected}`, "get"),
+                    useFetch(`/analytics/user-streak/${selected}`, "get"),
+                ]);
 
-                if (result.status === 200) {
-                    setData((prev) => {
-                        return {
-                            ...prev,
-                            currentStreak: { days: result.data.currentStreak, interval: result.data.currentStreakInterval },
-                            bestStreak: { days: result.data.bestStreak, interval: result.data.bestStreakInterval },
-                        };
-                    });
+                if (streakData.status === 204 || consistencyData.status === 204) {
+                    toast.error(streakData.statusText || consistencyData.statusText);
+                    return;
                 }
+
+                const streakResult = streakData.data;
+                const consistencyResult = consistencyData.data;
+
+                setData((prev) => {
+                    return {
+                        ...prev,
+                        currentStreak: { days: streakResult.data.currentStreak, interval: streakResult.data.currentStreakInterval },
+                        bestStreak: { days: streakResult.data.bestStreak, interval: streakResult.data.bestStreakInterval },
+                        consistency: consistencyResult.data.currentStreak,
+                    };
+                });
+
             } catch (error) {
                 toast.error("Failed to fetch data.");
             }
@@ -67,7 +78,7 @@ const Overview: React.FC<OverviewProps> = ({ selected }) => {
                     </>
                 ) : (
                     <>
-                        <OverviewCard title="ALL TIME CONSISTENCY" value="85">
+                        <OverviewCard title={`${selected} Consistency`} value={data.consistency}>
                             <p className="font-semibold text-xl">%</p>
                         </OverviewCard>
                         <OverviewCard title="CURRENT STREAK" value={data.currentStreak.days} frequency="days" description={data.currentStreak.interval} />
@@ -98,7 +109,7 @@ const OverviewCard: React.FC<OverviewCardProps & PropsWithChildren> = ({ title, 
                 )}
             </CardContent>
             <CardHeader className="p-0 md:p-5 md:px-0 gap-0 space-y-0 text-center md:text-left">
-                <CardTitle className="text-wrap md:max-w-28 text-gray-600 text-sm tracking-tighter">{title}</CardTitle>
+                <CardTitle className="text-wrap md:max-w-28 text-gray-600 text-sm tracking-tighter capitalize">{title}</CardTitle>
                 <CardDescription className="text-gray-500 text-xs">{description}</CardDescription>
             </CardHeader>
         </Card>
