@@ -24,10 +24,6 @@ const Dashboard: React.FC = () => {
           setHabits(result.data);
           setNumHabits(result.data.length);
 
-          const savedStates = JSON.parse(
-            localStorage.getItem("habitStates") || "{}"
-          );
-
           const validStates: { [key: string]: boolean } = {};
           result.data.forEach((habit: Habit) => {
             validStates[habit.habit._id] = habit.accomplished;
