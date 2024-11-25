@@ -20,15 +20,9 @@ const Dashboard: React.FC = () => {
         if (result.data && result.data.length > 0) {
           setHabits(result.data);
 
-          // Only set habit states if there are habits
-          const savedStates = JSON.parse(
-            localStorage.getItem("habitStates") || "{}"
-          );
-
           const validStates: { [key: string]: boolean } = {};
           result.data.forEach((habit: Habit) => {
-            validStates[habit.habit._id] =
-              savedStates[habit.habit._id] || false;
+            validStates[habit.habit._id] = habit.accomplished;
           });
 
           setHabitStates(validStates);
@@ -44,16 +38,12 @@ const Dashboard: React.FC = () => {
     };
     fetchHabits();
   }, []);
-  useEffect(() => {
-    if (Object.keys(habitStates).length > 0) {
-      localStorage.setItem("habitStates", JSON.stringify(habitStates));
-    }
-  }, [habitStates]);
-  const handleCheck = (id: string, checked: boolean) => {
-    console.log("toggled: ", id);
 
+  const handleCheck = (id: string, checked: boolean) => {
     setHabitStates((prevStates) => ({ ...prevStates, [id]: checked }));
   };
+
+  console.log(habits)
 
   return (
     <div className="w-full py-12 flex-1 h-full lg:px-16 sm:px-5 px-5 mt-6 space-y-4">
@@ -84,7 +74,7 @@ const Dashboard: React.FC = () => {
               <ChallengeCard
                 key={habit.habit._id}
                 habit={habit.habit}
-                checked={habitStates[habit.habit._id] || false}
+                checked={habit.accomplished}
                 onCheck={handleCheck}
               />
             ))}
