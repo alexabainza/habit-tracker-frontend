@@ -12,6 +12,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
+  signOutUserFailure,
   signOutUserStart,
   signOutUserSuccess,
 } from "@/redux/user/userSlice";
@@ -93,6 +94,27 @@ export default function Profile() {
       navigate("/login");
     }
   };
+  const onSignOut = async () => {
+    dispatch(signOutUserStart());
+
+    try {
+      const response = await useFetch("/auth/logout", "post");
+      const result = response.data;
+
+      if (result.status === 200) {
+        dispatch(signOutUserSuccess());
+        navigate("/login");
+      } else {
+        const data = await result.json();
+        dispatch(signOutUserFailure(data.message || "Logout failed"));
+      }
+    } catch (error: any) {
+      dispatch(
+        signOutUserFailure(error.message || "An unexpected error occurred")
+      );
+    }
+  };
+
   const handleUpdateProfile = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true);
@@ -213,6 +235,30 @@ export default function Profile() {
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction onClick={confirmDelete}>
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button className="w-full border-2 border-black text-black hover:bg-black hover:text-white">
+                    LOGOUT
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="bg-white">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Logout </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Are you sure you want to logout?
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={onSignOut}
+                      className="border-black text-black hover:bg-black hover:text-white border-1"
+                    >
                       Continue
                     </AlertDialogAction>
                   </AlertDialogFooter>

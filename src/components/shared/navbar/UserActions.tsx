@@ -48,25 +48,6 @@ const UserActions = () => {
           </span>
         </Link>
       </li>
-      <li>
-        <Link
-          to="/profile"
-          className="group border border-dashed rounded-md hover:border-gray-600 flex-shrink-0 flex items-center justify-center gap-2 p-2.5 hover:rounded-lg hover:bg-gray-100 transition-all duration-300"
-        >
-          <CogIcon className="h-6 w-6 flex-shrink-0 group-hover:animate-spin-once" />
-          <span className="text-ellipsis md:hidden">Settings</span>
-        </Link>
-      </li>
-      <li>
-        <button
-          type="button"
-          onClick={onSignOut}
-          className="group w-full border border-dashed rounded-md hover:border-gray-600 flex-shrink-0 flex items-center justify-center gap-2 p-2.5 hover:rounded-lg hover:bg-gray-100 transition-all duration-300"
-        >
-          <LogOutIcon className="h-6 w-6 flex-shrink-0" />
-          <span className="text-ellipsis md:hidden">Logout</span>
-        </button>
-      </li>
     </ul>
   );
 };
