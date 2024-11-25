@@ -35,7 +35,7 @@ const Overview: React.FC<OverviewProps> = ({ selected }) => {
             try {
                 const [streakData, consistencyData] = await Promise.all([
                     useFetch(`/analytics/user-streak/${selected}`, "get"),
-                    useFetch(`/analytics/user-streak/${selected}`, "get"),
+                    useFetch(`/analytics/user-consistency/${selected}`, "get"),
                 ]);
 
                 if (streakData.status === 204 || consistencyData.status === 204) {
@@ -46,12 +46,14 @@ const Overview: React.FC<OverviewProps> = ({ selected }) => {
                 const streakResult = streakData.data;
                 const consistencyResult = consistencyData.data;
 
+                console.log(streakResult, consistencyResult);
+
                 setData((prev) => {
                     return {
                         ...prev,
                         currentStreak: { days: streakResult.data.currentStreak, interval: streakResult.data.currentStreakInterval },
                         bestStreak: { days: streakResult.data.bestStreak, interval: streakResult.data.bestStreakInterval },
-                        consistency: consistencyResult.data.currentStreak,
+                        consistency: consistencyResult.data.percentage,
                     };
                 });
 
