@@ -12,6 +12,7 @@ import { toast } from "sonner";
 
 type OverviewProps = {
   selected: string;
+  skippedDays?: number;
 };
 
 type OverviewCardProps = {
@@ -21,7 +22,9 @@ type OverviewCardProps = {
   description?: string;
 };
 
-const Overview: React.FC<OverviewProps> = ({ selected }) => {
+const cache: Record<string, any> = {};
+
+const Overview: React.FC<OverviewProps> = ({ selected, skippedDays }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({
     currentStreak: {
@@ -38,42 +41,51 @@ const Overview: React.FC<OverviewProps> = ({ selected }) => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+
       try {
-        const [streakData, consistencyData] = await Promise.all([
-          useFetch(`/analytics/user-streak/${selected}`, "get"),
-          useFetch(`/analytics/user-consistency/${selected}`, "get"),
-        ]);
+        const streakCacheKey = `/analytics/user-streak/${selected}`;
+        const consistencyCacheKey = `/analytics/user-consistency/${selected}`;
+
+        // Check if data is in the cache
+        const streakData =
+          cache[streakCacheKey] ||
+          (await useFetch(`/analytics/user-streak/${selected}`, "get"));
+        const consistencyData =
+          cache[consistencyCacheKey] ||
+          (await useFetch(`/analytics/user-consistency/${selected}`, "get"));
+
+        // Save data to cache
+        cache[streakCacheKey] = streakData;
+        cache[consistencyCacheKey] = consistencyData;
 
         if (streakData.status === 204 || consistencyData.status === 204) {
-          toast.error(streakData.statusText || consistencyData.statusText);
+          toast.error("Please do something first.");
           return;
         }
 
         const streakResult = streakData.data;
         const consistencyResult = consistencyData.data;
 
-        console.log(streakResult, consistencyResult);
-
-        setData((prev) => {
-          return {
-            ...prev,
-            currentStreak: {
-              days: streakResult.data.currentStreak,
-              interval: streakResult.data.currentStreakInterval,
-            },
-            bestStreak: {
-              days: streakResult.data.bestStreak,
-              interval: streakResult.data.bestStreakInterval,
-            },
-            consistency: consistencyResult.data.percentage.toFixed(0),
-          };
-        });
+        setData((prev) => ({
+          ...prev,
+          currentStreak: {
+            days: streakResult.data.currentStreak,
+            interval: streakResult.data.currentStreakInterval,
+          },
+          bestStreak: {
+            days: streakResult.data.bestStreak,
+            interval: streakResult.data.bestStreakInterval,
+          },
+          consistency: consistencyResult.data.percentage.toFixed(0),
+        }));
       } catch (error) {
         toast.error("Failed to fetch data.");
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchData().finally(() => setLoading(false));
+    fetchData();
   }, [selected]);
 
   return (
@@ -81,11 +93,7 @@ const Overview: React.FC<OverviewProps> = ({ selected }) => {
       <CardHeader className="p-3 pb-0">
         <CardTitle>Streak Overview</CardTitle>
       </CardHeader>
-      <CardContent
-        className={`flex items-center ${
-          selected === "all time" ? "justify-start gap-10" : "justify-between"
-        } overflow-x-auto max-w-full py-3 lg:py-3`}
-      >
+      <CardContent className="flex items-center justify-between gap-4 overflow-x-auto max-w-full py-3 lg:py-3">
         {loading ? (
           <>
             <Skeleton className="w-full max-w-72 h-24 bg-gray-400" />
@@ -95,14 +103,12 @@ const Overview: React.FC<OverviewProps> = ({ selected }) => {
           </>
         ) : (
           <>
-            {selected !== "all time" && (
-              <OverviewCard
-                title={`${selected} Consistency`}
-                value={data.consistency}
-              >
-                <p className="font-semibold text-xl">%</p>
-              </OverviewCard>
-            )}
+            <OverviewCard
+              title={`${selected} Consistency`}
+              value={data.consistency}
+            >
+              <p className="font-semibold text-xl">%</p>
+            </OverviewCard>
             <OverviewCard
               title="CURRENT STREAK"
               value={data.currentStreak.days}
@@ -115,14 +121,11 @@ const Overview: React.FC<OverviewProps> = ({ selected }) => {
               frequency="days"
               description={data.bestStreak.interval}
             />
-            {selected !== "all time" && (
-              <OverviewCard
-                title="Skipped Days this week"
-                value="2"
-                frequency="days"
-                description="Nov 20 - 23"
-              />
-            )}
+            <OverviewCard
+              title={`Skipped Days this ${selected} period`}
+              value={skippedDays || 0}
+              frequency="days"
+            />
           </>
         )}
       </CardContent>
