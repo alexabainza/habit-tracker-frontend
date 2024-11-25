@@ -9,30 +9,27 @@ const ChallengeCard: React.FC<{
   habit: Habit["habit"];
   checked: boolean;
   onCheck: (id: string, checked: boolean) => void;
-  className: string;
+  className?: string;
 }> = ({ habit, checked, onCheck, className }) => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const updateAccomplishedStatus = async () => {
-      setLoading(true);
-      try {
-        const response = await useFetch(
-          `/habits/acc/${habit._id.toString()}`,
-          "put"
-        );
-        if (response.status === 204) {
-          toast.error("The data does not exist!");
-          return;
-        }
-      } catch (error) {
-        toast.error("Did not update habit. Reverting...");
-      } finally {
-        setLoading(false);
+  const updateAccomplishedStatus = async () => {
+    setLoading(true);
+    try {
+      const response = await useFetch(
+        `/habits/acc/${habit._id.toString()}`,
+        "put"
+      );
+      if (response.status === 204) {
+        toast.error("The data does not exist!");
+        return;
       }
-    };
-    updateAccomplishedStatus();
-  }, [checked]);
+    } catch (error) {
+      toast.error("Did not update habit. Reverting...");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div
@@ -51,15 +48,17 @@ const ChallengeCard: React.FC<{
               type="checkbox"
               id={habit._id}
               checked={checked}
-              onChange={(e) => onCheck(habit._id, e.target.checked)}
+              onChange={(e) => {
+                onCheck(habit._id, e.target.checked)
+                updateAccomplishedStatus();
+              }}
               disabled={loading}
               className="hidden"
             />
             <label
               htmlFor={habit._id}
-              className={`cursor-pointer w-6 h-6 rounded-lg ${
-                checked ? "bg-sageGreen" : "bg-gray-200"
-              } flex items-center justify-center`}
+              className={`cursor-pointer w-6 h-6 rounded-lg ${checked ? "bg-sageGreen" : "bg-gray-200"
+                } flex items-center justify-center`}
             >
               {checked && <span className="text-white font-bold">✔</span>}
             </label>

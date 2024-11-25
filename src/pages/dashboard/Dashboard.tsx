@@ -51,14 +51,6 @@ const Dashboard: React.FC = () => {
     setHabitStates((prevStates) => ({ ...prevStates, [id]: checked }));
   };
 
-  console.log(habits)
-
-  const sortedHabits = habits.sort((a, b) => {
-    const aChecked = habitStates[a.habit._id] || false;
-    const bChecked = habitStates[b.habit._id] || false;
-    return aChecked === bChecked ? 0 : aChecked ? 1 : -1; // Checked habits go to the bottom
-  });
-
   return (
     <div className="w-full py-12 flex-1 h-full lg:px-16 sm:px-5 px-5 mt-6 space-y-4">
       <main>
@@ -85,21 +77,11 @@ const Dashboard: React.FC = () => {
           <p>No habits found</p>
         ) : (
           <>
-            <div className="space-y-4">
-              {habits.map((habit) => (
-                <ChallengeCard
-                  key={habit.habit._id}
-                  habit={habit.habit}
-                  checked={habit.accomplished}
-                  onCheck={handleCheck}
-                />
-              ))}
-            </div>
             <div className="w-full h-2 bg-gray-200 rounded-full mb-2">
               <div
                 className="h-full bg-green-500 rounded-full transition-all duration-500 ease-in-out"
                 style={{ width: `${percentage}%` }}
-              ></div>
+              />
             </div>
             <div className="flex justify-between">
               <p className="text-sm text-gray-700">
@@ -108,15 +90,13 @@ const Dashboard: React.FC = () => {
               </p>
               <p className="text-sm text-green-600">{percentage.toFixed()}%</p>
             </div>
-
             <div className="space-y-4">
-              {sortedHabits.map((habit) => (
+              {habits.map((habit) => (
                 <ChallengeCard
                   key={habit.habit._id}
                   habit={habit.habit}
                   checked={habitStates[habit.habit._id] || false}
                   onCheck={handleCheck}
-                  className="transition-all duration-300 ease-in-out transform"
                 />
               ))}
             </div>
