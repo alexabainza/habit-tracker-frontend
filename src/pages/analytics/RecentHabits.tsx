@@ -1,11 +1,11 @@
 import { Calendar } from "@/components/ui/calendar";
 import { RecentHabitsProps } from "@/utils/types";
-import React from "react";
+import { useMemo, useState } from "react";
 
 export function RecentHabits({ data }: RecentHabitsProps) {
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<Date | undefined>(new Date());
 
-  const modifiers = React.useMemo(() => {
+  const modifiers = useMemo(() => {
     const highActivity: Date[] = [];
     const mediumActivity: Date[] = [];
     const lowActivity: Date[] = [];
@@ -28,6 +28,8 @@ export function RecentHabits({ data }: RecentHabitsProps) {
     };
   }, [data]);
 
+  console.log(modifiers);
+
   return (
     <div className="w-full h-64 md:h-80 rounded-md border p-5 my-0">
       <div className="space-y-6">
@@ -35,12 +37,12 @@ export function RecentHabits({ data }: RecentHabitsProps) {
           mode="single"
           selected={date}
           onSelect={setDate}
-          className="rounded-md border"
+          className="rounded-md border transition-all duration-300"
           modifiers={modifiers}
           modifiersClassNames={{
-            highActivity: "bg-green-500 no-hover",
-            mediumActivity: "bg-green-300 no-hover",
-            lowActivity: "bg-green-100 no-hover",
+            highActivity: "bg-green-500 hover:bg-green-500/80",
+            mediumActivity: "bg-green-400 hover:bg-green-400/80",
+            lowActivity: "bg-green-300 hover:bg-green-300/80",
           }}
         />
       </div>

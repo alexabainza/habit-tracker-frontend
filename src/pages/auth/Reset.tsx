@@ -37,7 +37,7 @@ const ResetPassword: React.FC = () => {
     const form = useForm<z.infer<typeof ResetPasswordSchema>>({
         resolver: zodResolver(ResetPasswordSchema),
         defaultValues: {
-            id: queryParams.get('id') ?? "",
+            email: queryParams.get('email') ?? "",
             token: queryParams.get('token') ?? "",
             new_password: "",
             confirm_password: "",
@@ -55,15 +55,15 @@ const ResetPassword: React.FC = () => {
             if (result.status === 200) {
                 toast.success("Password reset successfully.");
                 navigate("/login");
+            } else {
+                toast.error(result.message);
             }
         } catch (error: any) {
-            toast.error('An error occurred while resetting password.')
+            toast.error(error.response.data.message);
         } finally {
             setIsLoading(false);
         }
     };
-
-    console.log(location)
 
     return (
         <div className="flex justify-center items-center mt-12 w-full">

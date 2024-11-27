@@ -24,7 +24,7 @@ const ForgotPasswordSchema = z.object({
 })
 
 const ResetPasswordSchema = z.object({
-    id: z.string({ message: "Token is required." }).min(3, { message: "Token is required." }),
+    email: z.string({ message: "Token is required." }).min(3, { message: "Token is required." }).email({ message: "Not a valid email." }).max(255, { message: "Email is too long." }),
     token: z.string({ message: "Token is required." }).min(3, { message: "Token is required." }),
     new_password: z.string({ message: "New password is required." }).min(8, { message: "Password should be at least 8 characters." }).regex(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[a-zA-Z\d\W_]{8,}$/,

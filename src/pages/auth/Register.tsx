@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterUserSchema } from "@/utils/schemas";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { ChevronLeftIcon, Eye, EyeOff, Loader2, MountainIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFetch } from "@/hooks/use-fetch";
 import { handleAuthError } from "@/utils/errorHandler";
@@ -67,11 +67,19 @@ const RegisterScreen: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center mt-12 w-full">
-      <Card className="w-[400px] bg-[var(--color-background)] sm:mx-5 mx-5">
+    <div className="flex justify-center items-center w-full bg-gradient-to-br from-[#2A3D43] via-[#40575C] to-[#61878A] text-white">
+      <Button
+        className="absolute top-5 left-5 text-white"
+        onClick={() => navigate("/")}
+        variant='link'
+      >
+        <ChevronLeftIcon className="w-6 h-6" />
+        Back to Home
+      </Button>
+      <Card className="w-[400px] sm:mx-5 mx-5 border-0 shadow-none">
         <CardHeader>
-          <CardTitle className="text-4xl text-[var(--color-primary)] text-center">
-            Register
+          <CardTitle className="text-4xl text-center">
+            <MountainIcon className="w-20 h-20 mx-auto mb-20" />
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -136,7 +144,7 @@ const RegisterScreen: React.FC = () => {
                         <button
                           type="button"
                           onClick={togglePasswordVisibility}
-                          className="ml-2 text-[var(--color-primary)] "
+                          className="ml-2 "
                         >
                           {showPassword ? <EyeOff /> : <Eye />}
                         </button>
@@ -146,25 +154,19 @@ const RegisterScreen: React.FC = () => {
                   </FormItem>
                 )}
               />
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-300">
                 Already have an account? Login{" "}
                 <Link to="/login" className="underline hover:font-bold">
                   here
                 </Link>
               </p>
-              {isLoading ? (
-                <Button disabled>
-                  <Loader2 className="animate-spin" />
-                  Loading{" "}
-                </Button>
-              ) : (
-                <Button
-                  className="bg-[#536489] hover:bg-[var(--color-primary)] text-white"
-                  type="submit"
-                >
-                  Register
-                </Button>
-              )}
+              <Button
+                type="submit"
+                className="relative w-full py-6 border border-white transition-all duration-300 text-white hover:bg-white/85 hover:text-black hover:border-transparent"
+                disabled={isLoading}
+              >
+                {isLoading ? <><Loader2 className="animate-spin" /> Loading</> : "Register"}
+              </Button>
             </form>
           </Form>
         </CardContent>
