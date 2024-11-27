@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   Form,
   FormControl,
@@ -25,8 +25,7 @@ const RegisterScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isLoading = useSelector((state: any) => state.user.loading);
-  // dispatch(resetState());
+  const [isLoading, setIsLoading] = useState(false);
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
@@ -43,6 +42,7 @@ const RegisterScreen: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
+      setIsLoading(true);
       const response = await useFetch(
         "/auth/register",
         "post",
@@ -52,7 +52,6 @@ const RegisterScreen: React.FC = () => {
 
       if (result.status == 201) {
         toast.success("Registration successful.");
-        // dispatch(signInSuccess(result.data));
         navigate("/login");
       }
     } catch (error: any) {
@@ -62,6 +61,8 @@ const RegisterScreen: React.FC = () => {
       } else {
         toast.error("Failed to register.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -89,9 +90,9 @@ const RegisterScreen: React.FC = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="shadcn"
+                        placeholder="John Doe"
                         {...field}
-                        className="border-[#6490BC] rounded-md placeholder-gray-200" // Add your desired placeholder color here
+                        className="border-[#6490BC] rounded-md placeholder:text-gray-400" // Add your desired placeholder color here
                       />
                     </FormControl>
                     <FormMessage className="text-xs text-red-400" />
@@ -107,9 +108,9 @@ const RegisterScreen: React.FC = () => {
                     <FormControl>
                       <Input
                         type="email"
-                        placeholder="shadcn"
+                        placeholder="johndoe@gmail.com"
                         {...field}
-                        className="border-[#6490BC] rounded-md placeholder-gray-200" // Add your desired placeholder color here
+                        className="border-[#6490BC] rounded-md placeholder:text-gray-400" // Add your desired placeholder color here
                       />
                     </FormControl>
                     <FormMessage className="text-xs text-red-400" />
@@ -128,9 +129,9 @@ const RegisterScreen: React.FC = () => {
                       <div className="flex flex-row items-center rounded-md">
                         <Input
                           type={showPassword ? "text" : "password"}
-                          placeholder="Enter your password"
+                          placeholder={`${showPassword ? "Password@123" : "********"}`}
                           {...field}
-                          className="placeholder-gray-200 border-[#6490BC] "
+                          className="placeholder:text-gray-400 border-[#6490BC] "
                         />
                         <button
                           type="button"

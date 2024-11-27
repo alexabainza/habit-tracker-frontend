@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { resetState, signInSuccess } from "@/redux/user/userSlice";
 import {
   Form,
@@ -19,7 +19,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { LoginSchema } from "@/utils/schemas";
 import { handleAuthError } from "@/utils/errorHandler";
 import { useFetch } from "@/hooks/use-fetch";
-import Cookies from "js-cookie";
 import { z } from "zod";
 import { toast } from "sonner";
 
@@ -27,7 +26,8 @@ const LoginScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isLoading = useSelector((state: any) => state.user.loading);
+  const [isLoading, setIsLoading] = useState(false);
+
   dispatch(resetState());
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -44,6 +44,8 @@ const LoginScreen: React.FC = () => {
 
   const onSubmit = async () => {
     try {
+      setIsLoading(true);
+
       const response = await useFetch("/auth/login", "post", form.getValues());
 
       const result = response.data;
@@ -51,9 +53,6 @@ const LoginScreen: React.FC = () => {
         dispatch(signInSuccess(result.data));
 
         toast.success("Login successful.");
-
-        Cookies.set("token", result.data.token, { expires: 7, secure: true });
-
         navigate("/dashboard");
       }
     } catch (error: any) {
@@ -63,6 +62,8 @@ const LoginScreen: React.FC = () => {
       } else {
         toast.error("An error occurred. Please try again.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -87,9 +88,9 @@ const LoginScreen: React.FC = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="shadcn"
+                        placeholder="johndoe@gmail.com"
                         {...field}
-                        className="border-[#6490BC] rounded-md placeholder-gray-200" // Add your desired placeholder color here
+                        className="border-[#6490BC] rounded-md placeholder:text-gray-400" // Add your desired placeholder color here
                       />
                     </FormControl>
                     <FormMessage className="text-xs text-red-400" />
@@ -108,9 +109,9 @@ const LoginScreen: React.FC = () => {
                       <div className="flex flex-row items-center rounded-md">
                         <Input
                           type={showPassword ? "text" : "password"}
-                          placeholder="Enter your password"
+                          placeholder={`${showPassword ? "Password@123" : "********"}`}
                           {...field}
-                          className="placeholder-gray-200 border-[#6490BC] "
+                          className="placeholder:text-gray-400 border-[#6490BC] "
                         />
                         <button
                           type="button"
@@ -131,19 +132,13 @@ const LoginScreen: React.FC = () => {
                   here
                 </Link>
               </p>
-              {isLoading ? (
-                <Button disabled>
-                  <Loader2 className="animate-spin" />
-                  Loading{" "}
-                </Button>
-              ) : (
-                <Button
-                  className="bg-[#536489] hover:bg-[var(--color-primary)] text-white"
-                  type="submit"
-                >
-                  Login
-                </Button>
-              )}
+              <Button
+                type="submit"
+                className="bg-[#536489] hover:bg-[var(--color-primary)] text-white"
+                disabled={isLoading}
+              >
+                {isLoading ? <Loader2 className="animate-spin" /> : "Login"}
+              </Button>
             </form>
           </Form>
         </CardContent>
