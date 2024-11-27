@@ -37,3 +37,7 @@ export interface StreakCardProps {
   amount: number;
   label: string;
 }
+
+export interface RecentHabitsProps {
+  data: { date: string; count: number; habits?: string[] }[];
+}

@@ -47,7 +47,8 @@
 }
 
 html,
-body, #root {
+body,
+#root {
   scroll-behavior: smooth;
   height: 100%;
 }
@@ -73,4 +74,10 @@ body, #root {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
   border-radius: 20px;
+}
+.no-hover:hover {
+  background-color: inherit !important;
+  border-color: inherit !important;
+  color: inherit !important;
+  transform: none !important;
 }
