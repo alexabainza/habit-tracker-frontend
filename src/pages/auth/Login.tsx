@@ -150,7 +150,7 @@ const LoginScreen: React.FC = () => {
               </p>
               <Button
                 type="submit"
-                className=" w-full py-6 border border-white transition-all duration-300 text-white hover:bg-white/85 hover:text-black hover:border-transparent"
+                className="w-full py-6 border border-white transition-all duration-300 text-white hover:bg-white/85 hover:text-black hover:border-transparent"
                 disabled={isLoading}
               >
                 {isLoading ? <><Loader2 className="animate-spin" /> Loading</> : "Login"}

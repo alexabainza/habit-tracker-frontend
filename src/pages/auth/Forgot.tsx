@@ -14,13 +14,14 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { ChevronLeft, ChevronLeftIcon, ChevronRightIcon, Loader2, MountainIcon } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { ForgotPasswordSchema } from "@/utils/schemas";
 import { handleAuthError } from "@/utils/errorHandler";
 import { useFetch } from "@/hooks/use-fetch";
 import { z } from "zod";
 import { toast } from "sonner";
+import { MdEmail } from "react-icons/md";
 
 const ForgotPassword: React.FC = () => {
     const navigate = useNavigate();
@@ -63,10 +64,27 @@ const ForgotPassword: React.FC = () => {
     };
 
     return (
-        <div className="flex justify-center items-center mt-12 w-full">
-            <Card className="w-[400px] bg-[var(--color-background)] sm:mx-5 mx-5">
+        <div className="flex justify-center items-center w-full bg-gradient-to-br from-[#2A3D43] via-[#40575C] to-[#61878A] text-white">
+            <div className="w-full inline-flex items-center justify-between absolute top-0 p-5">
+                <p className="text-md text-gray-200 gap-1.5 flex items-end">
+                    <span className="hidden md:block">No account?</span>
+                    <Link to="/register" className="underline hover:font-semibold transition-all duration-300">
+                        <ChevronLeftIcon className="w-5 h-5 inline-block" />
+                        Register
+                    </Link>
+                </p>
+                <p className="text-md text-gray-200 gap-1.5 flex items-end">
+                    <span className="hidden md:block">Remembered it?</span>
+                    <Link to="/login" className="underline hover:font-semibold transition-all duration-300">
+                        Login
+                        <ChevronRightIcon className="w-5 h-5 inline-block" />
+                    </Link>
+                </p>
+            </div>
+            <Card className="w-[400px] sm:mx-5 mx-5 border-0 shadow-none">
                 <CardHeader>
-                    <CardTitle className="text-4xl text-[var(--color-primary)] text-center">
+                    <MountainIcon className="w-12 h-12 text-white mx-auto mb-14" />
+                    <CardTitle className="text-2xl md:text-4xl text-center">
                         Forgot Password
                     </CardTitle>
                 </CardHeader>
@@ -82,11 +100,14 @@ const ForgotPassword: React.FC = () => {
                                             Email
                                         </FormLabel>
                                         <FormControl>
-                                            <Input
-                                                placeholder="johndoe@gmail.com"
-                                                {...field}
-                                                className="border-[#6490BC] rounded-md placeholder:text-gray-400" // Add your desired placeholder color here
-                                            />
+                                            <div className="relative">
+                                                <MdEmail className="w-5 h-5 absolute top-1/2 left-2 transform -translate-y-1/2" />
+                                                <Input
+                                                    placeholder="johndoe@gmail.com"
+                                                    {...field}
+                                                    className="border-[#6490BC] rounded-md placeholder:text-gray-400 pl-9" // Add your desired placeholder color here
+                                                />
+                                            </div>
                                         </FormControl>
                                         <FormMessage className="text-xs text-red-400" />
                                     </FormItem>
@@ -94,7 +115,7 @@ const ForgotPassword: React.FC = () => {
                             />
                             <Button
                                 type="submit"
-                                className="bg-[#536489] hover:bg-[var(--color-primary)] text-white"
+                                className="w-full py-6 border border-white transition-all duration-300 text-white hover:bg-white/85 hover:text-black hover:border-transparent"
                                 disabled={isLoading}
                             >
                                 {isLoading ? <Loader2 className="animate-spin" /> : "Send Request"}

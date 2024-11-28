@@ -28,10 +28,8 @@ export function RecentHabits({ data }: RecentHabitsProps) {
     };
   }, [data]);
 
-  console.log(modifiers);
-
   return (
-    <div className="w-full h-64 md:h-80 rounded-md border p-5 my-0">
+    <div className="w-full h-64 md:h-80 rounded-md border p-5 my-0 flex-[0.5]">
       <div className="space-y-6">
         <Calendar
           mode="single"
@@ -40,9 +38,9 @@ export function RecentHabits({ data }: RecentHabitsProps) {
           className="rounded-md border transition-all duration-300"
           modifiers={modifiers}
           modifiersClassNames={{
-            highActivity: "bg-green-500 hover:bg-green-500/80",
+            highActivity: "bg-green-600 hover:bg-green-600/80",
             mediumActivity: "bg-green-400 hover:bg-green-400/80",
-            lowActivity: "bg-green-300 hover:bg-green-300/80",
+            lowActivity: "bg-green-200 hover:bg-green-200/80",
           }}
         />
       </div>
