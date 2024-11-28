@@ -180,26 +180,25 @@ const Habits: React.FC = () => {
         <div className="mt-6 grid gap-4">
           {loading ? (
             <Loading />
+          ) : habits.length === 0 ? (
+            <div className="text-center text-gray-500">No habits found.</div>
           ) : (
-            habits.length === 0 ? (
-              <div className="text-center text-gray-500">No habits found.</div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {habits.map((habit) => (
-                  <HabitCard
-                    key={habit.habit._id}
-                    habit={habit.habit}
-                    onDelete={() => handleDelete(habit.habit._id)}
-                    onEdit={(habit) => {
-                      setHabitToUpdate(habit);
-                      setIsEditing(true);
-                      setIsDialogOpen(true);
-                    }}
-                    loading={loading}
-                  />
-                ))}
-              </div>
-            )
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6">
+              {habits.map((habit) => (
+                <HabitCard
+                  key={habit.habit._id}
+                  streak={habit.streak}
+                  habit={habit.habit}
+                  onDelete={() => handleDelete(habit.habit._id)}
+                  onEdit={(habit) => {
+                    setHabitToUpdate(habit);
+                    setIsEditing(true);
+                    setIsDialogOpen(true);
+                  }}
+                  loading={loading}
+                />
+              ))}
+            </div>
           )}
         </div>
         <ConfirmationDialog
@@ -259,8 +258,9 @@ const Habits: React.FC = () => {
                         {[1, 2, 3, 4, 5, 6, 7].map((value) => (
                           <label
                             key={value}
-                            className={`px-4 py-1 rounded-full cursor-pointer border-2 border-black ${field.value === value ? "bg-softGreen" : ""
-                              }`}
+                            className={`px-4 py-1 rounded-full cursor-pointer border-2 border-black ${
+                              field.value === value ? "bg-softGreen" : ""
+                            }`}
                           >
                             <input
                               type="radio"
