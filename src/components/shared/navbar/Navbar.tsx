@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
         <button
           type="button"
           onClick={toggleBurgerMenu}
-          className={`h-10 w-10 md:hidden absolute top-5 right-5 transition-all duration-300 -z-[-1] rounded-full justify-center items-center ${isBurgerOpen ? "opacity-0" : "border border-gray-700 opacity-100"}`}
+          className={`h-10 w-10 md:hidden absolute top-5 right-5 transition-all duration-300 -z-[-1] rounded-full justify-center items-center bg-white ${isBurgerOpen ? "opacity-0" : "border border-gray-700 opacity-100"}`}
         >
           <MountainIcon className="h-6 w-6 absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2" />
           <span className="sr-only">Toggle Menu</span>

@@ -1,6 +1,6 @@
 "use client"
 
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import { Line, LineChart, CartesianGrid, XAxis } from "recharts"
 
 import {
     ChartConfig,
@@ -39,17 +39,22 @@ export function ChartOverview({ loading, data }: ChartOverviewProps) {
                     <Loading />
                 ) : (
                     <ChartContainer config={chartConfig} className="min-h-60 w-full">
-                        <BarChart accessibilityLayer data={data}>
-                            <CartesianGrid vertical={false} className="hover:bg-white" />
+                        <LineChart accessibilityLayer data={data} margin={{
+                            top: 20,
+                            left: 12,
+                            right: 12,
+                        }}>
+                            <CartesianGrid vertical={false} />
                             <XAxis
                                 dataKey="date"
-                                tickMargin={10}
+                                axisLine={false}
+                                tickMargin={12}
                                 tickFormatter={(value) => value.split("-")[1] + "/" + value.split("-")[2]}
                             />
-                            <ChartTooltip content={<ChartTooltipContent className="gap-2 bg-white" />} />
+                            <ChartTooltip content={<ChartTooltipContent className="gap-2 bg-white" indicator="line"/>} />
                             <ChartLegend content={<ChartLegendContent />} />
-                            <Bar dataKey="count" fill="var(--color-count)" radius={4} />
-                        </BarChart>
+                            <Line dataKey="count" stroke="var(--color-count)" strokeWidth={2} dot={false} />
+                        </LineChart>
                     </ChartContainer>
                 )}
             </CardContent>
