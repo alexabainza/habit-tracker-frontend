@@ -31,7 +31,7 @@ export function RecentHabits({ data }: RecentHabitsProps) {
   console.log(modifiers);
 
   return (
-    <div className="w-full h-64 md:h-80 rounded-md border p-5 my-0">
+    <div className="w-full h-64 md:h-80 rounded-md border p-5 my-0 flex-[0.5]">
       <div className="space-y-6">
         <Calendar
           mode="single"

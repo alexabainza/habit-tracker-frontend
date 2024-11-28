@@ -14,12 +14,13 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterUserSchema } from "@/utils/schemas";
-import { ChevronLeftIcon, Eye, EyeOff, Loader2, MountainIcon } from "lucide-react";
+import { ChevronLeftIcon, Eye, EyeOff, KeyIcon, Loader2, MountainIcon, UserIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFetch } from "@/hooks/use-fetch";
 import { handleAuthError } from "@/utils/errorHandler";
 import { z } from "zod";
 import { toast } from "sonner";
+import { MdMail } from "react-icons/md";
 
 const RegisterScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -97,11 +98,14 @@ const RegisterScreen: React.FC = () => {
                       Username
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="John Doe"
-                        {...field}
-                        className="border-[#6490BC] rounded-md placeholder:text-gray-400" // Add your desired placeholder color here
-                      />
+                      <div className="relative">
+                        <UserIcon className="w-5 h-5 absolute top-1/2 left-2 transform -translate-y-1/2" />
+                        <Input
+                          placeholder="John Doe"
+                          {...field}
+                          className="border-[#6490BC] rounded-md placeholder:text-gray-400 pl-9" // Add your desired placeholder color here
+                        />
+                      </div>
                     </FormControl>
                     <FormMessage className="text-xs text-red-400" />
                   </FormItem>
@@ -113,13 +117,16 @@ const RegisterScreen: React.FC = () => {
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-0">
                     <FormLabel className="font-medium text-xs">Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="email"
-                        placeholder="johndoe@gmail.com"
-                        {...field}
-                        className="border-[#6490BC] rounded-md placeholder:text-gray-400" // Add your desired placeholder color here
-                      />
+                    <FormControl className="relative">
+                      <div className="relative">
+                        <MdMail className="w-5 h-5 absolute top-1/2 left-2 transform -translate-y-1/2" />
+                        <Input
+                          type="email"
+                          placeholder="johndoe@gmail.com"
+                          {...field}
+                          className="border-[#6490BC] rounded-md placeholder:text-gray-400 pl-9" // Add your desired placeholder color here
+                        />
+                      </div>
                     </FormControl>
                     <FormMessage className="text-xs text-red-400" />
                   </FormItem>
@@ -135,16 +142,17 @@ const RegisterScreen: React.FC = () => {
                     </FormLabel>
                     <FormControl className="relative">
                       <div className="flex flex-row items-center rounded-md">
+                        <KeyIcon className="w-5 h-5 absolute top-1/2 left-2 transform -translate-y-1/2" />
                         <Input
                           type={showPassword ? "text" : "password"}
                           placeholder={`${showPassword ? "Password@123" : "********"}`}
                           {...field}
-                          className="placeholder:text-gray-400 border-[#6490BC] "
+                          className="placeholder:text-gray-400 border-[#6490BC] pl-9"
                         />
                         <button
                           type="button"
                           onClick={togglePasswordVisibility}
-                          className="ml-2 "
+                          className="ml-2 absolute right-3 w-5"
                         >
                           {showPassword ? <EyeOff /> : <Eye />}
                         </button>

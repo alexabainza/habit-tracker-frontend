@@ -14,13 +14,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ChevronLeftIcon, Eye, EyeOff, Loader2, MountainIcon } from "lucide-react";
+import { ChevronLeftIcon, Eye, EyeOff, KeyIcon, Loader2, MountainIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginSchema } from "@/utils/schemas";
 import { handleAuthError } from "@/utils/errorHandler";
 import { useFetch } from "@/hooks/use-fetch";
 import { z } from "zod";
 import { toast } from "sonner";
+import { MdEmail } from "react-icons/md";
 
 const LoginScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -90,18 +91,21 @@ const LoginScreen: React.FC = () => {
                 control={form.control}
                 name="identifier"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col gap-0">
+                  <FormItem className="flex flex-col gap-0 relative">
                     <FormLabel className="uppercase font-medium text-xs space-x-1.5">
                       <strong>Email</strong>
                       <span className="lowercase">or</span>
                       <strong>Username</strong>
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="johndoe@gmail.com"
-                        {...field}
-                        className="border-[#6490BC] rounded-md placeholder:text-gray-400" // Add your desired placeholder color here
-                      />
+                      <div className="relative">
+                        <MdEmail className="w-5 h-5 absolute top-1/2 left-2 transform -translate-y-1/2" />
+                        <Input 
+                          placeholder="johndoe@gmail.com"
+                          {...field}
+                          className="border-[#6490BC] rounded-md placeholder:text-gray-400 pl-9" // Add your desired placeholder color here
+                        />
+                      </div>
                     </FormControl>
                     <FormMessage className="text-xs text-red-400" />
                   </FormItem>
@@ -112,16 +116,18 @@ const LoginScreen: React.FC = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-0">
-                    <FormLabel className="uppercase font-bold text-xs">
-                      Password
+                    <FormLabel className="uppercase font-bold text-xs flex items-center justify-between">
+                      <span>Password</span>
+                      <Link to='/forgot' target="_blank" className="lowercase font-semibold">Forgot Password?</Link>
                     </FormLabel>
                     <FormControl className="relative">
                       <div className="flex flex-row items-center rounded-md relative">
+                        <KeyIcon className="w-5 h-5 absolute top-1/2 left-2 transform -translate-y-1/2" />
                         <Input
                           type={showPassword ? "text" : "password"}
                           placeholder={`${showPassword ? "Password@123" : "********"}`}
                           {...field}
-                          className="placeholder:text-gray-400 border-[#6490BC] "
+                          className="placeholder:text-gray-400 border-[#6490BC] pl-9"
                         />
                         <button
                           type="button"
