@@ -44,7 +44,6 @@ const Analytics: React.FC = () => {
 
   const currentData = data[selected] || [];
   const skippedDays = currentData.filter((item) => item.count === 0).length;
-  console.log("current data:", currentData);
 
   return (
     <div className="w-full flex-1 h-full lg:px-16 sm:px-5 px-5 mt-6 space-y-4 pb-8">

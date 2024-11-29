@@ -47,21 +47,19 @@ const HabitCard: React.FC<HabitCardProps> = ({
               <CardTitle className="lg:text-2xl sm:text-xl text-xl text-ellipsis text-nowrap overflow-hidden w-full">
                 {habit.name}
               </CardTitle>
-              <CardDescription>Goal: {habit.goal}</CardDescription>
+              <CardDescription className="text-left">Goal: {habit.goal}</CardDescription>
             </CardHeader>
           </DialogTrigger>
-          <CardContent className="flex items-center align-middle gap-4">
+          <CardContent className="flex flex-col lg:flex-row justify-center items-center align-middle gap-4 md:gap-2 pb-0">
+            <SquarePen
+              onClick={() => onEdit(habit)}
+              color={colors.mossGreen}
+              className="cursor-pointer hover:opacity-30 w-5"
+            />
             <Trash2
               onClick={() => onDelete(habit._id)}
               color="red"
-              size={20}
-              className="cursor-pointer hover:opacity-30"
-            />
-            <SquarePen
-              onClick={() => onEdit(habit)}
-              size={20}
-              color={colors.mossGreen}
-              className="cursor-pointer hover:opacity-30"
+              className="cursor-pointer hover:opacity-30 w-5"
             />
           </CardContent>
         </Card>

@@ -28,8 +28,6 @@ export function RecentHabits({ data }: RecentHabitsProps) {
     };
   }, [data]);
 
-  console.log(modifiers);
-
   return (
     <div className="space-y-6 h-64 w-full flex-[0.5]">
       <Calendar
