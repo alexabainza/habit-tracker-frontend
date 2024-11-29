@@ -32,7 +32,7 @@ type ChartOverviewProps = {
 
 export function ChartOverview({ loading, data }: ChartOverviewProps) {
     return (
-        <Card className="w-full min-h-80 flex-[0.8]">
+        <Card className="w-full min-h-80 md:min-h-32 flex-[0.5]">
             <CardTitle className="p-5">Overview</CardTitle>
             <CardContent>
                 {loading ? (

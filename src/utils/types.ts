@@ -34,8 +34,7 @@ export interface ConfirmationDialogProps {
 }
 
 export interface StreakCardProps {
-  amount: number;
-  label: string;
+  id: string;
 }
 
 export interface RecentHabitsProps {

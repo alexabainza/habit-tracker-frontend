@@ -187,7 +187,6 @@ const Habits: React.FC = () => {
               {habits.map((habit) => (
                 <HabitCard
                   key={habit.habit._id}
-                  streak={habit.streak}
                   habit={habit.habit}
                   onDelete={() => handleDelete(habit.habit._id)}
                   onEdit={(habit) => {
