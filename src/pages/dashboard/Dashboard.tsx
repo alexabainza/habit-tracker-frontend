@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import ChallengeCard from "@/pages/dashboard/Challenges";
 import { toast } from "sonner";
+import Loading from "@/components/ui/loading";
 
 const Dashboard: React.FC = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
@@ -31,7 +32,6 @@ const Dashboard: React.FC = () => {
           setHabitStates(validStates);
         } else {
           setHabits([]);
-          toast.warning("No habits found.");
         }
       } catch (error) {
         toast.error("Failed to fetch habits.");
@@ -46,13 +46,13 @@ const Dashboard: React.FC = () => {
     setHabitStates((prevStates) => ({ ...prevStates, [id]: checked }));
   };
 
+  console.log(habits.length === 0);
+
   return (
     loading ? (
-      <div>
-        <Loader2 className="animate-spin" />
-      </div >
+      <Loading className="text-3xl" loaderClassName="w-10 h-10"/>
     ) : habits.length === 0 ? (
-      <p>No habits found</p>
+      <p className="text-black m-auto">No habits found.</p>
     ) : (
       <div className="w-full py-12 flex-1 h-full lg:px-16 sm:px-5 px-5 mt-6 space-y-4">
         <main>

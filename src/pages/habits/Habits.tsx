@@ -57,10 +57,6 @@ const Habits: React.FC = () => {
         const response = await useFetch("/habits", "get");
         const result = response.data;
         setHabits(result.data || []);
-
-        if (response.status === 204) {
-          toast.info("No habits found.");
-        }
       } catch (error) {
         console.error(error);
         toast.error("Failed to fetch habits.");

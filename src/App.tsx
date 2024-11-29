@@ -12,6 +12,7 @@ import Profile from "@/pages/profile/Profile";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import ResetPassword from "./pages/auth/Reset";
 import ForgotPassword from "./pages/auth/Forgot";
+import Verify from "./pages/auth/Verify";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route element={<GuestRoute />}>
             <Route path="/login" element={<LoginScreen />} />
             <Route path="/register" element={<RegisterScreen />} />
+            <Route path="/verify-email" element={<Verify />} />
             <Route path="/forgot" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
           </Route>

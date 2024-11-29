@@ -22,7 +22,8 @@ const Analytics: React.FC = () => {
           `/analytics/user-habit-count/${frequency}`,
           "get"
         );
-        if (response.status === 204) {
+
+        if (response.status === 404) {
           toast.error("Please do something first.");
           return;
         }
@@ -30,8 +31,9 @@ const Analytics: React.FC = () => {
           ...prev,
           [frequency]: response.data.data,
         }));
-      } catch (error) {
-        toast.error("Failed to fetch data.");
+      } catch (error: any) {
+        console.error(error);
+        error.status !== 404 && toast.error("Failed to fetch data.");
       } finally {
         setLoading(false);
       }
@@ -54,20 +56,18 @@ const Analytics: React.FC = () => {
         <div className="w-full max-w-xl flex items-center justify-center gap-x-10 mx-auto mb-1">
           <Button variant="link" onClick={() => setSelected("weekly")}>
             <span
-              className={`${
-                selected === "weekly" ? "underline text-black" : "text-black/60"
-              }`}
+              className={`${selected === "weekly" ? "underline text-black" : "text-black/60"
+                }`}
             >
               Weekly
             </span>
           </Button>
           <Button variant="link" onClick={() => setSelected("monthly")}>
             <span
-              className={`${
-                selected === "monthly"
+              className={`${selected === "monthly"
                   ? "underline text-black"
                   : "text-black/60"
-              }`}
+                }`}
             >
               Monthly
             </span>
