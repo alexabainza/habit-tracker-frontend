@@ -1,7 +1,6 @@
 import { useFetch } from "@/hooks/use-fetch";
 import { Habit } from "@/utils/types";
 import React, { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
 import ChallengeCard from "@/pages/dashboard/Challenges";
 import { toast } from "sonner";
 import Loading from "@/components/ui/loading";
@@ -45,8 +44,6 @@ const Dashboard: React.FC = () => {
   const handleCheck = (id: string, checked: boolean) => {
     setHabitStates((prevStates) => ({ ...prevStates, [id]: checked }));
   };
-
-  console.log(habits.length === 0);
 
   return (
     loading ? (
