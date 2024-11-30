@@ -5,6 +5,12 @@ export default {
   theme: {
     extend: {
       colors: {
+        lightYellow: "#FBEF95",
+        main: "#2A3D43",
+        midMain: "#40575C",
+        lightMain: "61878A",
+        innermostCard: "#627d7f",
+        outerCard: "#446062",
         lightGreen: "#e1f4d3",
         softGreen: "#c1e1a6",
         paleGreen: "#b4d19d",
@@ -58,13 +64,13 @@ export default {
         "shimmer-slide":
           "shimmer-slide var(--speed) ease-in-out infinite alternate",
         "spin-around": "spin-around calc(var(--speed) * 2) infinite linear",
-        'spin-once': 'spin-once 1s linear',
+        "spin-once": "spin-once 1s linear",
         meteor: "meteor 5s linear infinite",
       },
       keyframes: {
-        'spin-once': {
-          '0%': { transform: 'rotate(0deg)' },
-          '100%': { transform: 'rotate(360deg)' },
+        "spin-once": {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
         },
         "shimmer-slide": {
           to: {

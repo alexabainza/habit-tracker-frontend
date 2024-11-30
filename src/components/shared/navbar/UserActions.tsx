@@ -40,10 +40,10 @@ const UserActions = () => {
       <li>
         <Link
           to="/profile"
-          className="border border-dashed rounded-full hover:border-gray-600 flex-shrink-0 flex items-center justify-center gap-2 p-2.5 hover:bg-gray-100 transition-all duration-300"
+          className="border border-dashed border-lightYellow rounded-full hover:border-main flex-shrink-0 flex items-center justify-center gap-2 p-2.5 hover:bg-lightYellow hover:text-main transition-all duration-300"
         >
-          <UserIcon className="h-6 w-6 flex-shrink-0" />
-          <span className="text-ellipsis md:hidden">
+          <UserIcon className="h-6 w-6 flex-shrink-0 text-lightYellow hover:text-main" />
+          <span className="text-ellipsis md:hidden text-lightYellow">
             {currentUser && currentUser.user.username}
           </span>
         </Link>

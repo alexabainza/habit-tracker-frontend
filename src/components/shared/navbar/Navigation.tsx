@@ -28,13 +28,19 @@ const Navigation = () => {
               <TooltipTrigger className="w-full">
                 <Link
                   to={item.link}
-                  className={`border border-dashed rounded-md border-gray-600 flex-shrink-0 flex items-center gap-2 p-2.5 hover:rounded-2xl transition-all duration-300 ${
+                  className={`border border-dashed rounded-md border-lightYellow flex-shrink-0 flex items-center gap-2 p-2.5 hover:rounded-2xl transition-all duration-300 ${
                     location.pathname === item.link
-                      ? "bg-blue-700 text-white"
-                      : "hover:bg-gray-100"
+                      ? "bg-lightYellow text-main border-main"
+                      : "text-lightYellow hover:bg-lightYellow hover:drop-shadow-sm hover:text-main hover:border-main hover:border-dashed"
                   }`}
                 >
-                  <item.icon className="h-6 w-6" />
+                  <item.icon
+                    className={`h-6 w-6 ${
+                      location.pathname === item.link
+                        ? "text-main"
+                        : "text-lightYellow hover:text-main"
+                    }`}
+                  />
                   <span className="md:hidden">{item.name}</span>
                 </Link>
               </TooltipTrigger>

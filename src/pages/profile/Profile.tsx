@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -42,6 +43,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import Loading from "@/components/ui/loading";
+import { Check, Cross, Pencil, X } from "lucide-react";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -141,138 +143,182 @@ export default function Profile() {
   };
 
   return (
-    <div className="w-full py-12 flex-1 lg:px-16 sm:px-5 px-5 space-y-4 m-auto flex items-center justify-center">
-      {loading ? (
-        <Loading />
-      ) : (
-        <Card className="max-w-md  w-full mx-auto">
-          <CardHeader>
-            <CardTitle className="text-2xl font-bold text-center">
-              Profile
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col items-center space-y-4">
-              <Avatar className="w-24 h-24">
-                <AvatarFallback className="border text-2xl">
+    <div className="w-full bg-gradient-to-br from-[#2A3D43] to-[#40575C]">
+      <div className="lg:px-16 sm:px-5 px-5 space-y-4 m-auto items-center justify-center mt-6 py-12">
+        <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold text-lightYellow tracking-wider ">
+          Profile
+        </h1>
+        <hr className="border-gray-400 border-t-2 opacity-80 py-2" />
+        {loading ? (
+          <Loading />
+        ) : (
+          <div className="flex flex-col mt-12">
+            <div className="flex gap-2 pb-4 w-full">
+              <div className="lg:px-8 sm:px-2 px-2">
+                <div className="lg:h-[180px] lg:w-[180px] sm:w-[100px] sm:h-[100px] w-[100px] h-[100px] bg-[#5B838A] rounded-2xl flex justify-center items-center text-white lg:text-2xl sm:text-lg text-lg font-bold ">
                   {user?.username.slice(0, 2).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-              <div className="text-center">
-                <p className="font-semibold text-lg">{user?.username}</p>
-                <p className="text-muted-foreground">{user?.email}</p>
+                </div>
               </div>
+
+              {isEditing ? (
+                <div className="flex flex-row align-middle w-5/6 items-center">
+                  <Form {...form}>
+                    <form
+                      className="flex lg:flex-row sm:flex-col flex-col border-red-200 w-[100%] gap-2"
+                      onSubmit={handleUpdateProfile}
+                    >
+                      <FormField
+                        control={form.control}
+                        name="username"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-col gap-0">
+                            <FormControl>
+                              <Input
+                                placeholder="Habit name"
+                                {...field}
+                                className="border-gray-200 rounded-md placeholder-gray-200 text-white lg:h-12 md:h-12 sm:h-10 h-10 lg:text-2xl sm:text-lg text-lg"
+                              />
+                            </FormControl>
+                            <FormMessage className="text-xs text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+
+                      <div className="flex lg:justify-center sm:justify-start justify-start lg:gap-4 sm:gap-2 gap-2 items-center lg:w-1/6 sm:w-full w-full">
+                        <Button
+                          type="submit"
+                          disabled={loading}
+                          variant="outline"
+                          className="border-green-300 border-2 text-green-300 hover:bg-green-300 hover:text-main rounded-full lg:h-12 lg:w-12 sm:h-8 sm:w-8 h-8 w-8"
+                        >
+                          <Check size={30} />
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="border-red-200 border-2 text-red-200 hover:bg-red-200 hover:text-main rounded-full lg:h-12 lg:w-12 sm:h-8 sm:w-8 h-8 w-8"
+                          onClick={() => {
+                            form.reset({ username: user?.username });
+                            setIsEditing(false);
+                          }}
+                        >
+                          <X size={30} />{" "}
+                        </Button>
+                      </div>
+                    </form>
+                  </Form>
+                </div>
+              ) : (
+                <div className="flex justify-between w-5/6 space-y-2 ">
+                  <div className="flex flex-col align-middle justify-center">
+                    <p className="font-semibold lg:text-4xl sm:text-xl text-xl text-lightYellow">
+                      {user?.username}
+                    </p>
+                    <p className="text-muted-foreground lg:text-xl sm:text-sm text-sm text-white italic">
+                      {user?.email}
+                    </p>
+                  </div>
+                  <div className="flex lg:justify-end items-center">
+                    <button
+                      onClick={() => setIsEditing(true)}
+                      className="rounded-full text-white hover:bg-white hover:text-main lg:px-8 sm:px-2 px-2 border lg:text-lg lg:py-2 sm:text-sm sm:py-2 text-sm py-2 flex items-center gap-2"
+                    >
+                      <span className="lg:hidden">
+                        <Pencil className="w-5 h-5" />{" "}
+                      </span>
+                      <span className="hidden lg:inline">EDIT PROFILE</span>{" "}
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
-          </CardContent>
-          <CardFooter className="flex flex-col space-y-2">
-            <hr className="w-full pb-2 border-gray-400" />
+            <section className="space-y-4">
+              <hr className="border-gray-400 border-t-2 opacity-80 mt-4" />
+              <h1 className="lg:text-3xl sm:text-2xl text-lg font-bold text-lightYellow tracking-wider lg:pt-8">
+                Profile Settings
+              </h1>
 
-            {isEditing ? (
-              <>
-                <Form {...form}>
-                  <form className="space-y-2" onSubmit={handleUpdateProfile}>
-                    <FormField
-                      control={form.control}
-                      name="username"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-col gap-0">
-                          <FormControl>
-                            <Input
-                              placeholder="Habit name"
-                              {...field}
-                              className="border-[#6490BC] rounded-md placeholder-gray-200" // Add your desired placeholder color here
-                            />
-                          </FormControl>
-                          <FormMessage className="text-xs text-red-400" />
-                        </FormItem>
-                      )}
-                    />
-
-                    <div className="flex justify-between">
-                      <Button
-                        type="submit"
-                        disabled={loading}
-                        variant="outline"
-                        className=" border-blue-700 text-blue-700 hover:bg-blue-700 hover:text-white"
-                      >
-                        Save Changes
+              <Card className="text-white">
+                <CardContent className="lg:py-6 sm:py-4 py-4 lg:px-6 sm:px-4 px-4 space-y-1 flex justify-between">
+                  <div className="w-2/3 pe-4">
+                    <CardTitle className="lg:text-lg sm:text-sm text-sm">
+                      DELETE YOUR ACCOUNT
+                    </CardTitle>
+                    <CardDescription className="sm:text-xs text-xs">
+                      Once you delete your profile, there is no going back.
+                      Please be certain.
+                    </CardDescription>
+                  </div>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button className="lg:w-[200px] sm:w-[100px] w-[100px] border border-red-400 text-red-400 hover:bg-red-400 hover:text-white">
+                        DELETE<span className="hidden lg:inline">ACCOUNT</span>
                       </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        className=" border-black hover:bg-black hover:text-white"
-                        onClick={() => {
-                          form.reset({ username: user?.username });
-                          setIsEditing(false);
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                    </div>
-                  </form>
-                </Form>
-              </>
-            ) : (
-              <>
-                <Button
-                  onClick={() => setIsEditing(true)}
-                  className="w-full border-2 border-blue-700 text-blue-700 hover:bg-blue-700 hover:text-white"
-                >
-                  EDIT PROFILE
-                </Button>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button className="w-full border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white">
-                      DELETE ACCOUNT
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent className="bg-white">
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        Are you absolutely sure?
-                      </AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete
-                        your account and remove your data from our servers.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={confirmDelete}>
-                        Continue
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button className="w-full border-2 border-black text-black hover:bg-black hover:text-white">
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="bg-white">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you absolutely sure?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete your account and remove your data from our
+                          servers.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={confirmDelete}
+                          className="bg-red-600 text-white hover:bg-red-500"
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </CardContent>
+              </Card>
+              <Card className="text-white">
+                <CardContent className="lg:py-6 sm:py-4 py-4 lg:px-6 sm:px-4 px-4 space-y-1 flex justify-between">
+                  <div className="w-2/3 pe-4">
+                    <CardTitle className="lg:text-lg sm:text-sm text-sm">
                       LOGOUT
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent className="bg-white">
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Logout </AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Are you sure you want to logout?
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={onSignOut}
-                        className="border-black text-black hover:bg-black hover:text-white border-1"
-                      >
-                        Continue
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </>
-            )}
-          </CardFooter>
-        </Card>
-      )}
+                    </CardTitle>
+                    <CardDescription className="sm:text-xs text-xs">
+                      Logout of your account
+                    </CardDescription>
+                  </div>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button className="lg:w-[200px] sm:w-[100px] w-[100px] border border-blue-300 text-blue-300 hover:bg-blue-300 hover:text-white">
+                        LOGOUT<span className="hidden lg:inline">ACCOUNT</span>
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="bg-white">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Logout</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Are you sure you want to logout?
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={onSignOut}
+                          className="bg-black text-white hover:bg-gray-700"
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </CardContent>
+              </Card>
+            </section>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -33,11 +33,11 @@ const ChallengeCard: React.FC<{
 
   return (
     <div
-      className={`flex flex-1 bg-white border py-4 border-gray-300 rounded-2xl px-8 gap-4 align-middle justify-between transform transition-transform duration-500 ease-in-out ${className}`}
+      className={`flex flex-1 bg-innermostCard py-4 h-20 rounded-2xl px-8 gap-4 align-middle justify-between transform transition-transform duration-500 ease-in-out ${className}`}
     >
       <div className="flex gap-4 items-center">
-        <Dumbbell />
-        <span className="text-xl font-medium">{habit.name}</span>
+        <Dumbbell className="text-white" size={24} />
+        <span className="text-xl font-medium text-white">{habit.name}</span>
       </div>
       <div className="flex items-center gap-4">
         {loading ? (
@@ -49,7 +49,7 @@ const ChallengeCard: React.FC<{
               id={habit._id}
               checked={checked}
               onChange={(e) => {
-                onCheck(habit._id, e.target.checked)
+                onCheck(habit._id, e.target.checked);
                 updateAccomplishedStatus();
               }}
               disabled={loading}
@@ -57,10 +57,11 @@ const ChallengeCard: React.FC<{
             />
             <label
               htmlFor={habit._id}
-              className={`cursor-pointer w-6 h-6 rounded-lg ${checked ? "bg-sageGreen" : "bg-gray-200"
-                } flex items-center justify-center`}
+              className={`cursor-pointer w-6 h-6 rounded-lg ${
+                checked ? "bg-white" : "border-2 border-white"
+              } flex items-center justify-center`}
             >
-              {checked && <span className="text-white font-bold">✔</span>}
+              {checked && <span className="text-main font-bold">✔</span>}
             </label>
           </>
         )}

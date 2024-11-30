@@ -14,7 +14,15 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterUserSchema } from "@/utils/schemas";
-import { ChevronLeftIcon, Eye, EyeOff, KeyIcon, Loader2, MountainIcon, UserIcon } from "lucide-react";
+import {
+  ChevronLeftIcon,
+  Eye,
+  EyeOff,
+  KeyIcon,
+  Loader2,
+  MountainIcon,
+  UserIcon,
+} from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFetch } from "@/hooks/use-fetch";
 import { handleAuthError } from "@/utils/errorHandler";
@@ -72,7 +80,7 @@ const RegisterScreen: React.FC = () => {
       <Button
         className="absolute top-5 left-5 text-white"
         onClick={() => navigate("/")}
-        variant='link'
+        variant="link"
       >
         <ChevronLeftIcon className="w-6 h-6" />
         Back to Home
@@ -121,7 +129,6 @@ const RegisterScreen: React.FC = () => {
                       <div className="relative">
                         <MdMail className="w-5 h-5 absolute top-1/2 left-2 transform -translate-y-1/2" />
                         <Input
-                          type="email"
                           placeholder="johndoe@gmail.com"
                           {...field}
                           className="border-[#6490BC] rounded-md placeholder:text-gray-400 pl-9" // Add your desired placeholder color here
@@ -145,7 +152,9 @@ const RegisterScreen: React.FC = () => {
                         <KeyIcon className="w-5 h-5 absolute top-1/2 left-2 transform -translate-y-1/2" />
                         <Input
                           type={showPassword ? "text" : "password"}
-                          placeholder={`${showPassword ? "Password@123" : "********"}`}
+                          placeholder={`${
+                            showPassword ? "Password@123" : "********"
+                          }`}
                           {...field}
                           className="placeholder:text-gray-400 border-[#6490BC] pl-9"
                         />
@@ -173,7 +182,13 @@ const RegisterScreen: React.FC = () => {
                 className="relative w-full py-6 border border-white transition-all duration-300 text-white hover:bg-white/85 hover:text-black hover:border-transparent"
                 disabled={isLoading}
               >
-                {isLoading ? <><Loader2 className="animate-spin" /> Loading</> : "Register"}
+                {isLoading ? (
+                  <>
+                    <Loader2 className="animate-spin" /> Loading
+                  </>
+                ) : (
+                  "Register"
+                )}
               </Button>
             </form>
           </Form>
