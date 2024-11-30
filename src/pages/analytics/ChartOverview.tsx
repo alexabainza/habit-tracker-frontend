@@ -31,6 +31,7 @@ type ChartOverviewProps = {
 }
 
 export function ChartOverview({ loading, data }: ChartOverviewProps) {
+    console.log(data)
     return (
         <Card className="w-full min-h-80 md:min-h-32 flex-[0.5]">
             <CardTitle className="p-5">Overview</CardTitle>

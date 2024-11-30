@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LandingPage from "@/pages/Landing";
-import LoginScreen from "@/pages/auth/Login";
-import RegisterScreen from "@/pages/auth/Register";
+import LoginScreen from "@/pages/auth/sign-in/Login";
+import RegisterScreen from "@/pages/auth/sign-up/Register";
 import Navbar from "@/components/shared/navbar/Navbar";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import PrivateRoute from "@/components/shared/routing/PrivateRoute";
@@ -10,9 +10,9 @@ import Analytics from "@/pages/analytics/Analytics";
 import Habits from "@/pages/habits/Habits";
 import Profile from "@/pages/profile/Profile";
 import { Toaster as Sonner } from "@/components/ui/sonner";
-import ResetPassword from "./pages/auth/Reset";
-import ForgotPassword from "./pages/auth/Forgot";
-import Verify from "./pages/auth/Verify";
+import ResetPassword from "./pages/auth/reset-pwd/Reset";
+import ForgotPassword from "./pages/auth/forgot-pwd/Forgot";
+import Verify from "./pages/auth/verification/Verify";
 
 function App() {
   return (
