@@ -1,4 +1,3 @@
-// colors.ts
 export const colors = {
     lightYellow: '#FBEF95',
     main: '#2A3D43',
@@ -15,4 +14,11 @@ export const colors = {
     mossGreen: '#4a5d2a',      // Moss green, darker shade
     deepOlive: '#3d4a29',      // Darker olive, near forest green
   };
-  
+
+  export enum CardColor {
+    GREEN = '#BFFF95',
+    BLUE = '#89E2CD',
+    YELLOW = '#FBEF95',
+    PINK = '#FEBCEA',
+    ORANGE = '#F2C394'
+  }

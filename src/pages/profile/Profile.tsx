@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 
@@ -43,7 +40,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import Loading from "@/components/ui/loading";
-import { Check, Cross, Pencil, X } from "lucide-react";
+import { Check, Pencil, X } from "lucide-react";
 
 export default function Profile() {
   const navigate = useNavigate();

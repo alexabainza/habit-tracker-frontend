@@ -36,18 +36,24 @@ const HabitCard: React.FC<HabitCardProps> = ({
 }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const handleCloseDialog = () => setOpenDialog(false);
+
   return loading ? (
     <div className="animate-pulse flex justify-between bg-softGreen" />
   ) : (
     <>
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <Card className="w-full flex justify-between lg:col-span-2 xl:col-span-1 bg-softGreen shadow shadow-green-900">
+        <Card
+          style={{ backgroundColor: habit.color }}
+          className={`w-full flex justify-between lg:col-span-2 xl:col-span-1 shadow shadow-green-900`}
+        >
           <DialogTrigger>
             <CardHeader className="space-y-0 md:max-w-32 ">
               <CardTitle className="lg:text-2xl sm:text-xl text-xl text-ellipsis text-nowrap overflow-hidden w-full">
                 {habit.name}
               </CardTitle>
-              <CardDescription className="text-left">Goal: {habit.goal}</CardDescription>
+              <CardDescription className="text-left">
+                Goal: {habit.goal}
+              </CardDescription>
             </CardHeader>
           </DialogTrigger>
           <CardContent className="flex flex-col lg:flex-row justify-center items-center align-middle gap-4 md:gap-2 pb-0">

@@ -29,6 +29,7 @@ import HabitCard from "@/pages/habits/HabitCard";
 import ConfirmationDialog from "@/components/custom/ConfirmationDialog";
 import Loading from "@/components/ui/loading";
 import { toast } from "sonner";
+import { CardColor } from "@/utils/colors";
 
 const Habits: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
@@ -46,6 +47,7 @@ const Habits: React.FC = () => {
     defaultValues: {
       name: "",
       goal: 0,
+      color: "",
     },
     mode: "onSubmit",
   });
@@ -71,11 +73,14 @@ const Habits: React.FC = () => {
     if (habitToUpdate) {
       form.setValue("name", habitToUpdate.name);
       form.setValue("goal", habitToUpdate.goal);
+      form.setValue("color", habitToUpdate.color);
     }
   }, [habitToUpdate, form]);
 
   const handleSubmit = async () => {
     setLoading(true);
+    console.log("form values", form.getValues());
+
     try {
       const response = await useFetch("/habits", "post", {
         ...form.getValues(),
@@ -94,18 +99,22 @@ const Habits: React.FC = () => {
       form.reset();
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Error creating habit.");
+      setLoading(false);
     }
   };
   const handleUpdateHabit = async () => {
     if (!habitToUpdate) return;
 
     setLoading(true);
+    console.log(form.getValues());
+
     try {
-      const { name, goal } = form.getValues();
+      const { name, goal, color } = form.getValues();
       const response = await useFetch("/habits", "put", {
         id: habitToUpdate._id,
         name,
         goal,
+        color,
       });
 
       const updatedHabit = response.data.data;
@@ -207,7 +216,7 @@ const Habits: React.FC = () => {
             onConfirm={confirmDelete}
             isDestructive={true}
           />
-          <DialogContent className="sm:max-w-[400px] py-12 bg-slate-50">
+          <DialogContent className="sm:max-w-[400px] py-12 bg-slate-200">
             <DialogHeader>
               <DialogTitle className="text-3xl">
                 {isEditing ? "Update Habit" : "Create New Habit"}
@@ -254,8 +263,10 @@ const Habits: React.FC = () => {
                           {[1, 2, 3, 4, 5, 6, 7].map((value) => (
                             <label
                               key={value}
-                              className={`px-4 py-1 rounded-full cursor-pointer border-2 border-black ${
-                                field.value === value ? "bg-softGreen" : ""
+                              className={`px-4 py-1 rounded-full cursor-pointer border-2 border-main ${
+                                field.value === value
+                                  ? "bg-main text-white"
+                                  : ""
                               }`}
                             >
                               <input
@@ -276,6 +287,53 @@ const Habits: React.FC = () => {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="color"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-0">
+                      <FormLabel className="font-bold text-xs text-deepOlive">
+                        Set card color
+                      </FormLabel>
+                      <FormControl>
+                        <div className="flex justify-evenly">
+                          {Object.entries(CardColor).map(([key, value]) => (
+                            <label
+                              key={key}
+                              className={`relative w-10 h-10 rounded-full cursor-pointer border border-main`}
+                              style={{ backgroundColor: value }}
+                            >
+                              <input
+                                type="radio"
+                                {...field}
+                                value={value}
+                                checked={field.value === value}
+                                onChange={() => {
+                                  field.onChange(value); // Update the form state
+                                  console.log("Selected Color:", value); // Log the value
+                                }}
+                                className="hidden "
+                              />
+                              {field.value === value && (
+                                <span
+                                  className="absolute inset-0 flex items-center justify-center text-main font-bold text-xl"
+                                  style={{
+                                    backgroundColor: "rgba(0, 0, 0, 0.1)",
+                                    borderRadius: "50%",
+                                  }}
+                                >
+                                  ✓
+                                </span>
+                              )}
+                            </label>
+                          ))}
+                        </div>
+                      </FormControl>
+                      <FormMessage className="text-xs text-red-400" />
+                    </FormItem>
+                  )}
+                />
+
                 <Button
                   className="bg-sageGreen hover:bg-mutedGreen w-full text-white text-sm"
                   type="submit"

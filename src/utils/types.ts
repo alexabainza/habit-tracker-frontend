@@ -1,8 +1,11 @@
+import { CardColor } from "./colors";
+
 export interface Habit {
   habit: {
     _id: string;
     name: string;
     goal: number;
+    color: CardColor,
     user_id: string;
     deleted_at: string | null;
     created_at: string;
