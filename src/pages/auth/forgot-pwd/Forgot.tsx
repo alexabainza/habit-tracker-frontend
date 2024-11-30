@@ -14,7 +14,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ChevronLeft, ChevronLeftIcon, ChevronRightIcon, Loader2, MountainIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, Loader2, MountainIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { ForgotPasswordSchema } from "@/utils/schemas";
 import { handleAuthError } from "@/utils/errorHandler";

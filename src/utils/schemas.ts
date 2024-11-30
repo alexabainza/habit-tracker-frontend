@@ -5,6 +5,11 @@ const LoginSchema = z.object({
     password: z.string({ message: "Password is required." }).min(8, { message: "Password should be at least 8 characters." }),
 });
 
+const OtpSchema = z.object({
+    email: z.string({ message: "Email is required." }).email({ message: "Email invalid." }).min(5, { message: "Email is too short." }).max(255, { message: "Email is too long." }),
+    otp: z.string({ message: "OTP is required." }).min(6, { message: "OTP should be at least 6 characters." }),
+});
+
 const RegisterUserSchema = z.object({
     email: z.string().email({ message: "Email is required." }).min(5, { message: "Not a valid email." }).max(255, { message: "Email is too long." }),
     username: z.string({ message: "Username is required." }).min(3, { message: "Username is required 3 characters." }).max(30, { message: "Username is too long." }),
@@ -48,4 +53,4 @@ const EditUserSchema = z.object({
     username: z.string({ message: "Username is required." }).min(3, { message: "Username is required 3 characters." }).max(30, { message: "Username is too long." }),
 });
 
-export { habitSchema, RegisterUserSchema, LoginSchema, EditUserSchema, ForgotPasswordSchema, ResetPasswordSchema };
+export { habitSchema, RegisterUserSchema, LoginSchema, OtpSchema, EditUserSchema, ForgotPasswordSchema, ResetPasswordSchema };

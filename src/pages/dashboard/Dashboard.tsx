@@ -1,9 +1,9 @@
 import { useFetch } from "@/hooks/use-fetch";
 import { Habit } from "@/utils/types";
 import React, { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
 import ChallengeCard from "@/pages/dashboard/Challenges";
 import { toast } from "sonner";
+import Loading from "@/components/ui/loading";
 
 const Dashboard: React.FC = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
@@ -31,7 +31,6 @@ const Dashboard: React.FC = () => {
           setHabitStates(validStates);
         } else {
           setHabits([]);
-          toast.warning("No habits found.");
         }
       } catch (error) {
         toast.error("Failed to fetch habits.");
@@ -48,7 +47,7 @@ const Dashboard: React.FC = () => {
 
   return loading ? (
     <div className="w-full bg-gradient-to-br from-[#2A3D43] to-[#40575C]">
-      <Loader2 className="animate-spin text-white" />
+      <Loading className="text-3xl" loaderClassName="w-10 h-10" />
     </div>
   ) : habits.length === 0 ? (
     <p>No habits found</p>

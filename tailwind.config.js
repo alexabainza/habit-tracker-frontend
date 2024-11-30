@@ -61,6 +61,7 @@ export default {
         },
       },
       animation: {
+        "caret-blink": "caret-blink 1.25s ease-out infinite",
         "shimmer-slide":
           "shimmer-slide var(--speed) ease-in-out infinite alternate",
         "spin-around": "spin-around calc(var(--speed) * 2) infinite linear",
@@ -68,6 +69,10 @@ export default {
         meteor: "meteor 5s linear infinite",
       },
       keyframes: {
+        "caret-blink": {
+          "0%,70%,100%": { opacity: "1" },
+          "20%,50%": { opacity: "0" },
+        },
         "spin-once": {
           "0%": { transform: "rotate(0deg)" },
           "100%": { transform: "rotate(360deg)" },

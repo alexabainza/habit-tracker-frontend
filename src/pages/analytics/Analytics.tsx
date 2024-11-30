@@ -22,7 +22,8 @@ const Analytics: React.FC = () => {
           `/analytics/user-habit-count/${frequency}`,
           "get"
         );
-        if (response.status === 204) {
+
+        if (response.status === 404) {
           toast.error("Please do something first.");
           return;
         }
@@ -30,8 +31,9 @@ const Analytics: React.FC = () => {
           ...prev,
           [frequency]: response.data.data,
         }));
-      } catch (error) {
-        toast.error("Failed to fetch data.");
+      } catch (error: any) {
+        console.error(error);
+        error.status !== 404 && toast.error("Failed to fetch data.");
       } finally {
         setLoading(false);
       }
