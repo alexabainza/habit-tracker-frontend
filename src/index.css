@@ -54,27 +54,28 @@ body,
 }
 
 ::-webkit-scrollbar {
-  scrollbar-width: thin;
+  height: 8px;
+  width: 10px;
   border-radius: 20px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #446062;
   border-radius: 20px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 20px;
+  background: #898989;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
-  border-radius: 20px;
+  background: #1d292a;
+  background: #898989;
 }
+
 .no-hover:hover {
   background-color: inherit !important;
   border-color: inherit !important;

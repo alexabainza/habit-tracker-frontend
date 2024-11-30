@@ -16,7 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Habit } from "@/utils/types";
-import { SquarePen, Trash2 } from "lucide-react";
+import { DumbbellIcon, SquarePen, Trash2 } from "lucide-react";
 import { colors } from "@/utils/colors";
 import { Button } from "@/components/ui/button";
 import StreakCard from "@/components/custom/StreakCard";
@@ -44,10 +44,11 @@ const HabitCard: React.FC<HabitCardProps> = ({
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <Card
           style={{ backgroundColor: habit.color }}
-          className={`w-full flex justify-between lg:col-span-2 xl:col-span-1 shadow shadow-green-900`}
+          className={`w-full flex justify-between lg:col-span-2 xl:col-span-1 shadow shadow-green-900 hover:scale-[1.05] transition-all duration-300 ease-in-out overflow-hidden relative hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[4px_4px_0px_black]`}
         >
           <DialogTrigger>
-            <CardHeader className="space-y-0 md:max-w-32 ">
+            <CardHeader className="space-y-0 md:max-w-32 lg:max-w-40 group">
+              <DumbbellIcon className="w-72 h-72 absolute top-1/2 -right-10 transform -translate-y-2/3 opacity-5" />
               <CardTitle className="lg:text-2xl sm:text-xl text-xl text-ellipsis text-nowrap overflow-hidden w-full">
                 {habit.name}
               </CardTitle>
@@ -60,12 +61,12 @@ const HabitCard: React.FC<HabitCardProps> = ({
             <SquarePen
               onClick={() => onEdit(habit)}
               color={colors.mossGreen}
-              className="cursor-pointer hover:opacity-30 w-5"
+              className="cursor-pointer hover:opacity-30 w-5 z-10"
             />
             <Trash2
               onClick={() => onDelete(habit._id)}
               color="red"
-              className="cursor-pointer hover:opacity-30 w-5"
+              className="cursor-pointer hover:opacity-30 w-5 z-10"
             />
           </CardContent>
         </Card>
