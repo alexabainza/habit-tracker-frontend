@@ -50,7 +50,12 @@ const Dashboard: React.FC = () => {
       <Loading className="text-3xl" loaderClassName="w-10 h-10" />
     </div>
   ) : habits.length === 0 ? (
-    <p>No habits found</p>
+    <div className="w-full bg-gradient-to-br from-[#2A3D43] to-[#40575C]">
+      <h1 className="lg:px-16 sm:px-5 px-5 lg:text-4xl sm:text-3xl text-3xl font-bold text-lightYellow tracking-wider mt-6 py-12">
+        Dashboard
+      </h1>
+      <p className="text-white text-center">No habits found</p>
+    </div>
   ) : (
     <div className="w-full bg-gradient-to-br from-[#2A3D43] to-[#40575C]">
       <div className="lg:px-16 sm:px-5 px-5 space-y-4 m-auto items-center justify-center mt-6 py-12">
