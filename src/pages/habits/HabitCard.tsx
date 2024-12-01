@@ -59,7 +59,7 @@ const HabitCard: React.FC<HabitCardProps> = ({
           <CardContent className="flex flex-col lg:flex-row justify-center items-center align-middle gap-4 md:gap-2 pb-0">
             <SquarePen
               onClick={() => onEdit(habit)}
-              color={colors.mossGreen}
+              color={colors.main}
               className="cursor-pointer hover:opacity-30 w-5"
             />
             <Trash2

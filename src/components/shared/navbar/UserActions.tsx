@@ -1,40 +1,10 @@
-import { useFetch } from "@/hooks/use-fetch";
 import { RootState } from "@/redux/store";
-import {
-  signOutUserFailure,
-  signOutUserStart,
-  signOutUserSuccess,
-} from "@/redux/user/userSlice";
-import { CogIcon, LogOutIcon, UserIcon } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { UserIcon } from "lucide-react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const UserActions = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const onSignOut = async () => {
-    dispatch(signOutUserStart());
-
-    try {
-      const response = await useFetch("/auth/logout", "post");
-      const result = response.data;
-
-      if (result.status === 200) {
-        dispatch(signOutUserSuccess());
-        navigate("/login");
-      } else {
-        const data = await result.json();
-        dispatch(signOutUserFailure(data.message || "Logout failed"));
-      }
-    } catch (error: any) {
-      dispatch(
-        signOutUserFailure(error.message || "An unexpected error occurred")
-      );
-    }
-  };
-
   return (
     <ul className="font-medium space-y-4">
       <li>
