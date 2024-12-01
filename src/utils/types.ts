@@ -13,6 +13,8 @@ export interface Habit {
   };
   accomplished: boolean;
   streak: number;
+  goalProgress: number, 
+  weeklyCount: number
 }
 export interface User{
     _id?: string;
