@@ -171,7 +171,7 @@ const Habits: React.FC = () => {
             </main>
             <DialogTrigger asChild>
               <Button
-                className="bg-sageGreen text-white hover:bg-mutedGreen"
+                className="bg-lightYellow text-black hover:bg-lightYellow/90"
                 onClick={() => {
                   setIsDialogOpen(true);
                   setIsEditing(false);
@@ -310,7 +310,6 @@ const Habits: React.FC = () => {
                                 checked={field.value === value}
                                 onChange={() => {
                                   field.onChange(value); // Update the form state
-                                  console.log("Selected Color:", value); // Log the value
                                 }}
                                 className="hidden "
                               />

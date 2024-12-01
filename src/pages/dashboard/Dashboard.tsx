@@ -46,10 +46,7 @@ const Dashboard: React.FC = () => {
   };
 
   return loading ? (
-    <div className="w-full bg-gradient-to-br from-[#2A3D43] to-[#40575C]">
-      <h1 className="lg:px-16 sm:px-5 px-5 lg:text-4xl sm:text-3xl text-3xl font-bold text-lightYellow tracking-wider mt-6 py-12">
-        Dashboard
-      </h1>
+    <div className="w-full bg-gradient-to-br from-[#2A3D43] to-[#40575C] flex flex-col items-center justify-center">
       <Loading
         className="lg:px-16 sm:px-5 px-5 text-3xl"
         loaderClassName="w-10 h-10"

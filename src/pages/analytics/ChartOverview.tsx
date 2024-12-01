@@ -61,6 +61,7 @@ export function ChartOverview({ loading, data }: ChartOverviewProps) {
                 tickFormatter={(value) =>
                   value.split("-")[1] + "/" + value.split("-")[2]
                 }
+                interval="preserveStartEnd"
               />
               <ChartTooltip
                 content={
@@ -78,7 +79,6 @@ export function ChartOverview({ loading, data }: ChartOverviewProps) {
                 dataKey="count"
                 stroke="#FBEF95"
                 strokeWidth={2}
-                dot={false}
               />
             </LineChart>
           </ChartContainer>

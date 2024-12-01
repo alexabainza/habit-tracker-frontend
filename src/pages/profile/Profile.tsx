@@ -40,7 +40,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import Loading from "@/components/ui/loading";
-import { Check, Pencil, X } from "lucide-react";
+import { Check, LogOutIcon, Pencil, Trash2Icon, TrashIcon, X } from "lucide-react";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -232,19 +232,21 @@ export default function Profile() {
             <section className="space-y-4">
               <hr className="border-gray-400 border-t-2 opacity-80 mt-4" />
               <h1 className="lg:text-3xl sm:text-2xl text-lg font-bold text-lightYellow tracking-wider lg:pt-8">
-                Profile Settings
+                User Actions
               </h1>
-
               <Card className="text-white">
                 <CardContent className="lg:py-6 sm:py-4 py-4 lg:px-6 sm:px-4 px-4 space-y-1 flex justify-between">
-                  <div className="w-2/3 pe-4">
-                    <CardTitle className="lg:text-lg sm:text-sm text-sm">
-                      DELETE YOUR ACCOUNT
-                    </CardTitle>
-                    <CardDescription className="sm:text-xs text-xs">
-                      Once you delete your profile, there is no going back.
-                      Please be certain.
-                    </CardDescription>
+                  <div className="w-full max-w-72 md:max-w-lg pe-4 flex items-center gap-x-5">
+                    <Trash2Icon className="w-8 h-8 font-thin flex-shrink-0" />
+                    <div>
+                      <CardTitle className="lg:text-lg sm:text-sm text-sm">
+                        DELETE YOUR ACCOUNT
+                      </CardTitle>
+                      <CardDescription className="text-xs opacity-80">
+                        Once you delete your profile, there is no going back.
+                        Please be certain.
+                      </CardDescription>
+                    </div>
                   </div>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
@@ -255,10 +257,10 @@ export default function Profile() {
                     <AlertDialogContent className="bg-white">
                       <AlertDialogHeader>
                         <AlertDialogTitle>
-                          Are you absolutely sure?
+                          Deleting <strong>{user?.username}</strong>'s account
                         </AlertDialogTitle>
                         <AlertDialogDescription>
-                          This action cannot be undone. This will permanently
+                          This will permanently
                           delete your account and remove your data from our
                           servers.
                         </AlertDialogDescription>
@@ -278,13 +280,16 @@ export default function Profile() {
               </Card>
               <Card className="text-white">
                 <CardContent className="lg:py-6 sm:py-4 py-4 lg:px-6 sm:px-4 px-4 space-y-1 flex justify-between">
-                  <div className="w-2/3 pe-4">
-                    <CardTitle className="lg:text-lg sm:text-sm text-sm">
-                      LOGOUT
-                    </CardTitle>
-                    <CardDescription className="sm:text-xs text-xs">
-                      Logout of your account
-                    </CardDescription>
+                  <div className="w-full max-w-72 md:max-w-lg pe-4 flex items-center gap-x-5">
+                    <LogOutIcon className="w-7 h-7 font-thin flex-shrink-0" />
+                    <div>
+                      <CardTitle className="lg:text-lg sm:text-sm text-sm">
+                        Sign Out
+                      </CardTitle>
+                      <CardDescription className="sm:text-xs text-xs">
+                        Leave for now. You can always come back.
+                      </CardDescription>
+                    </div>
                   </div>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
@@ -294,7 +299,7 @@ export default function Profile() {
                     </AlertDialogTrigger>
                     <AlertDialogContent className="bg-white">
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Logout</AlertDialogTitle>
+                        <AlertDialogTitle>Signing<strong> {user?.username} </strong>out</AlertDialogTitle>
                         <AlertDialogDescription>
                           Are you sure you want to logout?
                         </AlertDialogDescription>

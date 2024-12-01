@@ -14,6 +14,7 @@ export default {
         softGreen: "#c1e1a6",
         sageGreen: "#6b8c4e",
         deepOlive: "#3d4a29",
+        mossGreen: "#4a5d2a",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
