@@ -45,6 +45,8 @@ const Dashboard: React.FC = () => {
     setHabitStates((prevStates) => ({ ...prevStates, [id]: checked }));
   };
 
+  console.log(habits);
+
   return loading ? (
     <div className="w-full bg-gradient-to-br from-[#2A3D43] to-[#40575C] flex flex-col items-center justify-center">
       <Loading

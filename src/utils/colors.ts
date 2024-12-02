@@ -8,6 +8,7 @@ export const colors = {
     softGreen: '#c1e1a6',
     sageGreen: '#6b8c4e',
     deepOlive: '#3d4a29',
+    mossGreen: '#4f5d2f',
   };
 
   export enum CardColor {
