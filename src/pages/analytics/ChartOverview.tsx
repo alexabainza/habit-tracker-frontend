@@ -31,9 +31,19 @@ type ChartOverviewProps = {
 };
 
 export function ChartOverview({ loading, data }: ChartOverviewProps) {
+  const dateRange = `${new Date(data[0]?.date).toDateString()} to ${new Date(data[data.length - 1]?.date).toDateString()}`;
   return (
-    <Card className="w-full min-h-80 md:min-h-32 flex-[0.5] bg-outerCard border-none">
-      <CardTitle className="p-5 text-xl text-lightYellow">Overview</CardTitle>
+    <Card className="w-full min-h-80 md:min-h-32 flex-[0.8] bg-outerCard border-none">
+      <CardTitle className="p-5 text-xl text-lightYellow">
+        {loading ? (
+          <span className="animate-pulse">Fetching...</span>
+        ) : (
+          <span>
+            Overview from
+            <strong className="ml-2">{dateRange}</strong>
+          </span>
+        )}
+      </CardTitle>
       <CardContent>
         {loading ? (
           <Loading />
@@ -59,7 +69,7 @@ export function ChartOverview({ loading, data }: ChartOverviewProps) {
                 tickLine={{ stroke: "#FBEF95" }}
                 tickMargin={12}
                 tickFormatter={(value) =>
-                  value.split("-")[1] + "/" + value.split("-")[2]
+                  value.split("-")[2]
                 }
                 interval="preserveStartEnd"
               />

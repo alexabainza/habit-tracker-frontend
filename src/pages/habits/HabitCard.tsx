@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { Habit } from "@/utils/types";
 import { DumbbellIcon, SquarePen, Trash2 } from "lucide-react";
-import { colors } from "@/utils/colors";
+import { colors } from "@/utils/constants";
 import { Button } from "@/components/ui/button";
 import StreakCard from "@/components/custom/StreakCard";
 

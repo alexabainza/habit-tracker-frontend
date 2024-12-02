@@ -1,8 +1,8 @@
 import { Calendar } from "@/components/ui/calendar";
-import { RecentHabitsProps } from "@/utils/types";
+import { MonthlyHabitsProps } from "@/utils/types";
 import { useMemo } from "react";
 
-export function RecentHabits({ data }: RecentHabitsProps) {
+export function MonthlyHabits({ data }: MonthlyHabitsProps) {
   const modifiers = useMemo(() => {
     const highActivity: Date[] = [];
     const mediumActivity: Date[] = [];

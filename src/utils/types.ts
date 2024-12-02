@@ -1,4 +1,4 @@
-import { CardColor } from "./colors";
+import { CardColor } from "./constants";
 
 export interface Habit {
   habit: {
@@ -13,17 +13,17 @@ export interface Habit {
   };
   accomplished: boolean;
   streak: number;
-  goalProgress: number, 
-  weeklyCount: number
+  goalProgress: number,
+  weeklyCount: [];
 }
-export interface User{
-    _id?: string;
-    username: string;
-    password?: string;
-    email?: string;
-    created_at?: Date;
-    updated_at?: Date;
-    deleted_at?: Date;
+export interface User {
+  _id?: string;
+  username: string;
+  password?: string;
+  email?: string;
+  created_at?: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
 
 }
 
@@ -42,6 +42,10 @@ export interface StreakCardProps {
   id: string;
 }
 
-export interface RecentHabitsProps {
-  data: { date: string; count: number; habits?: string[] }[];
+export interface MonthlyHabitsProps {
+  data: {
+    date: string;
+    count: number;
+    habits?: string[]
+  }[];
 }

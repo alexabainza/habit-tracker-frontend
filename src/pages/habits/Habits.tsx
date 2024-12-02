@@ -29,7 +29,7 @@ import HabitCard from "@/pages/habits/HabitCard";
 import ConfirmationDialog from "@/components/custom/ConfirmationDialog";
 import Loading from "@/components/ui/loading";
 import { toast } from "sonner";
-import { CardColor } from "@/utils/colors";
+import { CardColor } from "@/utils/constants";
 
 const Habits: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
@@ -158,6 +158,8 @@ const Habits: React.FC = () => {
       form.reset();
     }
   };
+
+  console.log(habits);
 
   return (
     <div className="w-full min-h-full bg-gradient-to-br from-[#2A3D43] to-[#40575C]">
