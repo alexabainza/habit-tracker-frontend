@@ -47,8 +47,7 @@ const habitSchema = z.object({
         (val) => (val ? Number(val) : undefined),
         z.number().min(1, { message: "Goal must be at least 1." })
     ),
-    color: z.string()
-    
+    color: z.string().nonempty("Please pick a color."),    
 });
 
 const EditUserSchema = z.object({

@@ -328,7 +328,9 @@ const Habits: React.FC = () => {
                           ))}
                         </div>
                       </FormControl>
-                      <FormMessage className="text-xs text-red-400" />
+                      <FormMessage className="text-xs text-red-400">
+                        {form.formState.errors.color?.message}
+                      </FormMessage>{" "}
                     </FormItem>
                   )}
                 />
