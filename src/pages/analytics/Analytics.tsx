@@ -43,7 +43,9 @@ const Analytics: React.FC = () => {
   };
 
   useMemo(() => {
-    setTimeout(() => fetchData(selected), 3000);
+    setTimeout(() => {
+      fetchData(selected);
+    }, 3000);
   }, [selected]);
 
   const currentData = data[selected] || [];
@@ -84,7 +86,7 @@ const Analytics: React.FC = () => {
         <div className="flex flex-col md:flex-row flex-wrap lg:flex-nowrap items-start justify-between gap-2 md:gap-5">
           <ChartOverview loading={loading} data={currentData} />
           {loading ? (
-            <Skeleton className="bg-gray-200 w-full flex-[0.5]" />
+            <Skeleton className=" w-full flex-1 h-[400px] bg-gray-800" />
           ) : selected === "monthly" ? (
             <MonthlyHabits data={currentData} />
           ) : (

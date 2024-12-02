@@ -33,7 +33,7 @@ type ChartOverviewProps = {
 export function ChartOverview({ loading, data }: ChartOverviewProps) {
   const dateRange = `${new Date(data[0]?.date).toDateString()} to ${new Date(data[data.length - 1]?.date).toDateString()}`;
   return (
-    <Card className="w-full min-h-80 md:min-h-32 flex-[0.8] bg-outerCard border-none">
+    <Card className="w-full min-h-96 md:min-h-[400px] flex-1 bg-outerCard border-none relative">
       <CardTitle className="p-5 text-xl text-lightYellow">
         {loading ? (
           <span className="animate-pulse">Fetching...</span>

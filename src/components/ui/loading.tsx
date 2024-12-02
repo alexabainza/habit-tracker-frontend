@@ -11,11 +11,11 @@ const Loading: React.FC<LoadingProps> = ({ className, loaderClassName }) => {
     <div
       className={cn(
         className,
-        "text-center text-lg text-lightYellow inline-flex flex-col items-center justify-center gap-2 p-5 mx-auto"
+        "text-center text-lg text-lightYellow space-y-5 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
       )}
     >
-      <LoaderIcon className={cn(loaderClassName, "w-8 h-8 animate-spin")} />
-      Loading...
+      <LoaderIcon className={cn(loaderClassName, "w-8 h-8 animate-spin mx-auto")} />
+      <span className="text-center">Loading...</span>
     </div>
   );
 };

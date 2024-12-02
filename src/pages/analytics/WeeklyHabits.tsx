@@ -17,7 +17,7 @@ import { toast } from "sonner";
 type IsAccomplished = {
     accomplished: boolean;
     date_changed: string;
-}
+};
 
 const WeeklyHabits = ({ data }: MonthlyHabitsProps) => {
     const [loading, setLoading] = useState(false);
@@ -45,9 +45,12 @@ const WeeklyHabits = ({ data }: MonthlyHabitsProps) => {
     }, []);
 
     return (
-        <Card className="space-y-2 w-full flex-1 bg-outerCard border-none rounded-xl text-yellow-300">
+        <Card className="space-y-2 w-full flex-1 bg-outerCard border-none rounded-xl text-yellow-300 h-[425px] relative">
             <CardHeader className="pb-0">
                 <CardTitle className="font-semibold">Weekly Habit Heatmap</CardTitle>
+                <CardDescription>
+                    Your committed habits this week of {currMonth} {startRange.getDate()} to {endRange.getDate()}
+                </CardDescription>
             </CardHeader>
             <CardContent>
                 {loading ? (
@@ -56,9 +59,9 @@ const WeeklyHabits = ({ data }: MonthlyHabitsProps) => {
                     <>
                         <div className="grid grid-cols-10 gap-2 mb-2">
                             <div className="col-span-3"></div>
-                            {DaysInWeek.map((day) => (
+                            {DaysInWeek.map((day, index) => (
                                 <span
-                                    key={day}
+                                    key={`day-${index}`}
                                     className="text-center font-semibold text-sm text-yellow-300"
                                 >
                                     {day}
@@ -67,18 +70,13 @@ const WeeklyHabits = ({ data }: MonthlyHabitsProps) => {
                         </div>
                         <div className="grid grid-cols-10 gap-2">
                             {habits.map((habit) => (
-                                <>
+                                <div key={`habit-${habit.habit._id}`} className="col-span-10 grid grid-cols-10 gap-2">
                                     <div
-                                        key={`name-${habit.habit._id}`}
                                         className="col-span-3 truncate font-medium text-sm overflow-ellipsis overflow-hidden"
-                                        title={habit.habit.name}
                                     >
                                         {habit.habit.name}
                                     </div>
-                                    {/* <div
-                                        key={`heatmap-${habit.habit._id}`}
-                                        className="col-span-7 grid grid-cols-7 gap-1"
-                                    >
+                                    {/* <div className="col-span-7 grid grid-cols-7 gap-1">
                                         {DaysInWeek.map((_, index) => {
                                             const accomplished = habit.weeklyCount.find(
                                                 (entry: IsAccomplished) =>
@@ -88,16 +86,17 @@ const WeeklyHabits = ({ data }: MonthlyHabitsProps) => {
 
                                             return (
                                                 <div
-                                                    key={index}
-                                                    className={`h-8 rounded-md ${accomplished
-                                                        ? "bg-green-500"
-                                                        : "bg-gray-300"
-                                                        }`}
+                                                    key={`heatmap-${habit.habit._id}-${index}`}
+                                                    className={`h-8 rounded-md ${
+                                                        accomplished
+                                                            ? "bg-green-500"
+                                                            : "bg-gray-300"
+                                                    }`}
                                                 ></div>
                                             );
                                         })}
                                     </div> */}
-                                </>
+                                </div>
                             ))}
                         </div>
                     </>

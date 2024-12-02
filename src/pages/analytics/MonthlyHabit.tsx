@@ -27,7 +27,7 @@ export function MonthlyHabits({ data }: MonthlyHabitsProps) {
   }, [data]);
 
   return (
-    <div className="space-y-6 w-full flex-[0.5] bg-outerCard border-none rounded-xl">
+    <div className="space-y-6 w-full flex-[0.5] bg-outerCard border-none rounded-xl relative">
       <Calendar
         mode="single"
         className="p-6 text-white text-3xl h-[500px] md:h-[600px]"
