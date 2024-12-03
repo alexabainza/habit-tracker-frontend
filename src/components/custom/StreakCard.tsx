@@ -3,13 +3,15 @@ import { StreakCardProps } from "@/utils/types";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Loading from "../ui/loading";
+import { Calendar } from "../ui/calendar";
 
 const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
   const [loading, setLoading] = useState(true);
-  const [amount, setAmount] = useState({
+  const [streakData, setStreakData] = useState({
     current: 0,
     best: 0,
   });
+  const [accomplishedDates, setAccomplishedDates] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchStreak = async () => {
@@ -23,10 +25,11 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
           return;
         }
 
-        setAmount({
+        setStreakData({
           current: data.currentStreak,
           best: data.bestStreak,
-        })
+        });
+        setAccomplishedDates(data.accomplishedDatesPerHabit);
       } catch (error) {
         console.error(error);
       }
@@ -35,23 +38,68 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
     fetchStreak().finally(() => setLoading(false));
   }, [id]);
 
-  return (
-    loading ? (
-      <Loading />
-    ) : (
-      <div className="w-full flex items-center gap-3 justify-between">
-        <div className="flex flex-col w-full h-[200px] bg-white border py-8 border-gray-300 rounded-lg items-center justify-center gap-4 align-middle">
-          <span className="text-5xl font-extrabold">{amount.current
-          }</span >
-          <span className="text-sm font-medium text-sageGreen">Current Streak</span>
-        </div >
-        <div className="flex flex-col w-full h-[200px] bg-white border py-8 border-gray-300 rounded-lg items-center justify-center gap-4 align-middle">
-          <span className="text-5xl font-extrabold">{amount.best}</span>
-          <span className="text-sm font-medium text-sageGreen">Best Streak</span>
+  const isAccomplished = (date: Date) => {
+    const dateString = date.toLocaleDateString();
+    return accomplishedDates.some(
+      (accomplishedDate) => accomplishedDate === dateString
+    );
+  };
+
+  return loading ? (
+    <Loading />
+  ) : (
+    <div className="w-full flex flex-col items-center gap-3 justify-between">
+      <div className="flex gap-4">
+        <div className="flex w-full h-[120px] bg-innermostCard py-8 rounded-lg gap-4 px-8 items-center">
+          <span className="text-7xl font-extrabold text-lightYellow">
+            {streakData.current}
+          </span>
+          <div>
+            <p className="text-lg font-medium text-white">CURRENT STREAK</p>
+            <p className="text-sm font-medium text-white opacity-90">
+              Date if naa
+            </p>
+          </div>
         </div>
-      </div >
-    )
-  )
+        <div className="flex w-full h-[120px] bg-innermostCard py-8 rounded-lg gap-4 px-8 items-center">
+          <span className="text-7xl font-extrabold text-lightYellow">
+            {streakData.best}
+          </span>
+          <div>
+            <p className="text-lg font-medium text-white">BEST STREAK</p>
+            <p className="text-sm font-medium text-white opacity-90">
+              Date if naa
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="w-full text-lightYellow">
+        <Calendar
+          date={new Date()}
+          mode="single"
+          markedDates={accomplishedDates.map((date) => new Date(date))}
+          renderDay={(day: Date) => {
+            const isDayAccomplished = accomplishedDates.some(
+              (accomplishedDate) => {
+                const dayString = day.toLocaleDateString(); // Convert `day` to string in YYYY-MM-DD format
+                return accomplishedDate === dayString;
+              }
+            );
+
+            return (
+              <div
+                className={`flex justify-center items-center w-10 h-10 rounded-full ${
+                  isDayAccomplished ? "bg-lightYellow text-main" : ""
+                }`}
+              >
+                {day.getDate()}
+              </div>
+            );
+          }}
+        />
+      </div>
+    </div>
+  );
 };
 
 export default StreakCard;

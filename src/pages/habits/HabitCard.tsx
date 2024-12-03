@@ -8,9 +8,8 @@ import {
 } from "@/components/ui/card";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogFooter,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -18,8 +17,8 @@ import {
 import { Habit } from "@/utils/types";
 import { DumbbellIcon, SquarePen, Trash2 } from "lucide-react";
 import { colors } from "@/utils/constants";
-import { Button } from "@/components/ui/button";
 import StreakCard from "@/components/custom/StreakCard";
+import { formatDate } from "@/utils/dateFormatter";
 
 interface HabitCardProps {
   habit: Habit["habit"];
@@ -54,6 +53,7 @@ const HabitCard: React.FC<HabitCardProps> = ({
               </CardTitle>
               <CardDescription className="text-left">
                 Goal: {habit.goal}
+                <br />
               </CardDescription>
             </CardHeader>
           </DialogTrigger>
@@ -70,24 +70,24 @@ const HabitCard: React.FC<HabitCardProps> = ({
             />
           </CardContent>
         </Card>
-        <DialogContent className="bg-gray-50 flex flex-col justify-center items-center">
-          <DialogTitle className="text-2xl">
+        <DialogContent className="bg-outerCard flex flex-col">
+          <DialogTitle className="text-3xl text-lightYellow">
             Statistics for <strong>{habit.name}</strong>
           </DialogTitle>
+          <DialogDescription className="text-start text-white text-md">
+            Started on:{" "}
+            <strong className="text-lightYellow">
+              {formatDate(habit.created_at)}
+            </strong>
+            <br />
+            Goal: <strong className="text-lightYellow">
+              {habit.goal}x
+            </strong>{" "}
+            per week
+          </DialogDescription>
           <DialogHeader className="w-full flex md:flex-row items-center gap-3">
             <StreakCard id={habit._id} />
           </DialogHeader>
-          <DialogFooter className="sm:justify-start">
-            <DialogClose asChild>
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={handleCloseDialog}
-              >
-                Close
-              </Button>
-            </DialogClose>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>
