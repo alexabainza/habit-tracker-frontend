@@ -81,7 +81,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
           renderDay={(day: Date) => {
             const isDayAccomplished = accomplishedDates.some(
               (accomplishedDate) => {
-                const dayString = day.toLocaleDateString(); // Convert `day` to string in YYYY-MM-DD format
+                const dayString = day.toLocaleDateString();
                 return accomplishedDate === dayString;
               }
             );

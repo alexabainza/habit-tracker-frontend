@@ -98,7 +98,7 @@ export default function Profile() {
     dispatch(signOutUserStart());
 
     try {
-      const response = await useFetch("/auth/logout", "post");
+      const response = await useFetch("/profile/logout", "post");
       const result = response.data;
 
       if (result.status === 200) {
@@ -299,9 +299,9 @@ export default function Profile() {
                     </AlertDialogTrigger>
                     <AlertDialogContent className="bg-white">
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Signing<strong> {user?.username} </strong>out</AlertDialogTitle>
+                        <AlertDialogTitle>Logging<strong> {user?.username} </strong>out</AlertDialogTitle>
                         <AlertDialogDescription>
-                          Are you sure you want to logout?
+                          Leaving so soon? This will sign you out.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>

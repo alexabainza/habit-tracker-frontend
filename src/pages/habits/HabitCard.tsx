@@ -70,7 +70,7 @@ const HabitCard: React.FC<HabitCardProps> = ({
             />
           </CardContent>
         </Card>
-        <DialogContent className="bg-outerCard flex flex-col">
+        <DialogContent className="bg-outerCard flex flex-col min-h-[575px] transition-all duration-300">
           <DialogTitle className="text-3xl text-lightYellow">
             Statistics for <strong>{habit.name}</strong>
           </DialogTitle>
