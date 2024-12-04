@@ -59,7 +59,6 @@ const Overview: React.FC<OverviewProps> = ({ selected, skippedDays }) => {
         cache[consistencyCacheKey] = consistencyData;
 
         if (streakData.status === 204 || consistencyData.status === 204) {
-          toast.error("Please do something first.");
           return;
         }
 
@@ -141,10 +140,10 @@ const OverviewCard: React.FC<OverviewCardProps & PropsWithChildren> = ({
     <Card className="w-full max-w-[190px] md:max-w-64 lg:max-w-[290px] border-none bg-innermostCard h-24 flex flex-col md:flex-row items-center justify-center md:gap-3 flex-shrink-0 transition-all duration-300 translate-x-[-2px] translate-y-[-2px] shadow-[4px_4px_0px_black] hover:translate-x-0 hover:translate-y-0 hover:rounded-md hover:shadow-none">
       <CardContent className="pt-4 p-0 flex items-center justify-center gap-1.5">
         <h1 className="text-xl md:text-5xl font-bold text-center text-lightYellow">
-          {value}
+          {value === 0 ? "-_-" : value}
         </h1>
         {children}
-        {frequency && (
+        {frequency && value ? (
           <>
             <p className="hidden text-[10px] uppercase text-white tracking-wider md:flex flex-col leading-tight font-medium">
               {frequency.split("").map((char, index) => (
@@ -155,6 +154,8 @@ const OverviewCard: React.FC<OverviewCardProps & PropsWithChildren> = ({
               {frequency}
             </h1>
           </>
+        ) : (
+          <span className="text-xs text-white">-</span>
         )}
       </CardContent>
       <CardHeader className="p-0 md:p-5 md:px-0 gap-0 space-y-0 text-center md:text-left">

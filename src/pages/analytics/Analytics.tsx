@@ -25,10 +25,6 @@ const Analytics: React.FC = () => {
           "get"
         );
 
-        if (response.status === 404) {
-          toast.error("Please do something first.");
-          return;
-        }
         setData((prev) => ({
           ...prev,
           [frequency]: response.data.data,
@@ -86,11 +82,11 @@ const Analytics: React.FC = () => {
         <div className="flex flex-col md:flex-row flex-wrap lg:flex-nowrap items-start justify-between gap-2 md:gap-5">
           <ChartOverview loading={loading} data={currentData} />
           {loading ? (
-            <Skeleton className=" w-full flex-1 h-[400px] bg-gray-800" />
+            <Skeleton className=" w-full flex-1 h-[425px] bg-outerCard" />
           ) : selected === "monthly" ? (
             <MonthlyHabits data={currentData} />
           ) : (
-            <WeeklyHabits data={currentData} />
+            <WeeklyHabits />
           )}
         </div>
       </div>

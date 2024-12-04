@@ -9,11 +9,11 @@ import {
 import Loading from "@/components/ui/loading";
 import { useFetch } from "@/hooks/use-fetch";
 import { DaysInWeek } from "@/utils/constants";
-import { Habit } from "@/utils/types";
-import { startOfWeek, endOfWeek, isThisWeek, isSameMonth, startOfToday } from "date-fns";
+import { startOfWeek, endOfWeek, isThisWeek, startOfToday } from "date-fns";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { GiDeadWood } from "react-icons/gi";
 
 type DataType = {
     habit: string;
@@ -65,11 +65,8 @@ const WeeklyHabits = () => {
         }
     };
 
-
-    console.log(habits)
-
     return (
-        <Card className="space-y-5 w-full flex-1 bg-outerCard border-none rounded-xl text-yellow-300 h-[425px] relative">
+        <Card className="space-y-5 w-full flex-1 bg-outerCard border-none rounded-xl text-yellow-300 min-h-[425px] relative">
             <CardHeader className="pb-0">
                 <CardTitle className="font-semibold flex items-center justify-between w-full max-w-sm mx-auto">
                     <Button
@@ -95,42 +92,49 @@ const WeeklyHabits = () => {
             <CardContent>
                 {loading ? (
                     <Loading />
+                ) : habits.length === 0 ? (
+                    <CardDescription className="space-y-5 text-center text-lg absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                        <GiDeadWood className="w-40 h-40 mx-auto"/>
+                        <h3>Seems barren here. <br /><strong>Start being productive!</strong></h3>
+                    </CardDescription>
                 ) : (
-                    <>
-                        <div className="grid grid-cols-10 gap-2 mb-2">
-                            <div className="col-span-3"></div>
-                            {DaysInWeek.map((day, index) => (
-                                <span
-                                    key={`day-${index}`}
-                                    className="text-center font-semibold text-sm text-yellow-300"
-                                >
-                                    {day}
-                                </span>
-                            ))}
-                        </div>
-                        <div className="grid grid-cols-10 gap-2">
-                            {habits.map((habit) => (
-                                <div key={`habit-${habit.habit}`} className="col-span-10 grid grid-cols-10 gap-2 items-center">
-                                    <div className="col-span-3 truncate font-medium text-sm overflow-ellipsis overflow-hidden max-w-32">
-                                        {habit.habit}
+                    (
+                        <>
+                            <div className="grid grid-cols-10 gap-2 mb-2">
+                                <div className="col-span-3"></div>
+                                {DaysInWeek.map((day, index) => (
+                                    <span
+                                        key={`day-${index}`}
+                                        className="text-center font-semibold text-sm text-yellow-300"
+                                    >
+                                        {day}
+                                    </span>
+                                ))}
+                            </div>
+                            <div className="grid grid-cols-10 gap-2">
+                                {habits.map((habit) => (
+                                    <div key={`habit-${habit.habit}`} className="col-span-10 grid grid-cols-10 gap-2 items-center">
+                                        <div className="col-span-3 truncate font-medium text-sm overflow-ellipsis overflow-hidden max-w-32">
+                                            {habit.habit}
+                                        </div>
+                                        {DaysInWeek.map((day, index) => {
+                                            const dateForDay = new Date(selectedDay);
+                                            dateForDay.setDate(startOfWeek(selectedDay).getDate() + (index + 1));
+                                            const isActive = habit.day.map(d => new Date(d).toISOString().split("T")[0]).includes(dateForDay.toISOString().split("T")[0]);
+                                            return (
+                                                <div
+                                                    key={`habit-${habit.habit}-day-${index}`}
+                                                    className={`col-span-1 row-span-1 h-10 flex items-center justify-center rounded-md ${isActive ? "bg-green-500" : "bg-gray-200"
+                                                        }`}
+                                                />
+                                            );
+                                        })}
                                     </div>
-                                    {DaysInWeek.map((day, index) => {
-                                        const dateForDay = new Date(selectedDay);
-                                        dateForDay.setDate(startOfWeek(selectedDay).getDate() + (index + 1));
-                                        const isActive = habit.day.map(d => new Date(d).toISOString().split("T")[0]).includes(dateForDay.toISOString().split("T")[0]);
-                                        return (
-                                            <div
-                                                key={`habit-${habit.habit}-day-${index}`}
-                                                className={`col-span-1 row-span-1 h-10 flex items-center justify-center rounded-md ${isActive ? "bg-green-500" : "bg-gray-200"
-                                                    }`}
-                                            />
-                                        );
-                                    })}
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
 
-                    </>
+                        </>
+                    )
                 )}
             </CardContent>
         </Card>
