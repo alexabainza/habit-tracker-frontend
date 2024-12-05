@@ -49,7 +49,7 @@ const Analytics: React.FC = () => {
 
   return (
     <div className="w-full h-full min-h-dvh flex-1 bg-gradient-to-br from-[#2A3D43] to-[#40575C]">
-      <div className="w-full p-12 flex-1 h-full lg:px-16 sm:px-5 px-5 mt-6 space-y-4">
+      <div className="w-full p-12 flex-1 h-full px-5 mt-6 space-y-4">
         <main>
           <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold mb-4 md:mb-0 tracking-wider text-lightYellow">
             Analytics
@@ -79,7 +79,7 @@ const Analytics: React.FC = () => {
           <Separator className="bg-gray-500 opacity-25 mb-4" />
         </main>
         <Overview selected={selected} skippedDays={skippedDays} />
-        <div className="flex flex-col md:flex-row flex-wrap lg:flex-nowrap items-start justify-between gap-2 md:gap-5">
+        <div className="flex flex-col lg:flex-row flex-wrap lg:flex-nowrap items-start justify-between gap-4">
           <ChartOverview loading={loading} data={currentData} />
           {loading ? (
             <Skeleton className=" w-full flex-1 h-[425px] bg-outerCard" />

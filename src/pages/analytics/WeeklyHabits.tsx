@@ -9,7 +9,7 @@ import {
 import Loading from "@/components/ui/loading";
 import { useFetch } from "@/hooks/use-fetch";
 import { DaysInWeek } from "@/utils/constants";
-import { startOfWeek, endOfWeek, isThisWeek, startOfToday } from "date-fns";
+import { startOfWeek, endOfWeek, isThisWeek, startOfToday, format } from "date-fns";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -66,17 +66,17 @@ const WeeklyHabits = () => {
     };
 
     return (
-        <Card className="space-y-5 w-full flex-1 bg-outerCard border-none rounded-xl text-yellow-300 min-h-[425px] relative">
+        <Card className="space-y-8 w-full min-w-96 md:max-w-xl flex-1 bg-outerCard border-none rounded-xl text-yellow-300 min-h-96 relative flex flex-col items-center">
             <CardHeader className="pb-0">
-                <CardTitle className="font-semibold flex items-center justify-between w-full max-w-sm mx-auto">
+                <CardTitle className="font-semibold flex items-center justify-between w-full max-w-sm mx-auto gap-4">
                     <Button
                         onClick={() => handleChangeWeek("prev")}
                         variant="outline"
                     >
                         <ChevronLeftIcon className="w-6 h-6 flex-shrink-0" />
                     </Button>
-                    <span className="text-xl space-x-1.5">
-                        {currMonth + " "}
+                    <span className="text-lg space-x-1.5">
+                        {format(startRange, "LLLL") + " "}
                         {startRange.toLocaleDateString().split("/")[1] + " - "}
                         {endRange.toLocaleDateString().split("/")[1]}
                     </span>
@@ -89,12 +89,12 @@ const WeeklyHabits = () => {
                     </Button>
                 </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="w-full">
                 {loading ? (
                     <Loading />
                 ) : habits.length === 0 ? (
                     <CardDescription className="space-y-5 text-center text-lg absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                        <GiDeadWood className="w-40 h-40 mx-auto"/>
+                        <GiDeadWood className="w-40 h-40 mx-auto" />
                         <h3>Seems barren here. <br /><strong>Start being productive!</strong></h3>
                     </CardDescription>
                 ) : (
@@ -124,7 +124,7 @@ const WeeklyHabits = () => {
                                             return (
                                                 <div
                                                     key={`habit-${habit.habit}-day-${index}`}
-                                                    className={`col-span-1 row-span-1 h-10 flex items-center justify-center rounded-md ${isActive ? "bg-green-500" : "bg-gray-200"
+                                                    className={`col-span-1 row-span-1 h-6 md:h-8 lg:h-6 flex items-center justify-center rounded-md ${isActive ? "bg-green-500" : "bg-gray-200"
                                                         }`}
                                                 />
                                             );
