@@ -14,6 +14,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { GiDeadWood } from "react-icons/gi";
+import { AxiosError } from "axios";
 
 type DataType = {
     habit: string;
@@ -24,7 +25,7 @@ const WeeklyHabits = () => {
     const [loading, setLoading] = useState(false);
     const [habits, setHabits] = useState<DataType[]>([]);
     const [selectedDay, setSelectedDay] = useState<Date>(startOfToday());
-    const currMonth = new Date().toLocaleString("default", { month: "long" });
+    const [error, setError] = useState<string | null>(null);
     const startRange = startOfWeek(selectedDay);
     const endRange = endOfWeek(selectedDay);
 
@@ -34,9 +35,8 @@ const WeeklyHabits = () => {
             const response = await useFetch(`/analytics/habit-days/${startOfWeek(selectedDay)}-${endOfWeek(selectedDay)}`, "get");
             const result = response.data;
             setHabits(result.data || []);
-        } catch (error) {
-            console.error(error);
-            toast.error("Failed to fetch habits.");
+        } catch (error: any) {
+            setError(error.message);
         } finally {
             setLoading(false);
         }
@@ -66,9 +66,9 @@ const WeeklyHabits = () => {
     };
 
     return (
-        <Card className="space-y-8 w-full min-w-96 md:max-w-xl flex-1 bg-outerCard border-none rounded-xl text-yellow-300 min-h-96 relative flex flex-col items-center">
-            <CardHeader className="pb-0">
-                <CardTitle className="font-semibold flex items-center justify-between w-full max-w-sm mx-auto gap-4">
+        <Card className="w-full md:min-w-96 md:max-w-xl flex-1 bg-outerCard border-none rounded-xl text-yellow-300 min-h-52 relative flex flex-col items-center gap-5">
+            <CardHeader className="pb-0 w-full">
+                <CardTitle className="font-semibold flex items-center justify-between w-full mx-auto gap-4">
                     <Button
                         onClick={() => handleChangeWeek("prev")}
                         variant="outline"
@@ -91,7 +91,7 @@ const WeeklyHabits = () => {
             </CardHeader>
             <CardContent className="w-full">
                 {loading ? (
-                    <Loading />
+                    <Loading className="mt-5"/>
                 ) : habits.length === 0 ? (
                     <CardDescription className="space-y-5 text-center text-lg absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                         <GiDeadWood className="w-40 h-40 mx-auto" />
@@ -124,7 +124,7 @@ const WeeklyHabits = () => {
                                             return (
                                                 <div
                                                     key={`habit-${habit.habit}-day-${index}`}
-                                                    className={`col-span-1 row-span-1 h-6 md:h-8 lg:h-6 flex items-center justify-center rounded-md ${isActive ? "bg-green-500" : "bg-gray-200"
+                                                    className={`col-span-1 row-span-1 h-8 lg:h-6 flex items-center justify-center rounded-md ${isActive ? "bg-green-500" : "bg-gray-200"
                                                         }`}
                                                 />
                                             );

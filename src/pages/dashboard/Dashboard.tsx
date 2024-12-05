@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import ChallengeCard from "@/pages/dashboard/Challenges";
 import { toast } from "sonner";
 import Loading from "@/components/ui/loading";
+import Error from "../Error";
 
 const Dashboard: React.FC = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
@@ -12,7 +13,10 @@ const Dashboard: React.FC = () => {
   const [numHabits, setNumHabits] = useState(0);
   const [weeklyCounts, setWeeklyCounts] = useState<{ [id: string]: number }>(
     {}
-  ); // Define weeklyCounts state
+  );
+  const [error, setError] = useState<{ message: string; status: string } | null>(
+    null
+  );
 
   const completed = Object.values(habitStates).filter(Boolean).length;
   const percentage = numHabits === 0 ? 0 : (completed / numHabits) * 100;
@@ -40,7 +44,11 @@ const Dashboard: React.FC = () => {
         } else {
           setHabits([]);
         }
-      } catch (error) {
+      } catch (error: any) {
+        setError({
+          message: error.response?.data?.message ?? error.message,
+          status: error.response?.status || error.status || error.code,
+        });
         toast.error("Failed to fetch habits.");
       } finally {
         setLoading(false);
@@ -81,6 +89,7 @@ const Dashboard: React.FC = () => {
 
     fetchHabits();
   }, []);
+
   const handleCheck = (id: string, checked: boolean) => {
     setHabitStates((prevStates) => {
       const updatedHabitStates = { ...prevStates };
@@ -105,11 +114,13 @@ const Dashboard: React.FC = () => {
     });
   };
 
-  console.log(habits);
+  if (error && !loading) {
+    return <Error message={error.message} errorStatus={error.status} />
+  };
 
   return loading ? (
     <div className="w-full bg-gradient-to-br from-[#2A3D43] to-[#40575C] flex flex-col">
-      <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold text-lightYellow tracking-wider lg:px-16 sm:px-5 px-5 mt-6 py-12">
+      <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold text-lightYellow tracking-wider lg:px-16 sm:px-5 px-5 py-12">
         Dashboard
       </h1>
       <Loading
@@ -119,14 +130,14 @@ const Dashboard: React.FC = () => {
     </div>
   ) : habits.length === 0 ? (
     <div className="w-full bg-gradient-to-br from-[#2A3D43] to-[#40575C] flex flex-col">
-      <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold text-lightYellow tracking-wider lg:px-16 sm:px-5 px-5 mt-6 py-12">
+      <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold text-lightYellow tracking-wider lg:px-16 sm:px-5 px-5 py-12">
         Dashboard
       </h1>
       <p className="text-white text-center">No habits found</p>
     </div>
   ) : (
     <div className="w-full bg-gradient-to-br from-[#2A3D43] to-[#40575C]">
-      <div className="lg:px-16 sm:px-5 px-5 space-y-4 m-auto items-center justify-center mt-6 py-12">
+      <div className="lg:px-16 sm:px-5 px-5 space-y-4 m-auto items-center justify-center py-12">
         <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold text-lightYellow tracking-wider ">
           Dashboard
         </h1>

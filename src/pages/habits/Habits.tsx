@@ -26,10 +26,11 @@ import { habitSchema } from "@/utils/schemas";
 import { useFetch } from "@/hooks/use-fetch";
 import { Habit } from "@/utils/types";
 import HabitCard from "@/pages/habits/HabitCard";
-import ConfirmationDialog from "@/components/custom/ConfirmationDialog";
+import ConfirmationDialog from "@/pages/habits/dialogs/ConfirmationDialog";
 import Loading from "@/components/ui/loading";
 import { toast } from "sonner";
 import { CardColor } from "@/utils/constants";
+import { Label } from "@/components/ui/label";
 
 const Habits: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
@@ -55,10 +56,24 @@ const Habits: React.FC = () => {
   useEffect(() => {
     const fetchHabits = async () => {
       setLoading(true);
+
+      // Check if habits are already cached
+      const cachedHabits = localStorage.getItem("habits");
+      if (cachedHabits) {
+        setHabits(JSON.parse(cachedHabits));
+        setLoading(false);
+        return;
+      }
+
+      // If not cached, fetch from API
       try {
         const response = await useFetch("/habits", "get");
         const result = response.data;
-        setHabits(result.data || []);
+        const fetchedHabits = result.data || [];
+        setHabits(fetchedHabits);
+
+        // Cache fetched habits
+        localStorage.setItem("habits", JSON.stringify(fetchedHabits));
       } catch (error) {
         console.error(error);
         toast.error("Failed to fetch habits.");
@@ -66,8 +81,10 @@ const Habits: React.FC = () => {
         setLoading(false);
       }
     };
+
     fetchHabits();
   }, []);
+
 
   useEffect(() => {
     if (habitToUpdate) {
@@ -95,6 +112,7 @@ const Habits: React.FC = () => {
 
         setIsDialogOpen(false);
       }
+      localStorage.removeItem("habits");
       setLoading(false);
       form.reset();
     } catch (error: any) {
@@ -102,6 +120,7 @@ const Habits: React.FC = () => {
       setLoading(false);
     }
   };
+
   const handleUpdateHabit = async () => {
     if (!habitToUpdate) return;
 
@@ -127,6 +146,7 @@ const Habits: React.FC = () => {
       );
       setIsDialogOpen(false);
       setHabitToUpdate(null);
+      localStorage.removeItem("habits");
       toast.success("Habit updated successfully.");
       form.reset();
     } catch (error: any) {
@@ -150,6 +170,7 @@ const Habits: React.FC = () => {
       setHabits((prev) =>
         prev.filter((habit) => habit.habit._id !== habitToDelete)
       );
+      localStorage.removeItem("habits");
       toast.success("Habit deleted successfully.");
     } catch (error) {
       toast.error("Error deleting habit.");
@@ -159,28 +180,24 @@ const Habits: React.FC = () => {
     }
   };
 
-  console.log(habits);
-
   return (
     <div className="w-full min-h-full bg-gradient-to-br from-[#2A3D43] to-[#40575C]">
-      <div className="w-full py-12 lg:px-16 sm:px-5 px-5 mt-6 space-y-4">
+      <div className="w-full py-12 lg:px-16 sm:px-5 px-5 space-y-4">
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <div className="flex lg:flex-row sm:flex-col flex-col sm:gap-4 justify-between">
-            <main>
-              <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold mb-4 text-lightYellow tracking-wider">
+          <div className="flex gap-4 justify-between">
+              <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold text-lightYellow tracking-wider">
                 Your habits
               </h1>
-            </main>
             <DialogTrigger asChild>
               <Button
-                className="bg-lightYellow text-black hover:bg-lightYellow/90"
+                className="h-12 w-12 md:w-fit bg-outerCard text-black hover:bg-outerCard/90 fixed bottom-5 right-5 md:bottom-0 md:right-0 md:relative rounded-full md:rounded-md shadow-md shadow-neutral-900 z-50"
                 onClick={() => {
                   setIsDialogOpen(true);
                   setIsEditing(false);
                 }}
               >
                 <Plus className="w-8 h-8" />
-                <span className="ml-2">Create Habit</span>{" "}
+                <span className="ml-1 hidden md:block">Create Habit</span>
               </Button>
             </DialogTrigger>
           </div>
@@ -265,11 +282,10 @@ const Habits: React.FC = () => {
                           {[1, 2, 3, 4, 5, 6, 7].map((value) => (
                             <label
                               key={value}
-                              className={`px-4 py-1 rounded-full cursor-pointer border-2 border-main ${
-                                field.value === value
-                                  ? "bg-main text-white"
-                                  : ""
-                              }`}
+                              className={`px-4 py-1 rounded-full cursor-pointer border-2 border-main ${field.value === value
+                                ? "bg-main text-white"
+                                : ""
+                                }`}
                             >
                               <input
                                 type="radio"
@@ -300,7 +316,7 @@ const Habits: React.FC = () => {
                       <FormControl>
                         <div className="flex justify-evenly">
                           {Object.entries(CardColor).map(([key, value]) => (
-                            <label
+                            <Label
                               key={key}
                               className={`relative w-10 h-10 rounded-full cursor-pointer border border-main`}
                               style={{ backgroundColor: value }}
@@ -326,7 +342,7 @@ const Habits: React.FC = () => {
                                   ✓
                                 </span>
                               )}
-                            </label>
+                            </Label>
                           ))}
                         </div>
                       </FormControl>

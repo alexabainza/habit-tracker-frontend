@@ -2,8 +2,8 @@ import { useFetch } from "@/hooks/use-fetch";
 import { StreakCardProps } from "@/utils/types";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
-import Loading from "../ui/loading";
-import { Calendar } from "../ui/calendar";
+import Loading from "../../components/ui/loading";
+import { Calendar } from "../../components/ui/calendar";
 
 const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
   const [loading, setLoading] = useState(true);
@@ -12,6 +12,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
     best: 0,
   });
   const [accomplishedDates, setAccomplishedDates] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchStreak = async () => {
@@ -31,19 +32,23 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
         });
         setAccomplishedDates(data.accomplishedDatesPerHabit);
       } catch (error) {
-        console.error(error);
+        setError("Failed to fetch streak data.");
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchStreak().finally(() => setLoading(false));
+    fetchStreak();
   }, [id]);
 
-  const isAccomplished = (date: Date) => {
-    const dateString = date.toLocaleDateString();
-    return accomplishedDates.some(
-      (accomplishedDate) => accomplishedDate === dateString
-    );
-  };
+  if (error && !loading) {
+    return (
+      <div className="text-white">
+        <img src="/error.svg" alt="error" className="w-60 h-60" />
+        <span className="text-xl text-center">{error}</span>
+      </div>
+    )
+  }
 
   return loading ? (
     <Loading />
@@ -88,9 +93,8 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
 
             return (
               <div
-                className={`flex justify-center items-center w-10 h-10 rounded-full ${
-                  isDayAccomplished ? "bg-lightYellow text-main" : ""
-                }`}
+                className={`flex justify-center items-center w-10 h-10 rounded-full ${isDayAccomplished ? "bg-lightYellow text-main" : ""
+                  }`}
               >
                 {day.getDate()}
               </div>

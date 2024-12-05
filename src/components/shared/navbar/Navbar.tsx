@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
       <button
         type="button"
         onClick={toggleBurgerMenu}
-        className={`h-10 w-10 md:hidden absolute top-5 right-5 transition-all duration-300 -z-[-1] rounded-full justify-center items-center bg-[#5F7A7A] ${
+        className={` h-12 w-12 md:hidden fixed top-9 right-5 transition-all duration-300 z-50 rounded-full justify-center items-center bg-[#5F7A7A] ${
           isBurgerOpen ? "opacity-0" : "border border-gray-700 opacity-100"
         }`}
       >

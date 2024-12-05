@@ -5,9 +5,9 @@ import Overview from "./Overview";
 import { ChartOverview } from "./ChartOverview";
 import { MonthlyHabits } from "./MonthlyHabit";
 import { useFetch } from "@/hooks/use-fetch";
-import { toast } from "sonner";
 import WeeklyHabits from "./WeeklyHabits";
 import { Skeleton } from "@/components/ui/skeleton";
+import Error from "../Error";
 
 const Analytics: React.FC = () => {
   const [selected, setSelected] = useState("weekly");
@@ -15,6 +15,9 @@ const Analytics: React.FC = () => {
     [key: string]: { date: string; count: number }[];
   }>({});
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<{ message: string; status: string } | null>(
+    null
+  );
 
   const fetchData = async (frequency: string) => {
     if (!data[frequency]) {
@@ -30,8 +33,11 @@ const Analytics: React.FC = () => {
           [frequency]: response.data.data,
         }));
       } catch (error: any) {
-        console.error(error);
-        error.status !== 404 && toast.error("Failed to fetch data.");
+        console.log(error);
+        setError({
+          message: error.response?.data?.message ?? error.message,
+          status: error.response?.status || error.status || error.code,
+        });
       } finally {
         setLoading(false);
       }
@@ -47,9 +53,15 @@ const Analytics: React.FC = () => {
   const currentData = data[selected] || [];
   const skippedDays = currentData.filter((item) => item.count === 0).length;
 
+  if (error) {
+    console.log(error);
+    return <Error message={error.message} errorStatus={error.status} />
+  }
+
+
   return (
     <div className="w-full h-full min-h-dvh flex-1 bg-gradient-to-br from-[#2A3D43] to-[#40575C]">
-      <div className="w-full p-12 flex-1 h-full px-5 mt-6 space-y-4">
+      <div className="w-full p-12 flex-1 h-full px-5 space-y-4">
         <main>
           <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold mb-4 md:mb-0 tracking-wider text-lightYellow">
             Analytics

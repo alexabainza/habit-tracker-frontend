@@ -141,7 +141,7 @@ export default function Profile() {
 
   return (
     <div className="w-full bg-gradient-to-br from-[#2A3D43] to-[#40575C]">
-      <div className="lg:px-16 sm:px-5 px-5 space-y-4 m-auto items-center justify-center mt-6 py-12">
+      <div className="lg:px-16 sm:px-5 px-5 space-y-4 m-auto items-center justify-center py-12">
         <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold text-lightYellow tracking-wider ">
           Profile
         </h1>

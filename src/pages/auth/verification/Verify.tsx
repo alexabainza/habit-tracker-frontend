@@ -93,7 +93,7 @@ const Verify = () => {
                             disabled={isLoading}
                             onClick={handleVerify}
                         >
-                            {isLoading ? <Loader2Icon className="animate-spin" /> : "Send Request"}
+                            {isLoading ? <Loader2Icon className="animate-spin" /> : "Verify Me"}
                         </Button>
                     </CardContent>
                 </Card>

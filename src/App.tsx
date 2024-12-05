@@ -13,6 +13,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import ResetPassword from "./pages/auth/reset-pwd/Reset";
 import ForgotPassword from "./pages/auth/forgot-pwd/Forgot";
 import Verify from "./pages/auth/verification/Verify";
+import Error from "./pages/Error";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/profile" element={<Profile />} />
           </Route>
+          <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>
     </main>

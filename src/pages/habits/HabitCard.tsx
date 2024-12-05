@@ -17,7 +17,7 @@ import {
 import { Habit } from "@/utils/types";
 import { DumbbellIcon, SquarePen, Trash2 } from "lucide-react";
 import { colors } from "@/utils/constants";
-import StreakCard from "@/components/custom/StreakCard";
+import StreakCard from "@/pages/habits/StreakCard";
 import { formatDate } from "@/utils/dateFormatter";
 
 interface HabitCardProps {
@@ -34,7 +34,6 @@ const HabitCard: React.FC<HabitCardProps> = ({
   loading,
 }) => {
   const [openDialog, setOpenDialog] = useState(false);
-  const handleCloseDialog = () => setOpenDialog(false);
 
   return loading ? (
     <div className="animate-pulse flex justify-between bg-softGreen" />
@@ -48,7 +47,7 @@ const HabitCard: React.FC<HabitCardProps> = ({
           <DialogTrigger>
             <CardHeader className="space-y-0 md:max-w-32 lg:max-w-40 group">
               <DumbbellIcon className="w-72 h-72 absolute top-1/2 -right-10 transform -translate-y-2/3 opacity-5" />
-              <CardTitle className="lg:text-2xl sm:text-xl text-xl text-ellipsis text-nowrap overflow-hidden w-full">
+              <CardTitle className="lg:text-2xl sm:text-xl text-xl text-ellipsis text-nowrap overflow-hidden w-full max-w-40 md:max-w-64">
                 {habit.name}
               </CardTitle>
               <CardDescription className="text-left">
