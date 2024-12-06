@@ -27,7 +27,7 @@ const Analytics: React.FC = () => {
       setLoading(true);
       try {
         const response = await useFetch(
-          `/analytics/user-habit-count/${frequency}`,
+          `/analytics/user-habit-count/${frequency}/${new Date().getFullYear()}/${new Date().getMonth() + 1}`,
           "get"
         );
 

@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
       <button
         type="button"
         onClick={toggleBurgerMenu}
-        className={` h-12 w-12 md:hidden fixed top-9 right-5 transition-all duration-300 z-50 rounded-full justify-center items-center bg-[#5F7A7A] shadow-sm hover:shadow-lightYellow hover:-translate-y-1 ${
+        className={` h-12 w-12 md:hidden fixed top-9 right-5 transition-all duration-300 z-[100] rounded-full justify-center items-center bg-[#5F7A7A] shadow-sm hover:shadow-lightYellow hover:-translate-y-1 ${
           isBurgerOpen ? "opacity-0" : "border border-gray-700 opacity-100"
         }`}
       >
@@ -26,11 +26,11 @@ const Navbar: React.FC = () => {
       {isBurgerOpen && (
         <div
           onClick={toggleBurgerMenu}
-          className="bg-black/40 h-screen w-screen fixed top-0 left-0 transition-opacity duration-300 z-50"
+          className="bg-black/40 h-screen w-screen fixed top-0 left-0 transition-opacity duration-300 z-[100]"
         />
       )}
       <nav
-        className={`border-r border-opacity-30 border-gray-700 fixed md:sticky md:translate-x-0 top-0 h-dvh max-w-44 md:max-w-16 lg:max-w-20 flex flex-col items-center justify-between text-[var(--color-primary)] bg-[#5F7A7A] p-5 shadow-sm dark:bg-gray-950 transition-all duration-300 z-50 ${
+        className={`border-r border-opacity-30 border-gray-700 fixed md:sticky md:translate-x-0 top-0 h-dvh max-w-44 md:max-w-16 lg:max-w-20 flex flex-col items-center justify-between text-[var(--color-primary)] bg-[#5F7A7A] p-5 shadow-sm dark:bg-gray-950 transition-all duration-300 z-[100] ${
           isBurgerOpen ? "translate-x-0" : "-translate-x-44"
         }`}
       >

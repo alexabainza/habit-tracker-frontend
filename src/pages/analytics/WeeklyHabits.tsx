@@ -25,15 +25,23 @@ const WeeklyHabits = () => {
     const [habits, setHabits] = useState<DataType[]>([]);
     const [selectedDay, setSelectedDay] = useState<Date>(startOfToday());
     const [error, setError] = useState<string | null>(null);
+
     const startRange = startOfWeek(selectedDay);
     const endRange = endOfWeek(selectedDay);
+    const cacheKey = `habits-${startRange.toISOString()}-${endRange.toISOString()}`;
 
     const fetchHabits = async () => {
         setLoading(true);
         try {
-            const response = await useFetch(`/analytics/habit-days/${startOfWeek(selectedDay)}-${endOfWeek(selectedDay)}`, "get");
-            const result = response.data;
-            setHabits(result.data || []);
+            const cachedData = localStorage.getItem(cacheKey);
+            if (cachedData) {
+                setHabits(JSON.parse(cachedData));
+            } else {
+                const response = await useFetch(`/analytics/habit-days/${startOfWeek(selectedDay)}-${endOfWeek(selectedDay)}`, "get");
+                const result = response.data;
+                setHabits(result.data || []);
+                localStorage.setItem(cacheKey, JSON.stringify(result.data || []));
+            }
         } catch (error: any) {
             setError(error.message);
         } finally {
@@ -59,8 +67,12 @@ const WeeklyHabits = () => {
         }
     };
 
+    if (error) {
+        return null;
+    };
+
     return (
-        <Card className="w-full mx-auto md:min-w-96 lg:max-w-xl flex-1 bg-outerCard border-none rounded-xl text-yellow-300 min-h-fit sm:min-h-96 lg:min-h-52 relative flex flex-col items-center gap-5">
+        <Card className="w-full mx-auto md:min-w-96 lg:max-w-xl flex-1 bg-outerCard border-none rounded-xl text-yellow-300 min-h-96 sm:min-h-96 lg:min-h-96 relative flex flex-col items-center gap-5">
             <CardHeader className="pb-0 w-full">
                 <CardTitle className="font-semibold flex items-center justify-between w-full mx-auto gap-4">
                     <Button
@@ -85,7 +97,7 @@ const WeeklyHabits = () => {
             </CardHeader>
             <CardContent className="w-full">
                 {loading ? (
-                    <Loading className="mt-5"/>
+                    <Loading className="mt-5" />
                 ) : habits.length === 0 ? (
                     <CardDescription className="space-y-5 text-center text-lg absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                         <GiDeadWood className="w-40 h-40 mx-auto" />
