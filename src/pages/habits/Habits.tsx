@@ -85,7 +85,6 @@ const Habits: React.FC = () => {
     fetchHabits();
   }, []);
 
-
   useEffect(() => {
     if (habitToUpdate) {
       form.setValue("name", habitToUpdate.name);
@@ -185,19 +184,19 @@ const Habits: React.FC = () => {
       <div className="w-full py-12 lg:px-16 sm:px-5 px-5 space-y-4">
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <div className="flex gap-4 justify-between">
-              <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold text-lightYellow tracking-wider">
-                Your habits
-              </h1>
+            <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold text-lightYellow tracking-wider">
+              Your habits
+            </h1>
             <DialogTrigger asChild>
               <Button
-                className="h-12 w-12 md:w-fit bg-sky-400 text-black hover:bg-sky-400/90 fixed bottom-5 right-5 md:bottom-0 md:right-0 md:relative rounded-full md:rounded-md shadow-md shadow-neutral-900 z-50"
+                className="h-12 w-12 md:w-fit bg-lightYellow text-black hover:bg-lightYellow/90 fixed bottom-5 right-5 md:bottom-0 md:right-0 md:relative rounded-full md:rounded-md shadow-md shadow-neutral-900 z-50"
                 onClick={() => {
                   setIsDialogOpen(true);
                   setIsEditing(false);
                 }}
               >
                 <Plus className="w-8 h-8" />
-                <span className="ml-1 hidden md:block">Create Habit</span>
+                <span className="ml-1 hidden md:block ">Create Habit</span>
               </Button>
             </DialogTrigger>
           </div>
@@ -282,10 +281,11 @@ const Habits: React.FC = () => {
                           {[1, 2, 3, 4, 5, 6, 7].map((value) => (
                             <label
                               key={value}
-                              className={`px-4 py-1 rounded-full cursor-pointer border-2 border-main ${field.value === value
-                                ? "bg-main text-white"
-                                : ""
-                                }`}
+                              className={`px-4 py-1 rounded-full cursor-pointer border-2 border-main ${
+                                field.value === value
+                                  ? "bg-main text-white"
+                                  : ""
+                              }`}
                             >
                               <input
                                 type="radio"

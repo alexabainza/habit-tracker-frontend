@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Loading from "../../components/ui/loading";
 import { Calendar } from "../../components/ui/calendar";
-import { formatDate } from "@/utils/dateFormatter";
+import { formatDate, formatDateToMMM_d } from "@/utils/dateFormatter";
 
 const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
   const [loading, setLoading] = useState(true);
@@ -12,6 +12,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
     current: 0,
     best: 0,
     currentStreakDates: [] as string[],
+    bestStreakDates: [] as string[],
   });
 
   const [accomplishedDates, setAccomplishedDates] = useState<string[]>([]);
@@ -33,6 +34,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
           current: data.currentStreak,
           best: data.bestStreak,
           currentStreakDates: data.currentStreakDates,
+          bestStreakDates: data.bestStreakDates,
         });
 
         setAccomplishedDates(data.accomplishedDatesPerHabit);
@@ -59,9 +61,6 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
     accomplished: accomplishedDates.map((date) => new Date(date)),
   };
 
-  const startDate = streakData.currentStreakDates[1];
-  const endDate = streakData.currentStreakDates[0];
-
   return loading ? (
     <Loading />
   ) : (
@@ -77,11 +76,21 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
               <p className="text-white text-xs">No current streak</p>
             ) : (
               <>
-                {" "}
-                <p className="text-sm font-medium text-white opacity-90">
-                  {formatDate(startDate, "MMM d")} -{" "}
-                  {formatDate(endDate, "MMM d")}
-                </p>
+                {streakData.currentStreakDates.length === 0 ? (
+                  <p className="text-white text-xs">No best streak</p>
+                ) : streakData.currentStreakDates.length === 1 ? (
+                  <p className="text-white text-xs">
+                    {formatDateToMMM_d(streakData.currentStreakDates[0])}
+                  </p>
+                ) : (
+                  <>
+                    <p className="text-sm font-medium text-white opacity-90">
+                      {formatDateToMMM_d(streakData.currentStreakDates[1])}{" "}
+                      {" - "}
+                      {formatDateToMMM_d(streakData.currentStreakDates[0])}
+                    </p>
+                  </>
+                )}
               </>
             )}
           </div>
@@ -92,9 +101,20 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
           </span>
           <div>
             <p className="text-lg font-medium text-white">BEST STREAK</p>
-            <p className="text-sm font-medium text-white opacity-90">
-              date if naa
-            </p>
+            {streakData.bestStreakDates.length === 0 ? (
+              <p className="text-white text-xs">No best streak</p>
+            ) : streakData.bestStreakDates.length === 1 ? (
+              <p className="text-white text-xs">
+                {formatDateToMMM_d(streakData.bestStreakDates[0])}
+              </p>
+            ) : (
+              <>
+                <p className="text-sm font-medium text-white opacity-90">
+                  {formatDateToMMM_d(streakData.bestStreakDates[0])} {" - "}
+                  {formatDateToMMM_d(streakData.bestStreakDates[1])}
+                </p>
+              </>
+            )}
           </div>
         </div>
       </div>
