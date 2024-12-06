@@ -14,7 +14,6 @@ import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { GiDeadWood } from "react-icons/gi";
-import { AxiosError } from "axios";
 
 type DataType = {
     habit: string;
@@ -43,12 +42,7 @@ const WeeklyHabits = () => {
     };
 
     useEffect(() => {
-        const controller = new AbortController();
         fetchHabits();
-
-        return () => {
-            controller.abort();
-        };
     }, [selectedDay]);
 
     const handleChangeWeek = (direction: "next" | "prev") => {
@@ -66,7 +60,7 @@ const WeeklyHabits = () => {
     };
 
     return (
-        <Card className="w-full md:min-w-96 md:max-w-xl flex-1 bg-outerCard border-none rounded-xl text-yellow-300 min-h-52 relative flex flex-col items-center gap-5">
+        <Card className="w-full mx-auto md:min-w-96 lg:max-w-xl flex-1 bg-outerCard border-none rounded-xl text-yellow-300 min-h-fit sm:min-h-96 lg:min-h-52 relative flex flex-col items-center gap-5">
             <CardHeader className="pb-0 w-full">
                 <CardTitle className="font-semibold flex items-center justify-between w-full mx-auto gap-4">
                     <Button
@@ -100,8 +94,8 @@ const WeeklyHabits = () => {
                 ) : (
                     (
                         <>
-                            <div className="grid grid-cols-10 gap-2 mb-2">
-                                <div className="col-span-3"></div>
+                            <div className="grid grid-cols-11 gap-2 mb-2">
+                                <div className="col-start-2 col-span-3"></div>
                                 {DaysInWeek.map((day, index) => (
                                     <span
                                         key={`day-${index}`}
@@ -111,10 +105,10 @@ const WeeklyHabits = () => {
                                     </span>
                                 ))}
                             </div>
-                            <div className="grid grid-cols-10 gap-2">
+                            <div className="grid grid-cols-11 gap-2">
                                 {habits.map((habit) => (
-                                    <div key={`habit-${habit.habit}`} className="col-span-10 grid grid-cols-10 gap-2 items-center">
-                                        <div className="col-span-3 truncate font-medium text-sm overflow-ellipsis overflow-hidden max-w-32">
+                                    <div key={`habit-${habit.habit}`} className="col-span-11 grid grid-cols-11 gap-2 items-center">
+                                        <div className="col-span-4 truncate font-medium text-sm overflow-ellipsis overflow-hidden max-w-40">
                                             {habit.habit}
                                         </div>
                                         {DaysInWeek.map((day, index) => {
@@ -124,7 +118,7 @@ const WeeklyHabits = () => {
                                             return (
                                                 <div
                                                     key={`habit-${habit.habit}-day-${index}`}
-                                                    className={`col-span-1 row-span-1 h-8 lg:h-6 flex items-center justify-center rounded-md ${isActive ? "bg-green-500" : "bg-gray-200"
+                                                    className={`col-span-1 row-span-1 h-6 sm:h-8 lg:h-6 flex items-center justify-center rounded-md ${isActive ? "bg-green-500" : "bg-gray-200"
                                                         }`}
                                                 />
                                             );

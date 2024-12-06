@@ -130,18 +130,18 @@ const Dashboard: React.FC = () => {
     </div>
   ) : habits.length === 0 ? (
     <div className="w-full bg-gradient-to-br from-[#2A3D43] to-[#40575C] flex flex-col">
-      <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold text-lightYellow tracking-wider lg:px-16 sm:px-5 px-5 py-12">
+      <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold text-lightYellow tracking-wider lg:px-16 sm:px-5 px-5 py-4">
         Dashboard
       </h1>
       <p className="text-white text-center">No habits found</p>
     </div>
   ) : (
     <div className="w-full bg-gradient-to-br from-[#2A3D43] to-[#40575C]">
-      <div className="lg:px-16 sm:px-5 px-5 space-y-4 m-auto items-center justify-center py-12">
+      <div className="lg:px-16 sm:px-8 px-5 space-y-4 m-auto items-center justify-center py-8">
         <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold text-lightYellow tracking-wider ">
           Dashboard
         </h1>
-        <section className="bg-outerCard lg:px-8 sm:px-4 px-4 py-12 rounded-xl  space-y-3">
+        <section className="bg-outerCard sm:px-8 px-4 py-8 rounded-xl  space-y-3">
           <div className="flex justify-between items-end px-2">
             <div className="w-3/4 space-y-4">
               <h1 className="font-semibold text-2xl text-lightYellow">

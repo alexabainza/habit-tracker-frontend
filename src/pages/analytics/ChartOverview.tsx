@@ -34,7 +34,7 @@ type ChartOverviewProps = {
 export function ChartOverview({ loading, data }: ChartOverviewProps) {
   const dateRange = `${new Date(data[0]?.date).toDateString()} to ${new Date(data[data.length - 1]?.date).toDateString()}`;
   return (
-    <Card className="w-full min-h-96 md:min-h-[425px] flex-1 bg-outerCard border-none relative">
+    <Card className="w-full min-h-96 flex-1 bg-outerCard border-none relative">
       {loading ? (
         <Loading />
       ) : data.length === 0 ? (

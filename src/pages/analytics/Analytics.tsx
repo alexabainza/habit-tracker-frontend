@@ -8,9 +8,11 @@ import { useFetch } from "@/hooks/use-fetch";
 import WeeklyHabits from "./WeeklyHabits";
 import { Skeleton } from "@/components/ui/skeleton";
 import Error from "../Error";
+import { useSearchParams } from "react-router-dom";
 
 const Analytics: React.FC = () => {
-  const [selected, setSelected] = useState("weekly");
+  const [history, setHistory] = useSearchParams();
+  const [selected, setSelected] = useState(history.get("frequency") || "weekly");
   const [data, setData] = useState<{
     [key: string]: { date: string; count: number }[];
   }>({});
@@ -45,13 +47,16 @@ const Analytics: React.FC = () => {
   };
 
   useMemo(() => {
-    setTimeout(() => {
-      fetchData(selected);
-    }, 3000);
+    fetchData(selected);
   }, [selected]);
 
   const currentData = data[selected] || [];
   const skippedDays = currentData.filter((item) => item.count === 0).length;
+
+  const handleChangeSelected = (frequency: string) => {
+    setHistory({ frequency })
+    setSelected(frequency);
+  };
 
   if (error) {
     console.log(error);
@@ -67,7 +72,7 @@ const Analytics: React.FC = () => {
             Analytics
           </h1>
           <div className="w-full max-w-xl flex items-center justify-center gap-x-10 mx-auto mb-1">
-            <Button variant="link" onClick={() => setSelected("weekly")}>
+            <Button variant="link" onClick={() => handleChangeSelected("weekly")}>
               <span
                 className={`${selected === "weekly"
                   ? "underline text-lightYellow font-semibold tracking-wide"
@@ -77,7 +82,7 @@ const Analytics: React.FC = () => {
                 Weekly
               </span>
             </Button>
-            <Button variant="link" onClick={() => setSelected("monthly")}>
+            <Button variant="link" onClick={() => handleChangeSelected("monthly")}>
               <span
                 className={`${selected === "monthly"
                   ? "underline text-lightYellow font-semibold tracking-wide"
@@ -91,10 +96,10 @@ const Analytics: React.FC = () => {
           <Separator className="bg-gray-500 opacity-25 mb-4" />
         </main>
         <Overview selected={selected} skippedDays={skippedDays} />
-        <div className="flex flex-col lg:flex-row flex-wrap lg:flex-nowrap items-start justify-between gap-4">
+        <div className="flex flex-col md:flex-row flex-wrap lg:flex-nowrap items-start justify-between gap-4">
           <ChartOverview loading={loading} data={currentData} />
           {loading ? (
-            <Skeleton className=" w-full flex-1 h-[425px] bg-outerCard" />
+            <Skeleton className=" w-full flex-1 h-96 bg-outerCard" />
           ) : selected === "monthly" ? (
             <MonthlyHabits data={currentData} />
           ) : (

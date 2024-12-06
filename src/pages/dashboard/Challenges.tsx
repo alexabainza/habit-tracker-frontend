@@ -57,13 +57,13 @@ const ChallengeCard: React.FC<{
 
   return (
     <div
-      className={`flex flex-1 bg-innermostCard py-4 h-28 rounded-2xl lg:px-8 sm:px-4 px-4 gap-4 align-middle justify-between transform transition-transform duration-500 ease-in-out ${className}`}
+      className={`flex flex-1 bg-innermostCard py-4 h-28 rounded-2xl lg:px-8 sm:px-8 px-4 gap-4 align-middle justify-between transform transition-transform duration-500 ease-in-out ${className}`}
     >
       <div className="flex items-center w-full justify-between">
         <div className="flex items-center gap-4 w-3/4">
           <>
             {loading ? (
-              <LoaderIcon className="flex-shrink-0 w-6 h-6 animate-spin" />
+              <LoaderIcon className="flex-shrink-0 w-6 h-6 animate-spin text-white" />
             ) : (
               <>
                 <Input
@@ -92,7 +92,6 @@ const ChallengeCard: React.FC<{
             {habit.name}
           </span>
         </div>
-
         <div className="relative w-[120px] h-[120px]">
           <RadialBarChart
             width={120}
@@ -117,10 +116,9 @@ const ChallengeCard: React.FC<{
               startAngle={90}
               endAngle={(360 * weeklyProgress) / 100}
               isAnimationActive={true}
-              animationDuration={1000}
+              animationDuration={3000}
             />
           </RadialBarChart>
-
           <p className="absolute inset-0 flex items-center justify-center text-white font-bold text-md">
             {Math.round(weeklyProgress)}%
           </p>

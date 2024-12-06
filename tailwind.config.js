@@ -57,6 +57,7 @@ export default {
         },
       },
       animation: {
+        "bounce-less": "bounce-less 1s infinite",
         "caret-blink": "caret-blink 1.25s ease-out infinite",
         "shimmer-slide":
           "shimmer-slide var(--speed) ease-in-out infinite alternate",
@@ -90,6 +91,16 @@ export default {
           },
           "100%": {
             transform: "translateZ(0) rotate(360deg)",
+          },
+        },
+        "bounce-less": {
+          "0%, 100%": {
+            transform: "translateY(-12%)",
+            animationTimingFunction: "cubic-bezier(0.8,0,1,1)",
+          },
+          "50%": {
+            transform: "translateY(0)",
+            animationTimingFunction: "cubic-bezier(0,0,0.2,1)",
           },
         },
         meteor: {

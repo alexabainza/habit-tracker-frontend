@@ -96,7 +96,9 @@ const Overview: React.FC<OverviewProps> = ({ selected, skippedDays }) => {
       </CardHeader>
       <CardContent className="grid sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-1 gap-4 overflow-x-auto w-full p-3 pl-0.5">
         {loading ? (
-          <Skeleton className="w-full h-24 bg-gray-400" />
+          [...Array(4)].map((_, index) => (
+            <Skeleton key={index} className="w-full col-span-1 h-24 bg-slate-400" />
+          ))
         ) : (
           <>
             <OverviewCard

@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
       <button
         type="button"
         onClick={toggleBurgerMenu}
-        className={` h-12 w-12 md:hidden fixed top-9 right-5 transition-all duration-300 z-50 rounded-full justify-center items-center bg-[#5F7A7A] ${
+        className={` h-12 w-12 md:hidden fixed top-9 right-5 transition-all duration-300 z-50 rounded-full justify-center items-center bg-[#5F7A7A] shadow-sm hover:shadow-lightYellow hover:-translate-y-1 ${
           isBurgerOpen ? "opacity-0" : "border border-gray-700 opacity-100"
         }`}
       >
@@ -34,8 +34,8 @@ const Navbar: React.FC = () => {
           isBurgerOpen ? "translate-x-0" : "-translate-x-44"
         }`}
       >
-        <Link to="/" className="flex items-center">
-          <MountainIcon className="h-6 w-6 text-lightYellow" />
+        <Link to="/" className="flex items-center justify-center w-20">
+          <img src="/logo.svg" alt="Tribbit" className="h-14 w-14 flex-shrink-0" />
           <span className="sr-only text-[var(--color-primary)]">Tribbit</span>
         </Link>
         <Navigation />
