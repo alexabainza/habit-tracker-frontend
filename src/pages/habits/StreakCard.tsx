@@ -4,13 +4,16 @@ import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Loading from "../../components/ui/loading";
 import { Calendar } from "../../components/ui/calendar";
+import { formatDate } from "@/utils/dateFormatter";
 
 const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
   const [loading, setLoading] = useState(true);
   const [streakData, setStreakData] = useState({
     current: 0,
     best: 0,
+    currentStreakDates: [] as string[],
   });
+
   const [accomplishedDates, setAccomplishedDates] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -29,7 +32,9 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
         setStreakData({
           current: data.currentStreak,
           best: data.bestStreak,
+          currentStreakDates: data.currentStreakDates,
         });
+
         setAccomplishedDates(data.accomplishedDatesPerHabit);
       } catch (error) {
         setError("Failed to fetch streak data.");
@@ -47,8 +52,15 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
         <img src="/error.svg" alt="error" className="w-60 h-60" />
         <span className="text-xl text-center">{error}</span>
       </div>
-    )
+    );
   }
+
+  const modifiers = {
+    accomplished: accomplishedDates.map((date) => new Date(date)),
+  };
+
+  const startDate = streakData.currentStreakDates[1];
+  const endDate = streakData.currentStreakDates[0];
 
   return loading ? (
     <Loading />
@@ -61,9 +73,17 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
           </span>
           <div>
             <p className="text-lg font-medium text-white">CURRENT STREAK</p>
-            <p className="text-sm font-medium text-white opacity-90">
-              Date if naa
-            </p>
+            {streakData.currentStreakDates.length === 0 ? (
+              <p className="text-white text-xs">No current streak</p>
+            ) : (
+              <>
+                {" "}
+                <p className="text-sm font-medium text-white opacity-90">
+                  {formatDate(startDate, "MMM d")} -{" "}
+                  {formatDate(endDate, "MMM d")}
+                </p>
+              </>
+            )}
           </div>
         </div>
         <div className="flex w-full h-[120px] bg-innermostCard py-8 rounded-lg gap-4 px-8 items-center">
@@ -73,33 +93,21 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
           <div>
             <p className="text-lg font-medium text-white">BEST STREAK</p>
             <p className="text-sm font-medium text-white opacity-90">
-              Date if naa
+              date if naa
             </p>
           </div>
         </div>
       </div>
       <div className="w-full text-lightYellow">
         <Calendar
-          date={new Date()}
           mode="single"
-          markedDates={accomplishedDates.map((date) => new Date(date))}
-          renderDay={(day: Date) => {
-            const isDayAccomplished = accomplishedDates.some(
-              (accomplishedDate) => {
-                const dayString = day.toLocaleDateString();
-                return accomplishedDate === dayString;
-              }
-            );
-
-            return (
-              <div
-                className={`flex justify-center items-center w-10 h-10 rounded-full ${isDayAccomplished ? "bg-lightYellow text-main" : ""
-                  }`}
-              >
-                {day.getDate()}
-              </div>
-            );
+          className="p-6 text-white text-3xl"
+          modifiers={modifiers}
+          modifiersClassNames={{
+            accomplished:
+              "bg-lightYellow text-main rounded-full hover:bg-orange-300 hover:text-main",
           }}
+          onMonthChange={(newMonth) => console.log("Month changed:", newMonth)}
         />
       </div>
     </div>

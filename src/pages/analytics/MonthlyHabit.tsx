@@ -2,7 +2,12 @@ import { Calendar } from "@/components/ui/calendar";
 import { MonthlyHabitsProps } from "@/utils/types";
 import { useMemo } from "react";
 
-export function MonthlyHabits({ data }: MonthlyHabitsProps) {
+export function MonthlyHabits({
+  data,
+  onMonthYearChange,
+}: MonthlyHabitsProps & {
+  onMonthYearChange?: (month: number, year: number) => void;
+}) {
   const modifiers = useMemo(() => {
     const highActivity: Date[] = [];
     const mediumActivity: Date[] = [];
@@ -25,13 +30,20 @@ export function MonthlyHabits({ data }: MonthlyHabitsProps) {
       lowActivity,
     };
   }, [data]);
+  const handleMonthChange = (newMonth: Date) => {
+    const month = newMonth.getMonth() + 1;
+    const year = newMonth.getFullYear();
+    console.log(`Month: ${month}, Year: ${year}`);
 
+    onMonthYearChange?.(month, year);
+  };
   return (
     <div className="space-y-6 w-full flex-[0.5] bg-outerCard border-none rounded-xl relative">
       <Calendar
         mode="single"
         className="p-6 text-white text-3xl h-[500px] md:h-[600px]"
         modifiers={modifiers}
+        onMonthChange={handleMonthChange}
         modifiersClassNames={{
           highActivity: "bg-green-600 text-outerCard hover:bg-green-600/80",
           mediumActivity: "bg-green-400 text-outerCard  hover:bg-green-400/80",
