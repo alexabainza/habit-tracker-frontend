@@ -12,7 +12,9 @@ import { useSearchParams } from "react-router-dom";
 
 const Analytics: React.FC = () => {
   const [history, setHistory] = useSearchParams();
-  const [selected, setSelected] = useState(history.get("frequency") || "weekly");
+  const [selected, setSelected] = useState(
+    history.get("frequency") || "weekly"
+  );
   const [data, setData] = useState<{
     [key: string]: { date: string; count: number }[];
   }>({});
@@ -27,7 +29,9 @@ const Analytics: React.FC = () => {
       setLoading(true);
       try {
         const response = await useFetch(
-          `/analytics/user-habit-count/${frequency}/${new Date().getFullYear()}/${new Date().getMonth() + 1}`,
+          `/analytics/user-habit-count/${new Date().getFullYear()}/${
+            new Date().getMonth() + 1
+          }`,
           "get"
         );
 
@@ -55,7 +59,7 @@ const Analytics: React.FC = () => {
   const skippedDays = currentData.filter((item) => item.count === 0).length;
 
   const handleChangeSelected = (frequency: string) => {
-    setHistory({ frequency })
+    setHistory({ frequency });
     setSelected(frequency);
   };
 
@@ -72,7 +76,10 @@ const Analytics: React.FC = () => {
             Analytics
           </h1>
           <div className="w-full max-w-xl flex items-center justify-center gap-x-10 mx-auto mb-1">
-            <Button variant="link" onClick={() => handleChangeSelected("weekly")}>
+            <Button
+              variant="link"
+              onClick={() => handleChangeSelected("weekly")}
+            >
               <span
                 className={`${
                   selected === "weekly"
@@ -83,7 +90,10 @@ const Analytics: React.FC = () => {
                 Weekly
               </span>
             </Button>
-            <Button variant="link" onClick={() => handleChangeSelected("monthly")}>
+            <Button
+              variant="link"
+              onClick={() => handleChangeSelected("monthly")}
+            >
               <span
                 className={`${
                   selected === "monthly"
@@ -99,11 +109,11 @@ const Analytics: React.FC = () => {
         </main>
         <Overview selected={selected} skippedDays={skippedDays} />
         <div className="flex flex-col md:flex-row flex-wrap lg:flex-nowrap items-start justify-between gap-4">
-          <ChartOverview loading={loading} data={currentData} />
+          {/* <ChartOverview loading={loading} data={currentData} /> */}
           {loading ? (
             <Skeleton className=" w-full flex-1 h-96 bg-outerCard" />
           ) : selected === "monthly" ? (
-            <MonthlyHabits data={currentData} />
+            <MonthlyHabits />
           ) : (
             <WeeklyHabits />
           )}

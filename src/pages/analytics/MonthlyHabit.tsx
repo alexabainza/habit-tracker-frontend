@@ -1,19 +1,44 @@
 import { Calendar } from "@/components/ui/calendar";
+import { useFetch } from "@/hooks/use-fetch";
 import { MonthlyHabitsProps } from "@/utils/types";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { ChartOverview } from "./ChartOverview";
 
-export function MonthlyHabits({
-  data,
-  onMonthYearChange,
-}: MonthlyHabitsProps & {
-  onMonthYearChange?: (month: number, year: number) => void;
-}) {
+export function MonthlyHabits() {
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [habitData, setHabitData] = useState<MonthlyHabitsProps["data"]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await useFetch(
+        `/analytics/user-habit-count/${selectedYear}/${selectedMonth}`,
+        "get"
+      );
+      if (response.status !== 200) {
+        throw new Error("Failed to fetch habit data");
+      }
+      setHabitData(response.data.data);
+      console.log(response.data.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [selectedYear, selectedMonth]);
+
   const modifiers = useMemo(() => {
     const highActivity: Date[] = [];
     const mediumActivity: Date[] = [];
     const lowActivity: Date[] = [];
 
-    data.forEach((item) => {
+    habitData.forEach((item) => {
       const activityDate = new Date(item.date);
       if (item.count >= 5) {
         highActivity.push(activityDate);
@@ -29,19 +54,19 @@ export function MonthlyHabits({
       mediumActivity,
       lowActivity,
     };
-  }, [data]);
+  }, [habitData]);
   const handleMonthChange = (newMonth: Date) => {
-    const month = newMonth.getMonth() + 1;
-    const year = newMonth.getFullYear();
-    console.log(`Month: ${month}, Year: ${year}`);
-
-    onMonthYearChange?.(month, year);
+    setSelectedMonth(newMonth.getMonth() + 1);
+    setSelectedYear(newMonth.getFullYear());
   };
   return (
-    <div className="space-y-6 w-full flex-[0.5] bg-outerCard border-none rounded-xl relative">
+    <div className="space-y-6 w-full flex relative gap-4">
+      <div className="w-3/5 h-full">
+        <ChartOverview loading={loading} data={habitData} />
+      </div>
       <Calendar
         mode="single"
-        className="p-6 text-white text-3xl h-[500px] md:h-[600px]"
+        className="text-white text-3xl bg-outerCard border-none rounded-xl"
         modifiers={modifiers}
         onMonthChange={handleMonthChange}
         modifiersClassNames={{

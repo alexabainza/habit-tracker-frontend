@@ -32,7 +32,9 @@ type ChartOverviewProps = {
 };
 
 export function ChartOverview({ loading, data }: ChartOverviewProps) {
-  const dateRange = `${new Date(data[0]?.date).toDateString()} to ${new Date(data[data.length - 1]?.date).toDateString()}`;
+  const dateRange = `${new Date(data[0]?.date).toDateString()} to ${new Date(
+    data[data.length - 1]?.date
+  ).toDateString()}`;
   return (
     <Card className="w-full min-h-96 flex-1 bg-outerCard border-none relative">
       {loading ? (
@@ -40,7 +42,9 @@ export function ChartOverview({ loading, data }: ChartOverviewProps) {
       ) : data.length === 0 ? (
         <div className="text-xl text-center text-yellow-300 absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 space-y-5">
           <GiDesert className="w-40 h-40 mx-auto" />
-          <h3><strong>No data available</strong> for the selected date range.</h3>
+          <h3>
+            <strong>No data available</strong> for the selected date range.
+          </h3>
         </div>
       ) : (
         <>
@@ -68,12 +72,14 @@ export function ChartOverview({ loading, data }: ChartOverviewProps) {
                 <XAxis
                   dataKey="date"
                   axisLine={{ stroke: "white" }}
-                  tick={{ fontSize: 12, stroke: "white", fontWeight: "semibold" }}
+                  tick={{
+                    fontSize: 12,
+                    stroke: "white",
+                    fontWeight: "semibold",
+                  }}
                   tickLine={{ stroke: "#FBEF95" }}
                   tickMargin={12}
-                  tickFormatter={(value) =>
-                    value.split("-")[2]
-                  }
+                  tickFormatter={(value) => value.split("-")[2]}
                   interval="preserveStartEnd"
                 />
                 <ChartTooltip
@@ -88,11 +94,7 @@ export function ChartOverview({ loading, data }: ChartOverviewProps) {
                   stroke="white"
                   content={<ChartLegendContent style={{ color: "white" }} />}
                 />
-                <Line
-                  dataKey="count"
-                  stroke="#FBEF95"
-                  strokeWidth={2}
-                />
+                <Line dataKey="count" stroke="#FBEF95" strokeWidth={2} />
               </LineChart>
             </ChartContainer>
           </CardContent>
