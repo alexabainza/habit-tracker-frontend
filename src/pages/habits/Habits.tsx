@@ -190,7 +190,7 @@ const Habits: React.FC = () => {
               </h1>
             <DialogTrigger asChild>
               <Button
-                className="h-12 w-12 md:w-fit bg-outerCard text-black hover:bg-outerCard/90 fixed bottom-5 right-5 md:bottom-0 md:right-0 md:relative rounded-full md:rounded-md shadow-md shadow-neutral-900 z-50"
+                className="h-12 w-12 md:w-fit bg-sky-400 text-black hover:bg-sky-400/90 fixed bottom-5 right-5 md:bottom-0 md:right-0 md:relative rounded-full md:rounded-md shadow-md shadow-neutral-900 z-50"
                 onClick={() => {
                   setIsDialogOpen(true);
                   setIsEditing(false);
