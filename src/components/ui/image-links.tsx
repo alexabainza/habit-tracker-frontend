@@ -1,5 +1,5 @@
 import { useMotionValue, motion, useSpring, useTransform } from "framer-motion";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { FiArrowRight } from "react-icons/fi";
 
 interface LinkProps {
@@ -47,7 +47,7 @@ export const ImageLink = ({ heading, imgSrc, subheading, href }: LinkProps) => {
             onMouseMove={handleMouseMove}
             initial="initial"
             whileHover="whileHover"
-            className="group relative flex items-center justify-between border-b-2 border-neutral-700 py-4 transition-colors duration-500 hover:border-[#cae0ab] md:py-8"
+            className="group relative w-full flex items-center justify-between border-b-2 border-neutral-700 py-4 transition-colors duration-500 hover:border-[#cae0ab] md:py-8 mt-12 first:mt-0"
         >
             <div>
                 <motion.span
@@ -97,6 +97,11 @@ export const ImageLink = ({ heading, imgSrc, subheading, href }: LinkProps) => {
                 className="absolute z-10 h-24 w-32 rounded-lg object-cover md:h-48 md:w-64"
                 alt={`Image representing a link for ${heading}`}
             />
+            <img
+                src={imgSrc}
+                className="relative md:hidden z-0 top-0 right-0 w-20 h-20 object-cover rounded-full p-1 border-4 border-black"
+                alt={`Image representing a link for ${heading}`}
+            />
 
             <motion.div
                 variants={{
@@ -110,9 +115,9 @@ export const ImageLink = ({ heading, imgSrc, subheading, href }: LinkProps) => {
                     },
                 }}
                 transition={{ type: "spring" }}
-                className="relative z-10 p-4"
+                className="hidden md:block relative z-10 p-4"
             >
-                <FiArrowRight className="text-5xl text-mossGreen" />
+                <FiArrowRight className="text-5xl text-lightYellow bg-outerCard rounded-full" />
             </motion.div>
         </motion.a>
     );

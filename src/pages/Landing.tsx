@@ -44,7 +44,7 @@ const LandingPage: React.FC = () => {
           </section>
         </div>
       </section>
-      <section className="z-50 xl:rounded-md md:h-[450px] w-full max-w-7xl bg-lightYellow mx-auto grid grid-cols-1 grid-rows-3 md:grid-cols-3 md:grid-rows-1 p-5 gap-5 md:gap-8 lg:gap-10 py-10 mt-20 lg:mb-20 shadow-[4px_4px_0px_black] shadow-black">
+      <section className="z-50 xl:rounded-md md:h-[450px] w-full bg-lightYellow mx-auto grid grid-cols-1 grid-rows-3 md:grid-cols-3 md:grid-rows-1 p-5 gap-5 md:gap-8 lg:gap-10 py-10 mt-20 lg:mb-20 shadow-[4px_4px_0px_black] shadow-black">
         <div className="flex flex-col transition-all duration-300 hover:gap-8 justify-center gap-5 items-center py-0">
           <MdTrackChanges className="h-32 w-32 flex-shrink-0 text-outerCard" />
           <section className="space-y-3">
@@ -136,7 +136,7 @@ const LandingPage: React.FC = () => {
           draggable={false}
         />
       </ContainerScroll>
-      <section className="bg-lightYellow p-4 md:px-8 md:py-16 h-[900px] lg:h-[1100px] w-full max-w-7xl mx-auto rounded-xl relative">
+      <section className="bg-lightYellow p-4 md:px-8 md:py-16 h-[900px] lg:h-[1100px] w-full mx-auto rounded-[4rem] relative mr-5">
         <div className="py-12">
           <LuSwords className="w-28 h-28 mx-auto text-outerCard" />
           <h1 className="text-5xl md:text-6xl lg:text-7xl text-outerCard text-center font-bold">
@@ -163,10 +163,10 @@ const LandingPage: React.FC = () => {
             href="https://www.facebook.com/stellasalde"
           />
         </div>
-        <footer className="text-center bg-neutral-700 lg:text-left flex items-center justify-between px-5 md:px-16 lg:px-24 rounded-t-full pt-10 md:pt-16 absolute bottom-0 w-full left-0">
+        <footer className="text-center bg-neutral-700 lg:text-left flex items-center justify-between px-5 md:px-16 lg:px-24 rounded-t-[3rem] pt-5 absolute bottom-0 w-full left-0">
           <img
-            loading="eager" src="/logo.svg" alt="logo" className="w-20 h-20 z-50" />
-          <div className="p-4 text-center text-lightYellow dark:text-white font-semibold z-50">
+            loading="eager" src="/logo.svg" alt="logo" className="h-12 w-12 md:w-20 md:h-20 z-50" />
+          <div className="p-4 text-center text-lightYellow dark:text-white font-semibold z-50 md:text-xl">
             © 2023 Copyright:
             <a href="/"> Tribbit</a>
           </div>
