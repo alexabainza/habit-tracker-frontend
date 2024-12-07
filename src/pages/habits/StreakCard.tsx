@@ -31,10 +31,10 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
         }
 
         setStreakData({
-          current: data.currentStreak,
-          best: data.bestStreak,
-          currentStreakDates: data.currentStreakDates,
-          bestStreakDates: data.bestStreakDates,
+          current: data.currentStreak || 0,
+          best: data.bestStreak || 0,
+          currentStreakDates: data.currentStreakDates || [],
+          bestStreakDates: data.bestStreakDates || [],
         });
 
         setAccomplishedDates(data.accomplishedDatesPerHabit);
@@ -85,9 +85,9 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
                 ) : (
                   <>
                     <p className="text-sm font-medium text-white opacity-90">
-                      {formatDateToMMM_d(streakData.currentStreakDates[1])}{" "}
+                      {formatDateToMMM_d(streakData.currentStreakDates[0])}{" "}
                       {" - "}
-                      {formatDateToMMM_d(streakData.currentStreakDates[0])}
+                      {formatDateToMMM_d(streakData.currentStreakDates[1])}
                     </p>
                   </>
                 )}

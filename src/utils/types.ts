@@ -14,7 +14,7 @@ export interface Habit {
   accomplished: boolean;
   streak: number;
   goalProgress: number,
-  weeklyCount: [];
+  weeklyCount: number;
 }
 export interface User {
   _id?: string;

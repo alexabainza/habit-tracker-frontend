@@ -56,25 +56,24 @@ export function MonthlyHabits() {
     };
   }, [habitData]);
 
-  
   const handleMonthChange = (newMonth: Date) => {
     setSelectedMonth(newMonth.getMonth() + 1);
     setSelectedYear(newMonth.getFullYear());
   };
-  
+
   const data = habitData.map((item) => ({
     date: item.date,
     count: item.count,
   }));
-  
+
   return (
     <div className="space-y-6 w-full flex relative gap-4">
-      <div className=" h-full">
+      <div className="w-3/4">
         <ChartOverview view="monthly" loading={loading} data={data} />
       </div>
       <Calendar
         mode="single"
-        className="text-white text-3xl bg-outerCard border-none rounded-xl"
+        className="text-white text-3xl bg-outerCard rounded-xl"
         modifiers={modifiers}
         onMonthChange={handleMonthChange}
         modifiersClassNames={{

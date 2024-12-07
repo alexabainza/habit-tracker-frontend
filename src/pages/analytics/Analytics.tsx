@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import React, { useMemo, useState } from "react";
 import Overview from "./Overview";
-import { ChartOverview } from "./ChartOverview";
 import { MonthlyHabits } from "./MonthlyHabit";
 import { useFetch } from "@/hooks/use-fetch";
 import WeeklyHabits from "./WeeklyHabits";

@@ -44,7 +44,7 @@ export function ChartOverview({
   ).toDateString()}`;
 
   return (
-    <Card className="w-full min-h-[450px] max-h-[450px] flex-[0.6] bg-outerCard border-none relative pb-10 px-5">
+    <Card className="w-full min-h-[450px] max-h-[450px] flex-[0.6] bg-outerCard border-2 relative px-5">
       {loading ? (
         <Loading />
       ) : !loading && data.length === 0 ? (
@@ -54,71 +54,18 @@ export function ChartOverview({
             <strong>No data available</strong> for the selected date range.
           </h3>
         </div>
-      ) : (
-        view === "monthly" ? (
-          <>
-            <CardTitle className="p-5 text-xl text-lightYellow">
-              <span>
-                Overview from
-                <strong className="ml-2">{dateRange}</strong>
-              </span>
-            </CardTitle>
-            <CardContent>
-              <ChartContainer
-                config={chartConfig}
-                className="min-h-60 w-full text-white text-md -mt-96"
-              >
-                <LineChart
-                  accessibilityLayer
-                  data={data}
-                  margin={{
-                    top: 20,
-                    left: 12,
-                    right: 12,
-                  }}
-                >
-                  <CartesianGrid vertical={true} />
-                  <XAxis
-                    dataKey="date"
-                    axisLine={{ stroke: "white" }}
-                    tick={{
-                      fontSize: 12,
-                      stroke: "white",
-                      fontWeight: "semibold"
-                    }}
-                    tickLine={{ stroke: "#FBEF95" }}
-                    tickMargin={12}
-                    tickFormatter={(value) => value.split("-")[2]}
-                    interval="preserveStartEnd"
-                  />
-                  <ChartTooltip
-                    content={
-                      <ChartTooltipContent
-                        className="gap-2 bg-white text-black"
-                        indicator="line"
-                      />
-                    }
-                  />
-                  <ChartLegend
-                    stroke="white"
-                    content={<ChartLegendContent style={{ color: "white" }} />}
-                  />
-                  <Line dataKey="count" stroke="#FBEF95" strokeWidth={2} />
-                </LineChart>
-              </ChartContainer>
-            </CardContent>
-          </>
-        ) : (
-          <>
-            <CardTitle className="p-5 text-xl text-lightYellow">
-              <span>
-                Overview from
-                <strong className="ml-2">{weeklyDateRange}</strong>
-              </span>
-            </CardTitle>
+      ) : view === "monthly" ? (
+        <>
+          <CardTitle className="p-5 text-xl text-lightYellow">
+            <span>
+              Overview from
+              <strong className="ml-2">{dateRange}</strong>
+            </span>
+          </CardTitle>
+          <CardContent>
             <ChartContainer
               config={chartConfig}
-              className="min-h-60 w-full text-white text-md"
+              className="min-h-60 w-full text-white text-md -mt-20"
             >
               <LineChart
                 accessibilityLayer
@@ -129,11 +76,15 @@ export function ChartOverview({
                   right: 12,
                 }}
               >
-                <CartesianGrid vertical={false} />
+                <CartesianGrid vertical={true} />
                 <XAxis
                   dataKey="date"
                   axisLine={{ stroke: "white" }}
-                  tick={{ fontSize: 12, stroke: "white", fontWeight: "semibold" }}
+                  tick={{
+                    fontSize: 12,
+                    stroke: "white",
+                    fontWeight: "semibold",
+                  }}
                   tickLine={{ stroke: "#FBEF95" }}
                   tickMargin={12}
                   tickFormatter={(value) => value.split("-")[2]}
@@ -154,8 +105,55 @@ export function ChartOverview({
                 <Line dataKey="count" stroke="#FBEF95" strokeWidth={2} />
               </LineChart>
             </ChartContainer>
-          </>
-        )
+          </CardContent>
+        </>
+      ) : (
+        <>
+          <CardTitle className="p-5 text-xl text-lightYellow">
+            <span>
+              Overview from
+              <strong className="ml-2">{weeklyDateRange}</strong>
+            </span>
+          </CardTitle>
+          <ChartContainer
+            config={chartConfig}
+            className="min-h-60 w-full text-white text-md"
+          >
+            <LineChart
+              accessibilityLayer
+              data={data}
+              margin={{
+                top: 20,
+                left: 12,
+                right: 12,
+              }}
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="date"
+                axisLine={{ stroke: "white" }}
+                tick={{ fontSize: 12, stroke: "white", fontWeight: "semibold" }}
+                tickLine={{ stroke: "#FBEF95" }}
+                tickMargin={12}
+                tickFormatter={(value) => value.split("-")[2]}
+                interval="preserveStartEnd"
+              />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    className="gap-2 bg-white text-black"
+                    indicator="line"
+                  />
+                }
+              />
+              <ChartLegend
+                stroke="white"
+                content={<ChartLegendContent style={{ color: "white" }} />}
+              />
+              <Line dataKey="count" stroke="#FBEF95" strokeWidth={2} />
+            </LineChart>
+          </ChartContainer>
+        </>
       )}
     </Card>
   );
