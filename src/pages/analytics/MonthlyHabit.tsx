@@ -62,7 +62,7 @@ export function MonthlyHabits() {
   return (
     <div className="space-y-6 w-full flex relative gap-4">
       <div className="w-3/5 h-full">
-        <ChartOverview loading={loading} data={habitData} />
+        <ChartOverview view="monthly" loading={loading} data={habitData} />
       </div>
       <Calendar
         mode="single"
