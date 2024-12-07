@@ -125,7 +125,7 @@ const WeeklyHabits = () => {
         loading={loading}
         weeklyDateRange={`${formatDate(startRange)} - ${formatDate(endRange)}`}
       />
-      <Card className="w-full md:min-w-96 flex-[0.4] bg-outerCard border-none rounded-xl text-yellow-300 min-h-96 sm:min-h-96 lg:min-h-96 relative flex flex-col items-center gap-5">
+      <Card className="w-full md:min-w-96 flex-[0.4] border-none rounded-xl text-yellow-300 min-h-96 sm:min-h-96 lg:min-h-96 relative flex flex-col items-center gap-5">
         <CardHeader className="p-0 w-full">
           <CardTitle className="font-semibold flex items-center justify-center w-full mx-auto gap-4 p-5 border-b border-b-lightYellow border-opacity-40">
             <button onClick={() => handleChangeWeek("prev")} type="button" className="disabled:opacity-50">

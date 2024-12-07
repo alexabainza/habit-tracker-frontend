@@ -44,7 +44,7 @@ export function ChartOverview({
   ).toDateString()}`;
 
   return (
-    <Card className="w-full min-h-96 flex-[0.6] bg-outerCard border-none relative pb-10 px-5">
+    <Card className="w-full min-h-[450px] max-h-[450px] flex-[0.6] bg-outerCard border-none relative pb-10 px-5">
       {loading ? (
         <Loading />
       ) : !loading && data.length === 0 ? (
@@ -66,7 +66,7 @@ export function ChartOverview({
             <CardContent>
               <ChartContainer
                 config={chartConfig}
-                className="min-h-60 w-full text-white text-md"
+                className="min-h-60 w-full text-white text-md -mt-96"
               >
                 <LineChart
                   accessibilityLayer
@@ -77,7 +77,7 @@ export function ChartOverview({
                     right: 12,
                   }}
                 >
-                  <CartesianGrid vertical={false} />
+                  <CartesianGrid vertical={true} />
                   <XAxis
                     dataKey="date"
                     axisLine={{ stroke: "white" }}

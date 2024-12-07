@@ -108,7 +108,7 @@ const Analytics: React.FC = () => {
           <Separator className="bg-gray-500 opacity-25 mb-4" />
         </main>
         <Overview selected={selected} skippedDays={skippedDays} />
-        <div className="flex flex-col md:flex-row flex-wrap lg:flex-nowrap items-start justify-between gap-4">
+        <div className="flex flex-col md:flex-row flex-wrap lg:flex-nowrap items-start justify-between gap-4 transition-all duration-300">
           {loading ? (
             <Skeleton className=" w-full flex-1 h-96 bg-outerCard" />
           ) : selected === "monthly" ? (
