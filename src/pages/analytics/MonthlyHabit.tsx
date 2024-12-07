@@ -3,6 +3,7 @@ import { useFetch } from "@/hooks/use-fetch";
 import { MonthlyHabitsProps } from "@/utils/types";
 import { useEffect, useMemo, useState } from "react";
 import { ChartOverview } from "./ChartOverview";
+import Overview from "./Overview";
 
 export function MonthlyHabits() {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
@@ -32,6 +33,8 @@ export function MonthlyHabits() {
   useEffect(() => {
     fetchData();
   }, [selectedYear, selectedMonth]);
+  const skippedDays = habitData.filter((item) => item.count === 0).length;
+  console.log("monthly skipped days", skippedDays);
 
   const modifiers = useMemo(() => {
     const highActivity: Date[] = [];
@@ -67,21 +70,25 @@ export function MonthlyHabits() {
   }));
 
   return (
-    <div className="space-y-6 w-full flex relative gap-4">
-      <div className="w-3/4">
-        <ChartOverview view="monthly" loading={loading} data={data} />
+    <div className="space-y-6 w-full flex flex-col relative gap-4">
+      <Overview selected="monthly" skippedDays={skippedDays} />
+      <div className="flex gap-4">
+        <div className="w-3/5">
+          <ChartOverview view="monthly" loading={loading} data={data} />
+        </div>
+        <Calendar
+          mode="single"
+          className="text-white text-3xl bg-outerCard rounded-xl"
+          modifiers={modifiers}
+          onMonthChange={handleMonthChange}
+          modifiersClassNames={{
+            highActivity: "bg-green-600 text-outerCard hover:bg-green-600/80",
+            mediumActivity:
+              "bg-green-400 text-outerCard  hover:bg-green-400/80",
+            lowActivity: "bg-green-200 text-outerCard hover:bg-green-200/80",
+          }}
+        />
       </div>
-      <Calendar
-        mode="single"
-        className="text-white text-3xl bg-outerCard rounded-xl"
-        modifiers={modifiers}
-        onMonthChange={handleMonthChange}
-        modifiersClassNames={{
-          highActivity: "bg-green-600 text-outerCard hover:bg-green-600/80",
-          mediumActivity: "bg-green-400 text-outerCard  hover:bg-green-400/80",
-          lowActivity: "bg-green-200 text-outerCard hover:bg-green-200/80",
-        }}
-      />
     </div>
   );
 }

@@ -42,12 +42,13 @@ export function ChartOverview({
   const dateRange = `${new Date(data[0]?.date).toDateString()} to ${new Date(
     data[data.length - 1]?.date
   ).toDateString()}`;
+  console.log("data", data);
 
   return (
     <Card className="w-full min-h-[450px] max-h-[450px] flex-[0.6] bg-outerCard border-2 relative px-5">
       {loading ? (
         <Loading />
-      ) : !loading && data.length === 0 ? (
+      ) : data.length === 0 || !data ? (
         <div className="text-xl text-center text-yellow-300 absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 space-y-5">
           <GiDesert className="w-40 h-40 mx-auto" />
           <h3>
@@ -65,7 +66,7 @@ export function ChartOverview({
           <CardContent>
             <ChartContainer
               config={chartConfig}
-              className="min-h-60 w-full text-white text-md -mt-20"
+              className="min-h-60 w-full text-white text-md "
             >
               <LineChart
                 accessibilityLayer
