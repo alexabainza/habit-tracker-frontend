@@ -40,27 +40,20 @@ const WeeklyHabits = () => {
   const [error, setError] = useState<string | null>(null);
   const [userHabitCount, setUserHabitCount] = useState<Data[]>([]);
 
-  const startRange = startOfWeek(selectedDay);
+  const startRange = startOfWeek(selectedDay, { weekStartsOn: 0 });
   const endRange = endOfWeek(selectedDay);
-  const cacheKey = `habits-${startRange.toISOString()}-${endRange.toISOString()}`;
 
   const fetchHabits = async () => {
     setLoading(true);
     try {
-      const cachedData = localStorage.getItem(cacheKey);
-      if (cachedData) {
-        setHabits(JSON.parse(cachedData));
-      } else {
-        const response = await useFetch(
-          `/analytics/habit-days/${startOfWeek(selectedDay)}-${endOfWeek(
-            selectedDay
-          )}`,
-          "get"
-        );
-        const result = response.data;
-        setHabits(result.data || []);
-        localStorage.setItem(cacheKey, JSON.stringify(result.data || []));
-      }
+      const response = await useFetch(
+        `/analytics/habit-days/${startOfWeek(selectedDay, { weekStartsOn: 1 })}-${endOfWeek(
+          selectedDay, { weekStartsOn: 1 }
+        )}`,
+        "get"
+      );
+      const result = response.data;
+      setHabits(result.data || []);
     } catch (error: any) {
       setError(error.message);
     } finally {
@@ -68,14 +61,12 @@ const WeeklyHabits = () => {
     }
   };
 
-  console.log("habits: ", habits);
-
   const fetchUserHabitCount = async () => {
     try {
       const response = await useFetch(
         `/analytics/user-habit-count/${startOfWeek(
-          selectedDay
-        ).toISOString()}_${endOfWeek(selectedDay).toISOString()}`,
+          selectedDay, { weekStartsOn: 1 }
+        ).toISOString()}_${endOfWeek(selectedDay, { weekStartsOn: 1 }).toISOString()}`,
         "get"
       );
       const result = response.data;
@@ -115,7 +106,8 @@ const WeeklyHabits = () => {
       setSelectedDay(new Date(newDate.setDate(newDate.getDate() + 7)));
     } else {
       const previousWeekStart = startOfWeek(
-        new Date(newDate.setDate(newDate.getDate() - 7))
+        new Date(newDate.setDate(newDate.getDate() - 7)),
+        { weekStartsOn: 1 }
       );
       setSelectedDay(previousWeekStart);
     }
@@ -191,7 +183,7 @@ const WeeklyHabits = () => {
                     {DaysInWeek.map((day, index) => {
                       const dateForDay = new Date(selectedDay);
                       dateForDay.setDate(
-                        startOfWeek(selectedDay).getDate() + (index + 1)
+                        startOfWeek(selectedDay, { weekStartsOn: 0 }).getDate() + (index + 1)
                       );
                       const isActive = habit.day
                         .map((d) => new Date(d).toISOString().split("T")[0])
