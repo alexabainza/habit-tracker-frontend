@@ -55,14 +55,22 @@ export function MonthlyHabits() {
       lowActivity,
     };
   }, [habitData]);
+
+  
   const handleMonthChange = (newMonth: Date) => {
     setSelectedMonth(newMonth.getMonth() + 1);
     setSelectedYear(newMonth.getFullYear());
   };
+  
+  const data = habitData.map((item) => ({
+    date: item.date,
+    count: item.count,
+  }));
+  
   return (
     <div className="space-y-6 w-full flex relative gap-4">
-      <div className="w-3/5 h-full">
-        <ChartOverview view="monthly" loading={loading} data={habitData} />
+      <div className=" h-full">
+        <ChartOverview view="monthly" loading={loading} data={data} />
       </div>
       <Calendar
         mode="single"

@@ -78,7 +78,13 @@ const WeeklyHabits = () => {
         ).toISOString()}_${endOfWeek(selectedDay).toISOString()}`,
         "get"
       );
-      setUserHabitCount(response.data);
+      const result = response.data;
+
+      if (result.data && result.data.length > 0) {
+        setUserHabitCount(result.data);
+      } else {
+        setUserHabitCount([]);
+      }
     } catch (error: any) {
       setError(error.message);
     }
@@ -127,24 +133,26 @@ const WeeklyHabits = () => {
         loading={loading}
         weeklyDateRange={`${formatDate(startRange)} - ${formatDate(endRange)}`}
       />
-      <Card className="w-full mx-auto md:min-w-96 lg:max-w-xl flex-1 bg-outerCard border-none rounded-xl text-yellow-300 min-h-96 sm:min-h-96 lg:min-h-96 relative flex flex-col items-center gap-5">
-        <CardHeader className="pb-0 w-full">
-          <CardTitle className="font-semibold flex items-center justify-between w-full mx-auto gap-4">
-            <Button onClick={() => handleChangeWeek("prev")} variant="outline">
-              <ChevronLeftIcon className="w-6 h-6 flex-shrink-0" />
-            </Button>
+      <Card className="w-full md:min-w-96 flex-[0.4] bg-outerCard border-none rounded-xl text-yellow-300 min-h-96 sm:min-h-96 lg:min-h-96 relative flex flex-col items-center gap-5">
+        <CardHeader className="p-0 w-full">
+          <CardTitle className="font-semibold flex items-center justify-center w-full mx-auto gap-4 p-5 border-b border-b-lightYellow border-opacity-40">
+            <button onClick={() => handleChangeWeek("prev")} type="button" className="disabled:opacity-50">
+              <ChevronLeftIcon className="w-7 h-7 flex-shrink-0" />
+              <p className="sr-only">Prev</p>
+            </button>
             <span className="text-lg space-x-1.5">
               {format(startRange, "LLLL") + " "}
-              {startRange.toLocaleDateString().split("/")[1] + " - "}
-              {endRange.toLocaleDateString().split("/")[1]}
+              {startRange.toLocaleDateString().split("/")[1].padStart(2, "0") + " - "}
+              {format(startRange, "LLLL") + " " + endRange.toLocaleDateString().split("/")[1].padStart(2, "0")}
             </span>
-            <Button
-              onClick={() => handleChangeWeek("next")}
-              variant="outline"
+            <button
+              onClick={() => handleChangeWeek("next")} type="button"
               disabled={isThisWeek(endOfWeek(selectedDay))}
+              className="disabled:opacity-50"
             >
-              <ChevronRightIcon className="w-6 h-6 flex-shrink-0" />
-            </Button>
+              <ChevronRightIcon className="w-7 h-7 flex-shrink-0" />
+              <p className="sr-only">Next</p>
+            </button>
           </CardTitle>
         </CardHeader>
         <CardContent className="w-full">
@@ -191,9 +199,8 @@ const WeeklyHabits = () => {
                       return (
                         <div
                           key={`habit-${habit.habit}-day-${index}`}
-                          className={`col-span-1 row-span-1 h-6 sm:h-8 lg:h-6 flex items-center justify-center rounded-md ${
-                            isActive ? "bg-green-500" : "bg-gray-200"
-                          }`}
+                          className={`col-span-1 row-span-1 h-6 sm:h-8 lg:h-6 flex items-center justify-center rounded-md ${isActive ? "bg-green-500" : "bg-gray-200"
+                            }`}
                         />
                       );
                     })}

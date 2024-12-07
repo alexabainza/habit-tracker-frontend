@@ -49,7 +49,6 @@ const Dashboard: React.FC = () => {
           message: error.response?.data?.message ?? error.message,
           status: error.response?.status || error.status || error.code,
         });
-        toast.error("Failed to fetch habits.");
       } finally {
         setLoading(false);
       }
