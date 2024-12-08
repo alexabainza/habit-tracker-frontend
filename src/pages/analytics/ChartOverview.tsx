@@ -42,8 +42,7 @@ export function ChartOverview({
   const dateRange = `${new Date(data[0]?.date).toDateString()} to ${new Date(
     data[data.length - 1]?.date
   ).toDateString()}`;
-  console.log("data", data);
-
+  
   return (
     <Card className="w-full min-h-[450px] max-h-[450px] flex-[0.6] bg-outerCard border-2 relative px-5">
       {loading ? (

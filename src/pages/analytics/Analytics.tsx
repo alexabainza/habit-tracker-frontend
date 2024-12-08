@@ -18,7 +18,7 @@ const Analytics: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full min-h-dvh flex-1 bg-gradient-to-br from-[#2A3D43] to-[#40575C] lg:px-16">
+    <div className="w-full h-full min-h-dvh flex-1 bg-gradient-to-br from-[#2A3D43] to-[#40575C] xl:px-16">
       <div className="w-full p-12 flex-1 h-full px-5 space-y-4">
         <main>
           <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold mb-4 md:mb-0 tracking-wider text-lightYellow">

@@ -40,7 +40,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import Loading from "@/components/ui/loading";
-import { Check, LogOutIcon, Pencil, Trash2Icon, TrashIcon, X } from "lucide-react";
+import { Check, LogOutIcon, Pencil, Trash2Icon, X } from "lucide-react";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -85,7 +85,7 @@ export default function Profile() {
         toast.success("Account deleted successfully.");
       }
       dispatch(signOutUserSuccess());
-
+      removeAllAppData();
       navigate("/login");
     } catch (error) {
       toast.error("Failed to delete account.");
@@ -94,6 +94,7 @@ export default function Profile() {
       navigate("/login");
     }
   };
+
   const onSignOut = async () => {
     dispatch(signOutUserStart());
 
@@ -103,6 +104,7 @@ export default function Profile() {
 
       if (result.status === 200) {
         dispatch(signOutUserSuccess());
+        removeAllAppData();
         navigate("/login");
       } else {
         const data = await result.json();
@@ -137,6 +139,27 @@ export default function Profile() {
       setIsEditing(false);
       setLoading(false);
     }
+  };
+
+  const removeAllAppData = () => {
+    const keysToRemove = [
+      "token",
+      "user",
+      "habitStates",
+      "habits",
+      "persist:root",
+    ];
+
+    // Remove all habit and streak data
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && (key.startsWith("streakData-") || key.startsWith("habits-"))) {
+        keysToRemove.push(key);
+      }
+    }
+
+    // Remove all specified keys
+    keysToRemove.forEach((key) => localStorage.removeItem(key));
   };
 
   return (

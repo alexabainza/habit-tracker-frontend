@@ -22,6 +22,7 @@ import { GiDeadWood } from "react-icons/gi";
 import { ChartOverview } from "./ChartOverview";
 import { formatDate } from "@/utils/dateFormatter";
 import Overview from "./Overview";
+import Error from "../Error";
 
 type DataType = {
   habit: string;
@@ -41,18 +42,14 @@ const WeeklyHabits = () => {
   const [userHabitCount, setUserHabitCount] = useState<Data[]>([]);
 
   const startRange = startOfWeek(selectedDay, { weekStartsOn: 0 });
-  const endRange = endOfWeek(selectedDay);
+  const endRange = endOfWeek(selectedDay, { weekStartsOn: 0 });
   const skippedDays = userHabitCount.filter((item) => item.count === 0).length;
-  console.log("skipped days", skippedDays);
-  console.log("userhabitcount", userHabitCount);
 
   const fetchHabits = async () => {
     setLoading(true);
     try {
       const response = await useFetch(
-        `/analytics/habit-days/${startOfWeek(selectedDay, {
-          weekStartsOn: 1,
-        })}-${endOfWeek(selectedDay, { weekStartsOn: 1 })}`,
+        `/analytics/habit-days/${startRange}-${endRange}`,
         "get"
       );
       const result = response.data;
@@ -65,14 +62,12 @@ const WeeklyHabits = () => {
     }
   };
 
+  console.log(`/analytics/habit-days/${startRange}-${endRange}`)
+
   const fetchUserHabitCount = async () => {
     try {
       const response = await useFetch(
-        `/analytics/user-habit-count/${startOfWeek(selectedDay, {
-          weekStartsOn: 1,
-        }).toISOString()}_${endOfWeek(selectedDay, {
-          weekStartsOn: 1,
-        }).toISOString()}`,
+        `/analytics/user-habit-count/${startOfWeek(startRange).toISOString()}_${endRange.toISOString()}`,
         "get"
       );
       const result = response.data;
@@ -105,25 +100,27 @@ const WeeklyHabits = () => {
   const handleChangeWeek = (direction: "next" | "prev") => {
     const newDate = new Date(selectedDay);
     if (direction === "next") {
-      if (endOfWeek(newDate) >= endOfWeek(new Date())) {
-        toast.info("Cannot view future weeks.");
-        return;
-      }
       setSelectedDay(new Date(newDate.setDate(newDate.getDate() + 7)));
     } else {
       const previousWeekStart = startOfWeek(
         new Date(newDate.setDate(newDate.getDate() - 7)),
-        { weekStartsOn: 1 }
+        { weekStartsOn: 0 }
       );
       setSelectedDay(previousWeekStart);
     }
   };
 
+  if (error) {
+    return <Error message={error} errorStatus="500" />;
+  }
+
+  console.log(habits)
+
   return (
     <div className="space-y-6 w-full flex flex-col gap-4">
       <Overview selected="weekly" skippedDays={skippedDays} />
-      <div className="flex gap-4">
-        <div className="w-3/5">
+      <div className="flex flex-col lg:flex-row gap-4">
+        <div className="w-full md:max-w-2xl lg:max-w-3xl md:mx-auto lg:m-0">
           <ChartOverview
             data={userHabitCount}
             view="weekly"
@@ -133,7 +130,7 @@ const WeeklyHabits = () => {
             )}`}
           />
         </div>
-        <Card className="w-full md:min-w-96 flex-[0.4] border-none rounded-xl text-yellow-300 min-h-96 sm:min-h-96 lg:min-h-96 relative flex flex-col items-center gap-5">
+        <Card className="w-full md:min-w-96 md:max-w-2xl lg:max-w-3xl md:mx-auto lg:mr-0 flex-[0.5] border-none rounded-xl text-yellow-300 min-h-96 sm:min-h-96 lg:min-h-96 relative flex flex-col items-center gap-5 shadow-none">
           <CardHeader className="p-0 w-full">
             <CardTitle className="font-semibold flex items-center justify-center w-full mx-auto gap-4 p-5 border-b border-b-lightYellow border-opacity-40">
               <button
@@ -157,7 +154,7 @@ const WeeklyHabits = () => {
               <button
                 onClick={() => handleChangeWeek("next")}
                 type="button"
-                disabled={isThisWeek(endOfWeek(selectedDay))}
+                disabled={isThisWeek(endRange)}
                 className="disabled:opacity-50"
               >
                 <ChevronRightIcon className="w-7 h-7 flex-shrink-0" />
@@ -204,7 +201,7 @@ const WeeklyHabits = () => {
                           startOfWeek(selectedDay, {
                             weekStartsOn: 0,
                           }).getDate() +
-                            (index + 1)
+                          (index + 1)
                         );
                         const isActive = habit.day
                           .map((d) => new Date(d).toISOString().split("T")[0])
@@ -212,9 +209,8 @@ const WeeklyHabits = () => {
                         return (
                           <div
                             key={`habit-${habit.habit}-day-${index}`}
-                            className={`col-span-1 row-span-1 h-6 sm:h-8 lg:h-6 flex items-center justify-center rounded-md ${
-                              isActive ? "bg-green-500" : "bg-gray-200"
-                            }`}
+                            className={`col-span-1 row-span-1 h-6 sm:h-8 lg:h-6 flex items-center justify-center rounded-md ${isActive ? "bg-green-500" : "bg-gray-200"
+                              }`}
                           />
                         );
                       })}
