@@ -17,7 +17,6 @@ import {
 } from "date-fns";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { GiDeadWood } from "react-icons/gi";
 import { ChartOverview } from "./ChartOverview";
 import { formatDate } from "@/utils/dateFormatter";
@@ -62,7 +61,6 @@ const WeeklyHabits = () => {
     }
   };
 
-  console.log(`/analytics/habit-days/${startRange}-${endRange}`)
 
   const fetchUserHabitCount = async () => {
     try {

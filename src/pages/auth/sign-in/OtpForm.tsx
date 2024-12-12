@@ -19,7 +19,7 @@ import {
     InputOTPSeparator,
     InputOTPSlot,
 } from "@/components/ui/input-otp"
-import { Loader2Icon } from "lucide-react"
+import { Loader2Icon, LogInIcon } from "lucide-react"
 import { useState } from "react"
 import { OtpSchema } from "@/utils/schemas"
 import { useFetch } from "@/hooks/use-fetch"
@@ -101,7 +101,7 @@ export function InputOTPForm({ email }: { email: string }) {
                     className="w-full py-6 border border-white transition-all duration-300 text-white hover:bg-white/85 hover:text-black hover:border-transparent"
                     disabled={isLoading}
                 >
-                    {isLoading ? <><Loader2Icon className="animate-spin" /> Loading</> : "Login"}
+                    {isLoading ? <><Loader2Icon className="animate-spin" /> Loading</> : <><LogInIcon className="flex-shrink-0 w-5 h-5" />Login</>}
                 </Button>
             </form>
         </Form>

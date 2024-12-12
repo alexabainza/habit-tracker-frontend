@@ -78,9 +78,9 @@ const Verify = () => {
                     </Button>
                 </div>
             ) : (
-                <Card className="w-[400px] sm:mx-5 mx-5 border-0 shadow-none">
+                <Card className="w-[400px] md:w-[500px] sm:mx-5 mx-5 border-0 shadow-none">
                     <CardHeader>
-                        <MountainIcon className="w-12 h-12 text-white mx-auto mb-14" />
+                        <img src="/error.svg" alt="logo" className="w-40 h-40 mx-auto" />
                         <CardTitle className="text-2xl text-center text-ellipsis overflow-hidden text-wrap pb-5">
                             Verify your email<br />
                             {queryParams.get('email') && queryParams.get('email')}

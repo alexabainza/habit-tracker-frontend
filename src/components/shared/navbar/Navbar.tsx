@@ -35,7 +35,7 @@ const Navbar: React.FC = () => {
         }`}
       >
         <Link to="/" className="flex items-center justify-center w-20">
-          <img src="/logo.svg" alt="Tribbit" className="h-14 w-14 flex-shrink-0" />
+          <img src="/auth.svg" alt="Tribbit" className="h-14 w-14 flex-shrink-0" />
           <span className="sr-only text-[var(--color-primary)]">Tribbit</span>
         </Link>
         <Navigation />

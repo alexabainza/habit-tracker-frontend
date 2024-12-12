@@ -16,11 +16,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterUserSchema } from "@/utils/schemas";
 import {
   ChevronLeftIcon,
+  CircleFadingPlusIcon,
   Eye,
   EyeOff,
   KeyIcon,
   Loader2,
-  MountainIcon,
   UserIcon,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -85,10 +85,11 @@ const RegisterScreen: React.FC = () => {
         <ChevronLeftIcon className="w-6 h-6" />
         Back to Home
       </Button>
-      <Card className="w-[400px] sm:mx-5 mx-5 border-0 shadow-none">
+      <Card className="w-[400px] md:w-[500px] sm:mx-5 mx-5 border-0 shadow-none">
         <CardHeader>
-          <CardTitle className="text-4xl text-center">
-            <MountainIcon className="w-20 h-20 mx-auto mb-20" />
+          <img src="/error.svg" alt="logo" className="w-40 h-40 mx-auto" />
+          <CardTitle className="text-2xl md:text-4xl text-center">
+            Join our Community
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -152,9 +153,8 @@ const RegisterScreen: React.FC = () => {
                         <KeyIcon className="w-5 h-5 absolute top-1/2 left-2 transform -translate-y-1/2" />
                         <Input
                           type={showPassword ? "text" : "password"}
-                          placeholder={`${
-                            showPassword ? "Password@123" : "********"
-                          }`}
+                          placeholder={`${showPassword ? "Password@123" : "********"
+                            }`}
                           {...field}
                           className="placeholder:text-gray-400 border-[#6490BC] pl-9"
                         />
@@ -187,7 +187,7 @@ const RegisterScreen: React.FC = () => {
                     <Loader2 className="animate-spin" /> Loading
                   </>
                 ) : (
-                  "Register"
+                  <><CircleFadingPlusIcon className="flex-shrink-0 w-5 h-5" />Register</>
                 )}
               </Button>
             </form>

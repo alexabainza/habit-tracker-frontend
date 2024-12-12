@@ -44,33 +44,36 @@ const LandingPage: React.FC = () => {
           </section>
         </div>
       </section>
-      <section className="z-50 xl:rounded-md md:h-[450px] w-full bg-lightYellow mx-auto grid grid-cols-1 grid-rows-3 md:grid-cols-3 md:grid-rows-1 p-5 gap-5 md:gap-8 lg:gap-10 py-10 mt-20 lg:mb-20 shadow-[4px_4px_0px_black] shadow-black">
-        <div className="flex flex-col transition-all duration-300 hover:gap-8 justify-center gap-5 items-center py-0">
-          <MdTrackChanges className="h-32 w-32 flex-shrink-0 text-outerCard" />
-          <section className="space-y-3">
-            <h2 className="text-3xl font-medium text-center text-outerCard">Track your habits</h2>
-            <p className="text-base text-center font-normal text-outerCard max-w-64 md:max-w-xs">
-              Tribbit allows you to track your habits and see how you are doing overtime.
-            </p>
-          </section>
-        </div>
-        <div className="flex flex-col transition-all duration-300 hover:gap-8 justify-center gap-5 items-center py-5">
-          <GiInspiration className="h-32 w-32 flex-shrink-0 text-outerCard" />
-          <section className="space-y-3">
-            <h2 className="text-3xl font-medium text-center text-outerCard">Stay motivated</h2>
-            <p className="text-base text-center font-normal text-outerCard max-w-64 md:max-w-xs">
-              Tribbit helps you stay motivated, showing you how well you are doing.
-            </p>
-          </section>
-        </div>
-        <div className="flex flex-col transition-all duration-300 hover:gap-8 justify-center gap-5 items-center py-5">
-          <GiFist className="h-32 w-32 flex-shrink-0 text-outerCard" />
-          <section className="space-y-3">
-            <h2 className="text-3xl font-medium text-center text-outerCard">Build habits</h2>
-            <p className="text-base text-center font-normal text-outerCard max-w-64 md:max-w-xs">
-              With Tribbit, you can easily build good habits and improve your life.
-            </p>
-          </section>
+      <section className="z-50 xl:rounded-md md:h-[450px] w-full bg-lightYellow dark:bg-dot-white/[0.2] bg-dot-black/[0.2] mx-auto py-10 mt-20 lg:mb-20 shadow-[4px_4px_0px_black] shadow-black">
+        <h1 className="text-center font-bold tracking-widest text-outerCard text-xl">COME BUILD HABITS WITH US!</h1>
+        <div className="w-full grid grid-cols-1 grid-rows-3 md:grid-cols-3 md:grid-rows-1 p-5 gap-5 md:gap-8 lg:gap-10">
+          <div className="flex flex-col transition-all duration-300 hover:scale-[1.05] justify-center gap-5 items-center py-0">
+            <MdTrackChanges className="h-32 w-32 flex-shrink-0 text-outerCard" />
+            <section className="space-y-3">
+              <h2 className="text-3xl font-medium text-center text-outerCard">Track your habits</h2>
+              <p className="text-base text-center font-normal text-outerCard max-w-64 md:max-w-xs">
+                Tribbit allows you to track your habits and see how you are doing overtime.
+              </p>
+            </section>
+          </div>
+          <div className="flex flex-col transition-all duration-300 hover:scale-[1.05] justify-center gap-5 items-center py-5">
+            <GiInspiration className="h-32 w-32 flex-shrink-0 text-outerCard" />
+            <section className="space-y-3">
+              <h2 className="text-3xl font-medium text-center text-outerCard">Stay motivated</h2>
+              <p className="text-base text-center font-normal text-outerCard max-w-64 md:max-w-xs">
+                Tribbit helps you stay motivated, showing you how well you are doing.
+              </p>
+            </section>
+          </div>
+          <div className="flex flex-col transition-all duration-300 hover:scale-[1.05] justify-center gap-5 items-center py-5">
+            <GiFist className="h-32 w-32 flex-shrink-0 text-outerCard" />
+            <section className="space-y-3">
+              <h2 className="text-3xl font-medium text-center text-outerCard">Build habits</h2>
+              <p className="text-base text-center font-normal text-outerCard max-w-64 md:max-w-xs">
+                With Tribbit, you can easily build good habits and improve your life.
+              </p>
+            </section>
+          </div>
         </div>
       </section>
       <ContainerScroll
@@ -136,7 +139,7 @@ const LandingPage: React.FC = () => {
           draggable={false}
         />
       </ContainerScroll>
-      <section className="bg-lightYellow p-4 md:px-8 md:py-16 h-[900px] lg:h-[1100px] w-full mx-auto rounded-[4rem] relative mr-5">
+      <section className="bg-lightYellow p-4 md:px-8 md:py-16 h-[900px] md:h-[1100px] w-full mx-auto rounded-[4rem] relative mr-5">
         <div className="py-12">
           <LuSwords className="w-28 h-28 mx-auto text-outerCard" />
           <h1 className="text-5xl md:text-6xl lg:text-7xl text-outerCard text-center font-bold">

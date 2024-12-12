@@ -7,7 +7,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff, KeyIcon, Loader2, MailIcon } from "lucide-react";
+import { Eye, EyeOff, KeyIcon, Loader2, LogInIcon, MailIcon } from "lucide-react";
 import { useState } from "react";
 import { LoginSchema } from "@/utils/schemas";
 import { handleAuthError } from "@/utils/errorHandler";
@@ -140,7 +140,7 @@ const LoginForm = () => {
                         className="w-full py-6 border border-white transition-all duration-300 text-white hover:bg-white/85 hover:text-black hover:border-transparent"
                         disabled={isLoading}
                     >
-                        {isLoading ? <><Loader2 className="animate-spin" /> Loading</> : "Login"}
+                        {isLoading ? <><Loader2 className="animate-spin" /> Loading</> : <><LogInIcon className="flex-shrink-0 w-5 h-5" />Login</>}
                     </Button>
                 </form>
             </Form>

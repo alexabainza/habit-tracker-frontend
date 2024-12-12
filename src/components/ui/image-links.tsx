@@ -1,5 +1,5 @@
 import { useMotionValue, motion, useSpring, useTransform } from "framer-motion";
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { FiArrowRight } from "react-icons/fi";
 
 interface LinkProps {
@@ -47,7 +47,7 @@ export const ImageLink = ({ heading, imgSrc, subheading, href }: LinkProps) => {
             onMouseMove={handleMouseMove}
             initial="initial"
             whileHover="whileHover"
-            className="group relative w-full flex items-center justify-between border-b-2 border-neutral-700 py-4 transition-colors duration-500 hover:border-[#cae0ab] md:py-8 mt-12 first:mt-0"
+            className="group relative w-full flex items-center justify-between border-b-2 border-neutral-700 py-4 transition-colors duration-500 hover:border-[#cae0ab] md:py-8 mt-12 first:mt-0 hover:dark:bg-dot-white/[0.2] hover:bg-dot-black/[0.5] bg-opacity-0 hover:bg-opacity-100"
         >
             <div>
                 <motion.span
@@ -94,12 +94,12 @@ export const ImageLink = ({ heading, imgSrc, subheading, href }: LinkProps) => {
                 }}
                 transition={{ type: "spring" }}
                 src={imgSrc}
-                className="absolute z-10 h-24 w-32 rounded-lg object-cover md:h-48 md:w-64"
+                className="hidden sm:block absolute z-10 h-24 w-32 rounded-lg object-cover md:h-48 md:w-64"
                 alt={`Image representing a link for ${heading}`}
             />
             <img
                 src={imgSrc}
-                className="relative md:hidden z-0 top-0 right-0 w-20 h-20 object-cover rounded-full p-1 border-4 border-black"
+                className="relative sm:hidden z-0 top-0 right-0 w-20 h-20 object-cover rounded-full p-1 border-4 border-black group-hover:scale-[1.05] transition-all duration-300 group-hover:-translate-y-1"
                 alt={`Image representing a link for ${heading}`}
             />
 
@@ -115,7 +115,7 @@ export const ImageLink = ({ heading, imgSrc, subheading, href }: LinkProps) => {
                     },
                 }}
                 transition={{ type: "spring" }}
-                className="hidden md:block relative z-10 p-4"
+                className="hidden sm:block relative z-10 p-4"
             >
                 <FiArrowRight className="text-5xl text-lightYellow bg-outerCard rounded-full" />
             </motion.div>

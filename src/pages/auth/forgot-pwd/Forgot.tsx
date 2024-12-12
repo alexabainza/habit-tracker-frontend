@@ -14,7 +14,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ChevronLeftIcon, ChevronRightIcon, Loader2, MountainIcon } from "lucide-react";
+import { ChevronLeftIcon, Loader2, SendIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { ForgotPasswordSchema } from "@/utils/schemas";
 import { handleAuthError } from "@/utils/errorHandler";
@@ -46,7 +46,6 @@ const ForgotPassword: React.FC = () => {
 
             const result = response.data;
 
-            console.log(response)
             if (result.status === 200) {
                 toast.success(result.message);
                 navigate("/dashboard");
@@ -67,23 +66,15 @@ const ForgotPassword: React.FC = () => {
         <div className="flex justify-center items-center w-full bg-gradient-to-br from-[#2A3D43] via-[#40575C] to-[#61878A] text-white">
             <div className="w-full inline-flex items-center justify-between absolute top-0 p-5">
                 <p className="text-md text-gray-200 gap-1.5 flex items-end">
-                    <span className="hidden md:block">No account?</span>
-                    <Link to="/register" className="underline hover:font-semibold transition-all duration-300">
+                    <Link to="/" className="hover:underline hover:font-semibold transition-all duration-300">
                         <ChevronLeftIcon className="w-5 h-5 inline-block" />
-                        Register
-                    </Link>
-                </p>
-                <p className="text-md text-gray-200 gap-1.5 flex items-end">
-                    <span className="hidden md:block">Remembered it?</span>
-                    <Link to="/login" className="underline hover:font-semibold transition-all duration-300">
-                        Login
-                        <ChevronRightIcon className="w-5 h-5 inline-block" />
+                        Back to Home
                     </Link>
                 </p>
             </div>
-            <Card className="w-[400px] sm:mx-5 mx-5 border-0 shadow-none">
+            <Card className="w-[400px] md:w-[500px] sm:mx-5 mx-5 border-0 shadow-none">
                 <CardHeader>
-                    <MountainIcon className="w-12 h-12 text-white mx-auto mb-14" />
+                    <img src="/error.svg" alt="logo" className="w-40 h-40 mx-auto text-white" />
                     <CardTitle className="text-2xl md:text-4xl text-center">
                         Forgot Password
                     </CardTitle>
@@ -113,12 +104,26 @@ const ForgotPassword: React.FC = () => {
                                     </FormItem>
                                 )}
                             />
+                            <div className="flex items-center justify-between">
+                                <p className="text-xs text-gray-300">
+                                    Remembered it? Login{" "}
+                                    <Link to="/login" className="underline hover:font-bold">
+                                        here
+                                    </Link>
+                                </p>
+                                <p className="text-xs text-gray-300">
+                                    No Account? Register{" "}
+                                    <Link to="/register" className="underline hover:font-bold">
+                                        here
+                                    </Link>
+                                </p>
+                            </div>
                             <Button
                                 type="submit"
                                 className="w-full py-6 border border-white transition-all duration-300 text-white hover:bg-white/85 hover:text-black hover:border-transparent"
                                 disabled={isLoading}
                             >
-                                {isLoading ? <Loader2 className="animate-spin" /> : "Send Request"}
+                                {isLoading ? <Loader2 className="animate-spin" /> : <><SendIcon className="flex-shrink-0 w-5 h-5" />Send Request</>}
                             </Button>
                         </form>
                     </Form>

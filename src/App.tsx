@@ -19,8 +19,8 @@ function App() {
   return (
     <main className="min-h-dvh w-full flex justify-between">
       <BrowserRouter>
-        <Navbar />
         <Sonner duration={1500} />
+        <Navbar />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route element={<GuestRoute />}>
@@ -31,10 +31,12 @@ function App() {
             <Route path="/reset-password" element={<ResetPassword />} />
           </Route>
           <Route element={<PrivateRoute />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/habits" element={<Habits />} />
-            <Route path="/analytics" element={<Analytics />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route element={<Navbar />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/habits" element={<Habits />} />
+              <Route path="/analytics" element={<Analytics />} />
+              <Route path="/profile" element={<Profile />} />
+            </Route>
           </Route>
           <Route path="*" element={<Error />} />
         </Routes>
