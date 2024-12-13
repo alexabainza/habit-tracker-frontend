@@ -49,7 +49,7 @@ export function ChartOverview({
   }
 
   return (
-    <Card className="w-full min-h-[450px] max-h-[450px] flex-[0.6] bg-outerCard border-2 relative flex flex-col">
+    <Card className="w-full min-h-80 max-h-[450px] md:min-h-80 flex-[0.6] bg-outerCard border-2 relative flex flex-col">
       <CardTitle className="p-5 pb-1 text-xl text-lightYellow">
         {view === "monthly" ? (
           <span>
