@@ -42,11 +42,11 @@ const HabitCard: React.FC<HabitCardProps> = ({
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <Card
           style={{ backgroundColor: habit.color }}
-          className={`w-full flex justify-between lg:col-span-2 xl:col-span-1 shadow shadow-green-900 hover:scale-[1.05] transition-all duration-300 ease-in-out overflow-hidden relative hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[4px_4px_0px_black]`}
+          className={`w-full flex justify-between lg:col-span-2 xl:col-span-1 shadow shadow-green-900 hover:scale-[1.05] transition-all duration-300 ease-in-out overflow-hidden relative hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[4px_4px_0px_black] opacity-80 hover:opacity-100`}
         >
           <DialogTrigger>
             <CardHeader className="space-y-0 md:max-w-32 lg:max-w-40 group">
-              <DumbbellIcon className="w-72 h-72 absolute top-1/2 -right-10 transform -translate-y-2/3 opacity-[0.03]" />
+              <DumbbellIcon className="w-72 h-72 absolute top-1/2 -right-10 transform -translate-y-2/3 opacity-5 group-hover:opacity-10 transition-all duration-300" />
               <CardTitle className="lg:text-2xl sm:text-xl text-xl text-ellipsis text-nowrap overflow-hidden w-full max-w-40 md:max-w-64">
                 {habit.name}
               </CardTitle>

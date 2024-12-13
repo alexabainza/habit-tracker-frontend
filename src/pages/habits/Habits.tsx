@@ -21,22 +21,31 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { LoaderIcon, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight, LoaderIcon, Plus } from "lucide-react";
 import { habitSchema } from "@/utils/schemas";
 import { useFetch } from "@/hooks/use-fetch";
 import { Habit } from "@/utils/types";
 import HabitCard from "@/pages/habits/HabitCard";
 import ConfirmationDialog from "@/pages/habits/dialogs/ConfirmationDialog";
-import Loading from "@/components/ui/loading";
 import { toast } from "sonner";
 import { CardColor } from "@/utils/constants";
 import { Label } from "@/components/ui/label";
+import { useHabits } from "@/hooks/use-habits";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Habits: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
+  const {
+    habits,
+    loading,
+    totalPages,
+    page,
+    setPage,
+    setLoading,
+    setHabits,
+    limit,
+  } = useHabits();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [habits, setHabits] = useState<Habit[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [habitToUpdate, setHabitToUpdate] = useState<Habit["habit"] | null>(
     null
@@ -54,38 +63,6 @@ const Habits: React.FC = () => {
   });
 
   useEffect(() => {
-    const fetchHabits = async () => {
-      setLoading(true);
-
-      // Check if habits are already cached
-      const cachedHabits = localStorage.getItem("habits");
-      if (cachedHabits) {
-        setHabits(JSON.parse(cachedHabits));
-        setLoading(false);
-        return;
-      }
-
-      // If not cached, fetch from API
-      try {
-        const response = await useFetch("/habits", "get");
-        const result = response.data;
-        const fetchedHabits = result.data || [];
-        setHabits(fetchedHabits);
-
-        // Cache fetched habits
-        localStorage.setItem("habits", JSON.stringify(fetchedHabits));
-      } catch (error) {
-        console.error(error);
-        toast.error("Failed to fetch habits.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchHabits();
-  }, []);
-
-  useEffect(() => {
     if (habitToUpdate) {
       form.setValue("name", habitToUpdate.name);
       form.setValue("goal", habitToUpdate.goal);
@@ -95,7 +72,6 @@ const Habits: React.FC = () => {
 
   const handleSubmit = async () => {
     setLoading(true);
-    console.log("form values", form.getValues());
 
     try {
       const response = await useFetch("/habits", "post", {
@@ -107,11 +83,10 @@ const Habits: React.FC = () => {
         toast.error(result.message);
       } else {
         toast.success("Habit created successfully.");
-        setHabits((prevHabits) => [...prevHabits, result.data]);
+        setHabits((prevHabits: Habit[]) => [...prevHabits, result.data]);
 
         setIsDialogOpen(false);
       }
-      localStorage.removeItem("habits");
       setLoading(false);
       form.reset();
     } catch (error: any) {
@@ -136,7 +111,7 @@ const Habits: React.FC = () => {
       });
 
       const updatedHabit = response.data.data;
-      setHabits((prevHabits) =>
+      setHabits((prevHabits: Habit[]) =>
         prevHabits.map((habit) =>
           habit.habit._id === updatedHabit._id
             ? { ...habit, habit: updatedHabit }
@@ -145,7 +120,6 @@ const Habits: React.FC = () => {
       );
       setIsDialogOpen(false);
       setHabitToUpdate(null);
-      localStorage.removeItem("habits");
       toast.success("Habit updated successfully.");
       form.reset();
     } catch (error: any) {
@@ -166,10 +140,9 @@ const Habits: React.FC = () => {
     setLoading(true);
     try {
       await useFetch("/habits", "delete", { id: habitToDelete });
-      setHabits((prev) =>
+      setHabits((prev: Habit[]) =>
         prev.filter((habit) => habit.habit._id !== habitToDelete)
       );
-      localStorage.removeItem("habits");
       toast.success("Habit deleted successfully.");
     } catch (error) {
       toast.error("Error deleting habit.");
@@ -181,13 +154,33 @@ const Habits: React.FC = () => {
 
   return (
     <div className="w-full min-h-full bg-gradient-to-br from-[#2A3D43] to-[#40575C] relative overflow-hidden">
-      <img src="/error.svg" alt="auth" className="absolute top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 h-[500px] md:h-[600px] lg:h-[700px] opacity-5" />
       <div className="w-full py-12 lg:px-16 sm:px-5 px-5 space-y-4">
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <div className="flex gap-4 justify-between">
-            <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold text-lightYellow tracking-wider">
-              Your habits
-            </h1>
+            <section className="w-full flex flex-col items-end justify-between">
+              <h1 className="w-full lg:text-4xl sm:text-3xl text-2xl font-bold text-lightYellow tracking-wider ">
+                Your Habits
+              </h1>
+              <div className="md:hidden w-full flex md:justify-end items-center md:gap-4 mt-4 text-lightYellow gap-4">
+                <Button
+                  disabled={page === 1}
+                  onClick={() => setPage(Math.max(page - 1, 1))}
+                >
+                  <ChevronLeft className="flex-shrink-0 w-5 h-5" />
+                  <span>Previous</span>
+                </Button>
+                <span>
+                  {page} of {totalPages}
+                </span>
+                <Button
+                  disabled={page === totalPages}
+                  onClick={() => setPage(Math.min(page + 1, totalPages))}
+                >
+                  <span>Next</span>
+                  <ChevronRight className="flex-shrink-0 w-5 h-5" />
+                </Button>
+              </div>
+            </section>
             <DialogTrigger asChild>
               <Button
                 className="h-16 w-16 md:h-12 md:w-fit bg-lightYellow text-black hover:bg-yellow-500 fixed bottom-5 right-5 md:bottom-0 md:right-0 md:relative rounded-full md:rounded-md shadow-md shadow-neutral-900 z-50"
@@ -204,7 +197,11 @@ const Habits: React.FC = () => {
 
           <div className="mt-6 grid gap-4">
             {loading ? (
-              <Loading />
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6 w-full">
+                {[...Array(limit)].map((_, index) => (
+                  <Skeleton key={index} className="h-24 lg:col-span-2 xl:col-span-1 bg-innermostCard" />
+                ))}
+              </div>
             ) : habits.length === 0 ? (
               <div className="text-center text-white">No habits found.</div>
             ) : (
@@ -224,6 +221,25 @@ const Habits: React.FC = () => {
                 ))}
               </div>
             )}
+            <div className="w-full max-w-5xl hidden md:flex justify-center items-center gap-4 text-lightYellow mx-auto md:fixed bottom-5 left-1/2 transform -translate-x-1/2">
+              <Button
+                disabled={page === 1}
+                onClick={() => setPage(Math.max(page - 1, 1))}
+              >
+                <ChevronLeft className="flex-shrink-0 w-5 h-5" />
+                <span>Previous</span>
+              </Button>
+              <span>
+                {page} of {totalPages}
+              </span>
+              <Button
+                disabled={page === totalPages}
+                onClick={() => setPage(Math.min(page + 1, totalPages))}
+              >
+                <span>Next</span>
+                <ChevronRight className="flex-shrink-0 w-5 h-5" />
+              </Button>
+            </div>
           </div>
           <ConfirmationDialog
             open={isDeleteDialogOpen}
@@ -282,11 +298,10 @@ const Habits: React.FC = () => {
                           {[1, 2, 3, 4, 5, 6, 7].map((value) => (
                             <label
                               key={value}
-                              className={`px-4 py-1 rounded-full cursor-pointer border-2 border-main ${
-                                field.value === value
-                                  ? "bg-main text-white"
-                                  : ""
-                              }`}
+                              className={`px-4 py-1 rounded-full cursor-pointer border-2 border-main ${field.value === value
+                                ? "bg-main text-white"
+                                : ""
+                                }`}
                             >
                               <input
                                 type="radio"

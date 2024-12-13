@@ -23,7 +23,7 @@ const Navigation = () => {
     <ul className="font-medium space-y-5 z-50 shadow-sm">
       {MenuItems.map((item, index) => (
         <li key={index}>
-          <TooltipProvider delayDuration={300}>
+          <TooltipProvider delayDuration={100}>
             <Tooltip>
               <TooltipTrigger className="w-full">
                 <Link
