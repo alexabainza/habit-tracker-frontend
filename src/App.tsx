@@ -14,6 +14,7 @@ import ResetPassword from "./pages/auth/reset-pwd/Reset";
 import ForgotPassword from "./pages/auth/forgot-pwd/Forgot";
 import Verify from "./pages/auth/verification/Verify";
 import Error from "./pages/Error";
+import { HabitsProvider } from "./hooks/use-habits";
 
 function App() {
   return (
@@ -21,23 +22,25 @@ function App() {
       <BrowserRouter>
         <Sonner duration={1500} />
         <Navbar />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route element={<GuestRoute />}>
-            <Route path="/login" element={<LoginScreen />} />
-            <Route path="/register" element={<RegisterScreen />} />
-            <Route path="/verify-email" element={<Verify />} />
-            <Route path="/forgot" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-          </Route>
-          <Route element={<PrivateRoute />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/habits" element={<Habits />} />
-            <Route path="/analytics" element={<Analytics />} />
-            <Route path="/profile" element={<Profile />} />
-          </Route>
-          <Route path="*" element={<Error />} />
-        </Routes>
+        <HabitsProvider>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route element={<GuestRoute />}>
+              <Route path="/login" element={<LoginScreen />} />
+              <Route path="/register" element={<RegisterScreen />} />
+              <Route path="/verify-email" element={<Verify />} />
+              <Route path="/forgot" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+            </Route>
+            <Route element={<PrivateRoute />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/habits" element={<Habits />} />
+              <Route path="/analytics" element={<Analytics />} />
+              <Route path="/profile" element={<Profile />} />
+            </Route>
+            <Route path="*" element={<Error />} />
+          </Routes>
+        </HabitsProvider>
       </BrowserRouter>
     </main>
   );
