@@ -20,7 +20,7 @@ const Navbar: React.FC = () => {
           isBurgerOpen ? "opacity-0" : "border border-gray-700 opacity-100"
         }`}
       >
-        <MountainIcon className="h-6 w-6 absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 text-lightYellow" />
+        <img src="/auth.svg" alt="Menu" className="h-12 w-12 object-contain absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
         <span className="sr-only">Toggle Menu</span>
       </button>
       {isBurgerOpen && (

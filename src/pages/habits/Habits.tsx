@@ -180,7 +180,8 @@ const Habits: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-h-full bg-gradient-to-br from-[#2A3D43] to-[#40575C]">
+    <div className="w-full min-h-full bg-gradient-to-br from-[#2A3D43] to-[#40575C] relative overflow-hidden">
+      <img src="/error.svg" alt="auth" className="absolute top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 h-[500px] md:h-[600px] lg:h-[700px] opacity-5" />
       <div className="w-full py-12 lg:px-16 sm:px-5 px-5 space-y-4">
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <div className="flex gap-4 justify-between">
@@ -189,13 +190,13 @@ const Habits: React.FC = () => {
             </h1>
             <DialogTrigger asChild>
               <Button
-                className="h-12 w-12 md:w-fit bg-lightYellow text-black hover:bg-lightYellow/90 fixed bottom-5 right-5 md:bottom-0 md:right-0 md:relative rounded-full md:rounded-md shadow-md shadow-neutral-900 z-50"
+                className="h-16 w-16 md:h-12 md:w-fit bg-lightYellow text-black hover:bg-yellow-500 fixed bottom-5 right-5 md:bottom-0 md:right-0 md:relative rounded-full md:rounded-md shadow-md shadow-neutral-900 z-50"
                 onClick={() => {
                   setIsDialogOpen(true);
                   setIsEditing(false);
                 }}
               >
-                <Plus className="w-8 h-8" />
+                <Plus className="w-12 h-12 flex-shrink-0" />
                 <span className="ml-1 hidden md:block ">Create Habit</span>
               </Button>
             </DialogTrigger>

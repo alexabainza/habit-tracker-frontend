@@ -31,7 +31,7 @@ const Navigation = () => {
                   className={`border border-dashed rounded-md border-lightYellow flex-shrink-0 flex items-center gap-2 p-2.5 hover:rounded-2xl transition-all duration-300 group ${
                     location.pathname === item.link
                       ? "bg-lightYellow text-main border-main"
-                      : "text-lightYellow hover:bg-lightYellow hover:drop-shadow-sm"
+                      : "text-lightYellow hover:text-main hover:bg-lightYellow hover:drop-shadow-sm"
                   }`}
                 >
                   <item.icon

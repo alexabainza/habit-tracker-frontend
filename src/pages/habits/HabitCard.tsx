@@ -46,7 +46,7 @@ const HabitCard: React.FC<HabitCardProps> = ({
         >
           <DialogTrigger>
             <CardHeader className="space-y-0 md:max-w-32 lg:max-w-40 group">
-              <DumbbellIcon className="w-72 h-72 absolute top-1/2 -right-10 transform -translate-y-2/3 opacity-5" />
+              <DumbbellIcon className="w-72 h-72 absolute top-1/2 -right-10 transform -translate-y-2/3 opacity-[0.03]" />
               <CardTitle className="lg:text-2xl sm:text-xl text-xl text-ellipsis text-nowrap overflow-hidden w-full max-w-40 md:max-w-64">
                 {habit.name}
               </CardTitle>
@@ -69,7 +69,7 @@ const HabitCard: React.FC<HabitCardProps> = ({
             />
           </CardContent>
         </Card>
-        <DialogContent className="bg-outerCard flex flex-col min-h-[575px] transition-all duration-300">
+        <DialogContent className="bg-outerCard flex flex-col min-h-[575px] transition-all duration-300 z-[100]">
           <DialogTitle className="text-3xl text-lightYellow">
             Statistics for <strong>{habit.name}</strong>
           </DialogTitle>

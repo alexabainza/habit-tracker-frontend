@@ -31,12 +31,10 @@ function App() {
             <Route path="/reset-password" element={<ResetPassword />} />
           </Route>
           <Route element={<PrivateRoute />}>
-            <Route element={<Navbar />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/habits" element={<Habits />} />
-              <Route path="/analytics" element={<Analytics />} />
-              <Route path="/profile" element={<Profile />} />
-            </Route>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/habits" element={<Habits />} />
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
           <Route path="*" element={<Error />} />
         </Routes>

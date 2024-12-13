@@ -5,6 +5,7 @@ import { MonthlyHabits } from "./MonthlyHabit";
 import WeeklyHabits from "./WeeklyHabits";
 
 import { useSearchParams } from "react-router-dom";
+import { DumbbellIcon, MountainSnowIcon } from "lucide-react";
 
 const Analytics: React.FC = () => {
   const [history, setHistory] = useSearchParams();
@@ -18,8 +19,9 @@ const Analytics: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full min-h-dvh flex-1 bg-gradient-to-br from-[#2A3D43] to-[#40575C] xl:px-16">
-      <div className="w-full p-12 flex-1 h-full px-5 space-y-4">
+    <div className="w-full h-full min-h-dvh flex-1 bg-gradient-to-br from-[#2A3D43] to-[#40575C] xl:px-16 z-50">
+      <MountainSnowIcon className="w-[1000px] h-[1000px] text-lightYellow fixed -z-[10] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-5" />
+      <div className="w-full p-12 flex-1 h-full px-5 space-y-4 z-50">
         <main>
           <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold mb-4 md:mb-0 tracking-wider text-lightYellow">
             Analytics
@@ -30,11 +32,10 @@ const Analytics: React.FC = () => {
               onClick={() => handleChangeSelected("weekly")}
             >
               <span
-                className={`${
-                  selected === "weekly"
+                className={`${selected === "weekly"
                     ? "underline text-lightYellow font-semibold tracking-wide"
                     : "text-white"
-                }`}
+                  }`}
               >
                 Weekly
               </span>
@@ -44,11 +45,10 @@ const Analytics: React.FC = () => {
               onClick={() => handleChangeSelected("monthly")}
             >
               <span
-                className={`${
-                  selected === "monthly"
+                className={`${selected === "monthly"
                     ? "underline text-lightYellow font-semibold tracking-wide"
                     : "text-white"
-                }`}
+                  }`}
               >
                 Monthly
               </span>

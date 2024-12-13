@@ -91,7 +91,7 @@ const Overview: React.FC<OverviewProps> = ({ selected, skippedDays }) => {
     <Card className="bg-outerCard py-4 border-none px-8 space-y-2 w-full md:max-w-2xl lg:max-w-none md:mx-auto">
       <CardHeader className="p-3 pb-0 pl-0">
         <CardTitle className="text-lightYellow text-xl">
-          Streak Overview
+          Streak Overview for this <span className="uppercase font-bold underline">{selected.split('l')[0]}</span>
         </CardTitle>
       </CardHeader>
       <CardContent className="grid sm:grid-cols-2 xl:grid-cols-4 xl:grid-rows-1 gap-4 overflow-x-auto w-full p-3 pl-0.5">
