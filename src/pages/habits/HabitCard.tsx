@@ -70,7 +70,7 @@ const HabitCard: React.FC<HabitCardProps> = ({
             />
           </CardContent>
         </Card>
-        <DialogContent className="bg-outerCard flex flex-col max-h-dvh m-2 transition-all duration-300">
+        <DialogContent className="bg-outerCard flex flex-col max-h-dvh transition-all duration-300">
           <DialogTitle className="lg:text-3xl sm:text-2xl text-2xl text-lightYellow">
             Statistics for <strong>{habit.name}</strong>
           </DialogTitle>
@@ -91,7 +91,7 @@ const HabitCard: React.FC<HabitCardProps> = ({
           <DialogClose asChild>
             <button
               aria-label="Close"
-              className="absolute top-3 z-30 right-2 px-2 py-1 rounded-full bg-red-500 text-white hover:bg-red-300 transition-all duration-200"
+              className="absolute top-3 z-30 right-3 px-3 py-2 rounded-full bg-red-500 text-white hover:bg-red-300 transition-all duration-200"
             >
               ✕
             </button>
