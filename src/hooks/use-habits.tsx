@@ -35,11 +35,12 @@ export const HabitsProvider = ({ children }: PropsWithChildren) => {
     const [weeklyCounts, setWeeklyCounts] = useState<{ [id: string]: number }>({});
     const [error, setError] = useState<{ message: string; status: string } | null>(null);
 
-    const [page, setPage] = useState(1);
-    const limit = 4;
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const [page, setPage] = useState(searchParams.get("page") ? parseInt(searchParams.get("page") || "1") : 1);
+    const limit = 12;
     const [totalPages, setTotalPages] = useState(0);
 
-    const [searchParams, setSearchParams] = useSearchParams();
      
     useEffect(() => {
         const fetchHabits = async () => {

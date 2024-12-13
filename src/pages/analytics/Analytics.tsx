@@ -5,7 +5,6 @@ import { MonthlyHabits } from "./MonthlyHabit";
 import WeeklyHabits from "./WeeklyHabits";
 
 import { useSearchParams } from "react-router-dom";
-import { DumbbellIcon, MountainSnowIcon } from "lucide-react";
 
 const Analytics: React.FC = () => {
   const [history, setHistory] = useSearchParams();
