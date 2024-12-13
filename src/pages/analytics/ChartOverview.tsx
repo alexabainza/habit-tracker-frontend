@@ -42,13 +42,13 @@ export function ChartOverview({
   const dateRange = `${new Date(data[0]?.date).toDateString()} to ${new Date(
     data[data.length - 1]?.date
   ).toDateString()}`;
-  
+
   return (
-    <Card className="w-full min-h-[450px] max-h-[450px] flex-[0.6] bg-outerCard border-2 relative px-5">
+    <Card className="w-full bg-outerCard border-2 relative lg:px-2 md:px-4 sm:px-1 px-1">
       {loading ? (
         <Loading />
       ) : data.length === 0 || !data ? (
-        <div className="text-xl text-center text-yellow-300 absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 space-y-5">
+        <div className="text-xl text-center text-yellow-300 absolute transform -translate-x-1/2 -translate-y-1/2 top-1/4 left-1/2 space-y-5">
           <GiDesert className="w-40 h-40 mx-auto" />
           <h3>
             <strong>No data available</strong> for the selected date range.
@@ -56,7 +56,7 @@ export function ChartOverview({
         </div>
       ) : view === "monthly" ? (
         <>
-          <CardTitle className="p-5 text-xl text-lightYellow">
+          <CardTitle className="p-5 lg:text-xl sm:text-md text-md text-lightYellow">
             <span>
               Overview from
               <strong className="ml-2">{dateRange}</strong>
@@ -65,13 +65,13 @@ export function ChartOverview({
           <CardContent>
             <ChartContainer
               config={chartConfig}
-              className="min-h-60 w-full text-white text-md "
+              className="min-h-60 w-full text-white text-md"
             >
               <LineChart
                 accessibilityLayer
                 data={data}
                 margin={{
-                  top: 20,
+                  // top: 20,
                   left: 12,
                   right: 12,
                 }}
@@ -123,7 +123,7 @@ export function ChartOverview({
               accessibilityLayer
               data={data}
               margin={{
-                top: 20,
+                // top: 20,/
                 left: 12,
                 right: 12,
               }}

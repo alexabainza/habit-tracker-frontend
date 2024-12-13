@@ -61,11 +61,12 @@ const WeeklyHabits = () => {
     }
   };
 
-
   const fetchUserHabitCount = async () => {
     try {
       const response = await useFetch(
-        `/analytics/user-habit-count/${startOfWeek(startRange).toISOString()}_${endRange.toISOString()}`,
+        `/analytics/user-habit-count/${startOfWeek(
+          startRange
+        ).toISOString()}_${endRange.toISOString()}`,
         "get"
       );
       const result = response.data;
@@ -112,7 +113,7 @@ const WeeklyHabits = () => {
     return <Error message={error} errorStatus="500" />;
   }
 
-  console.log(habits)
+  console.log(habits);
 
   return (
     <div className="space-y-6 w-full flex flex-col gap-4">
@@ -199,7 +200,7 @@ const WeeklyHabits = () => {
                           startOfWeek(selectedDay, {
                             weekStartsOn: 0,
                           }).getDate() +
-                          (index + 1)
+                            (index + 1)
                         );
                         const isActive = habit.day
                           .map((d) => new Date(d).toISOString().split("T")[0])
@@ -207,8 +208,9 @@ const WeeklyHabits = () => {
                         return (
                           <div
                             key={`habit-${habit.habit}-day-${index}`}
-                            className={`col-span-1 row-span-1 h-6 sm:h-8 lg:h-6 flex items-center justify-center rounded-md ${isActive ? "bg-green-500" : "bg-gray-200"
-                              }`}
+                            className={`col-span-1 row-span-1 h-6 sm:h-8 lg:h-6 flex items-center justify-center rounded-md ${
+                              isActive ? "bg-green-500" : "bg-gray-200"
+                            }`}
                           />
                         );
                       })}

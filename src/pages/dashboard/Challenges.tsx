@@ -17,6 +17,21 @@ const ChallengeCard: React.FC<{
   const [loading, setLoading] = useState(false);
   const data = [{ name: habit.name, value: weeklyProgress, fill: habit.color }];
   const [progress, setProgress] = useState(0); // Track the progress in state
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  // Check if screen size is small
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth <= 640); // 640px is typical for small screens
+    };
+
+    handleResize(); // Check initial size
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (progress !== weeklyProgress) {
@@ -57,7 +72,7 @@ const ChallengeCard: React.FC<{
 
   return (
     <div
-      className={`flex flex-1 bg-innermostCard py-4 h-28 rounded-2xl lg:px-8 sm:px-8 px-4 gap-4 align-middle justify-between transform transition-transform duration-500 ease-in-out ${className}`}
+      className={`flex flex-1 bg-innermostCard py-4 h-28 rounded-2xl px-8 gap-4 align-middle justify-between transform transition-transform duration-500 ease-in-out ${className}`}
     >
       <div className="flex items-center w-full justify-between">
         <div className="flex items-center gap-4 w-3/4">
@@ -120,7 +135,9 @@ const ChallengeCard: React.FC<{
             />
           </RadialBarChart>
           <p className="absolute inset-0 flex items-center justify-center text-white font-bold text-md">
-            {Math.round(weeklyProgress)}%
+            {isSmallScreen
+              ? `${weeklyCount} / ${habit.goal}`
+              : `${Math.round(weeklyProgress)}%`}
           </p>
         </div>
       </div>

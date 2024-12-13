@@ -14,9 +14,10 @@ const Dashboard: React.FC = () => {
   const [weeklyCounts, setWeeklyCounts] = useState<{ [id: string]: number }>(
     {}
   );
-  const [error, setError] = useState<{ message: string; status: string } | null>(
-    null
-  );
+  const [error, setError] = useState<{
+    message: string;
+    status: string;
+  } | null>(null);
 
   const completed = Object.values(habitStates).filter(Boolean).length;
   const percentage = numHabits === 0 ? 0 : (completed / numHabits) * 100;
@@ -114,8 +115,8 @@ const Dashboard: React.FC = () => {
   };
 
   if (error && !loading) {
-    return <Error message={error.message} errorStatus={error.status} />
-  };
+    return <Error message={error.message} errorStatus={error.status} />;
+  }
 
   return loading ? (
     <div className="w-full bg-gradient-to-br from-[#2A3D43] to-[#40575C] flex flex-col">
@@ -142,7 +143,7 @@ const Dashboard: React.FC = () => {
         </h1>
         <section className="bg-outerCard sm:px-8 px-4 py-8 rounded-xl  space-y-3">
           <div className="flex justify-between items-end px-2">
-            <div className="w-3/4 space-y-4">
+            <div className="lg:w-3/4 sm:w-full w-full space-y-4">
               <h1 className="font-semibold text-2xl text-lightYellow">
                 Today's Challenges
               </h1>
@@ -163,7 +164,7 @@ const Dashboard: React.FC = () => {
                 </p>
               </div>
             </div>
-            <h1 className="text-xl text-lightYellow font-bold">
+            <h1 className="text-xl text-lightYellow font-bold hidden lg:block">
               Weekly progress
             </h1>
           </div>

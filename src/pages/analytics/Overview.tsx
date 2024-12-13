@@ -88,16 +88,19 @@ const Overview: React.FC<OverviewProps> = ({ selected, skippedDays }) => {
   }, [selected]);
 
   return (
-    <Card className="bg-outerCard py-4 border-none px-8 space-y-2 w-full md:max-w-2xl lg:max-w-none md:mx-auto">
-      <CardHeader className="p-3 pb-0 pl-0">
+    <Card className="bg-outerCard lg:py-4 sm:py-2 py-2 border-2 lg:px-8 md:px-4 sm:px-2 px-2 space-y-2 w-full md:mx-auto flex flex-col justify-center">
+      <CardHeader className="pb-0 pl-4">
         <CardTitle className="text-lightYellow text-xl">
           Streak Overview for this <span className="uppercase font-bold underline">{selected.split('l')[0]}</span>
         </CardTitle>
       </CardHeader>
-      <CardContent className="grid sm:grid-cols-2 xl:grid-cols-4 xl:grid-rows-1 gap-4 overflow-x-auto w-full p-3 pl-0.5">
+      <CardContent className="grid sm:grid-cols-2 xl:grid-cols-4 xl:grid-rows-1 gap-4 overflow-x-auto w-full p-3">
         {loading ? (
           [...Array(4)].map((_, index) => (
-            <Skeleton key={index} className="w-full col-span-1 h-24 bg-slate-400" />
+            <Skeleton
+              key={index}
+              className="w-full col-span-1 h-24 bg-slate-400"
+            />
           ))
         ) : (
           <>
@@ -139,7 +142,7 @@ const OverviewCard: React.FC<OverviewCardProps & PropsWithChildren> = ({
   children,
 }) => {
   return (
-    <Card className="w-full col-span-1 border-none bg-innermostCard h-24 flex items-center justify-evenly md:gap-3 flex-shrink-0 transition-all duration-300 translate-x-[-2px] translate-y-[-2px] shadow-[4px_4px_0px_black] hover:translate-x-0 hover:translate-y-0 hover:rounded-md hover:shadow-none">
+    <Card className="w-full col-span-1 border-none bg-innermostCard h-24 flex items-center justify-evenly md:gap-3 flex-shrink-0 transition-all duration-300     translate-x-[-2px] translate-y-[-2px] shadow-[4px_4px_0px_black] hover:translate-x-0 hover:translate-y-0 hover:rounded-md hover:shadow-none">
       <CardContent className="pt-4 p-0 md:p-4 flex items-center justify-center gap-1">
         <h1 className="text-5xl font-bold text-center text-lightYellow text-nowrap">
           {value === 0 ? "-_-" : value}

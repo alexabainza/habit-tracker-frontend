@@ -70,22 +70,34 @@ export function MonthlyHabits() {
   }));
 
   return (
-    <div className="space-y-6 w-full flex flex-col relative gap-4">
+    <div className="space-y-2 w-full flex flex-col relative gap-2 min-h-dvh">
       <Overview selected="monthly" skippedDays={skippedDays} />
-      <div className="flex gap-4">
-        <div className="w-3/5">
+      <div className="flex lg:flex-row md:flex-col sm:flex-col flex-col gap-4">
+        <div className="lg:w-4/5 md:w-full w-full">
           <ChartOverview view="monthly" loading={loading} data={data} />
         </div>
         <Calendar
           mode="single"
-          className="text-white text-3xl bg-outerCard rounded-xl"
+          className="text-white text-3xl bg-outerCard rounded-xl flex flex-1 justify-center border-2 border-black"
           modifiers={modifiers}
           onMonthChange={handleMonthChange}
           modifiersClassNames={{
-            highActivity: "bg-green-600 text-outerCard hover:bg-green-600/80",
+            highActivity:
+              "bg-green-600 rounded-full text-outerCard hover:bg-green-600/80",
             mediumActivity:
-              "bg-green-400 text-outerCard  hover:bg-green-400/80",
-            lowActivity: "bg-green-200 text-outerCard hover:bg-green-200/80",
+              "bg-green-400 rounded-full text-outerCard  hover:bg-green-400/80",
+            lowActivity:
+              "bg-green-200 rounded-full text-outerCard hover:bg-green-200/80",
+          }}
+          classNames={{
+            months: "lg:p-4 sm:p-2 p-2 rounded-xl",
+            table: "mt-8 ",
+            caption_label:
+              "lg:text-xl sm:text-lg text-lg font-medium text-lightYellow",
+            day: "lg:h-16 md:h-14 sm:h-10 h-10 lg:w-16 md:w-14 sm:w-10 w-10 text-center",
+            cell: "lg:text-lg sm:text-sm text-sm lg:w-16 md:w-16 sm:w-10 w-10 text-center",
+            head_cell: "text-center text-sm lg:w-16 md:w-14 sm:w-10 w-10 mt-4",
+            nav_button: "hover:opacity-60 rounded-full text-lightYellow",
           }}
         />
       </div>

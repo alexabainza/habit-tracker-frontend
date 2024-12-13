@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -69,11 +70,11 @@ const HabitCard: React.FC<HabitCardProps> = ({
             />
           </CardContent>
         </Card>
-        <DialogContent className="bg-outerCard flex flex-col min-h-[575px] transition-all duration-300 z-[100]">
-          <DialogTitle className="text-3xl text-lightYellow">
+        <DialogContent className="bg-outerCard flex flex-col max-h-dvh m-2 transition-all duration-300">
+          <DialogTitle className="lg:text-3xl sm:text-2xl text-2xl text-lightYellow">
             Statistics for <strong>{habit.name}</strong>
           </DialogTitle>
-          <DialogDescription className="text-start text-white text-md">
+          <DialogDescription className="text-start text-white lg:text-lg sm:text-sm text-sm">
             Started on:{" "}
             <strong className="text-lightYellow">
               {formatDate(habit.created_at)}
@@ -87,6 +88,14 @@ const HabitCard: React.FC<HabitCardProps> = ({
           <DialogHeader className="w-full flex md:flex-row items-center gap-3">
             <StreakCard id={habit._id} />
           </DialogHeader>
+          <DialogClose asChild>
+            <button
+              aria-label="Close"
+              className="absolute top-3 z-30 right-2 px-2 py-1 rounded-full bg-red-500 text-white hover:bg-red-300 transition-all duration-200"
+            >
+              ✕
+            </button>
+          </DialogClose>
         </DialogContent>
       </Dialog>
     </>

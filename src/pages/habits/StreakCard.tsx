@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Loading from "../../components/ui/loading";
 import { Calendar } from "../../components/ui/calendar";
-import { formatDate, formatDateToMMM_d } from "@/utils/dateFormatter";
+import { formatDateToMMM_d } from "@/utils/dateFormatter";
 
 const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
   const [loading, setLoading] = useState(true);
@@ -64,22 +64,24 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
   return loading ? (
     <Loading />
   ) : (
-    <div className="w-full flex flex-col items-center gap-3 justify-between">
-      <div className="flex gap-4">
-        <div className="flex w-full h-[120px] bg-innermostCard py-8 rounded-lg gap-4 px-8 items-center">
-          <span className="text-7xl font-extrabold text-lightYellow">
+    <div className="w-full flex flex-col items-center justify-between">
+      <div className="flex lg:flex-row md:flex-row sm:flex-col flex-col gap-2 w-full">
+        <div className="flex w-full lg:max-h-[120px] sm:max-h-[80px] max-h-[80px] bg-innermostCard py-8 rounded-lg gap-4 lg:px-8 sm:px-4 px-4 items-center">
+          <span className="lg:text-7xl sm:text-5xl text-5xl font-extrabold text-lightYellow">
             {streakData.current}
           </span>
-          <div>
-            <p className="text-lg font-medium text-white">CURRENT STREAK</p>
+          <div className="lg:w-full md:w-full">
+            <p className="font-medium text-white">CURRENT STREAK</p>
             {streakData.currentStreakDates.length === 0 ? (
               <p className="text-white text-xs">No current streak</p>
             ) : (
               <>
                 {streakData.currentStreakDates.length === 0 ? (
-                  <p className="text-white text-xs">No best streak</p>
+                  <p className="text-white text-xs text-start">
+                    No best streak
+                  </p>
                 ) : streakData.currentStreakDates.length === 1 ? (
-                  <p className="text-white text-xs">
+                  <p className="text-white text-xs text-start">
                     {formatDateToMMM_d(streakData.currentStreakDates[0])}
                   </p>
                 ) : (
@@ -95,12 +97,13 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
             )}
           </div>
         </div>
-        <div className="flex w-full h-[120px] bg-innermostCard py-8 rounded-lg gap-4 px-8 items-center">
-          <span className="text-7xl font-extrabold text-lightYellow">
+        <div className="flex w-full lg:max-h-[120px] sm:max-h-[80px] max-h-[80px] bg-innermostCard py-8 rounded-lg gap-4 lg:px-8 sm:px-4 px-4 items-center">
+          <span className="lg:text-7xl sm:text-5xl text-5xl font-extrabold text-lightYellow">
             {streakData.best}
           </span>
+
           <div>
-            <p className="text-lg font-medium text-white">BEST STREAK</p>
+            <p className="font-medium text-white">BEST STREAK</p>
             {streakData.bestStreakDates.length === 0 ? (
               <p className="text-white text-xs">No best streak</p>
             ) : streakData.bestStreakDates.length === 1 ? (
@@ -118,16 +121,26 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
           </div>
         </div>
       </div>
-      <div className="w-full text-lightYellow">
+      <div className="w-full text-lightYellow flex justify-center">
         <Calendar
           mode="single"
-          className="p-6 text-white text-3xl"
+          className="lg:py-4 sm:py-2 py-2 text-white text-3xl"
           modifiers={modifiers}
           modifiersClassNames={{
             accomplished:
-              "bg-lightYellow text-main rounded-full hover:bg-orange-300 hover:text-main",
+              "bg-lightYellow text-main hover:bg-orange-100 rounded-full hover:text-main",
           }}
-          onMonthChange={(newMonth) => console.log("Month changed:", newMonth)}
+          classNames={{
+            months: "lg:p-4 sm:p-2 p-2 rounded-xl bg-innermostCard",
+            table: "mt-8 ",
+            caption_label:
+              "lg:text-xl sm:text-lg text-lg font-medium text-lightYellow",
+            day: "lg:h-12 sm:h-10 h-10 md:h-12 md:w-16 lg:w-16 sm:w-10 w-10",
+            cell: "lg:text-lg sm:text-sm text-sm space-x-4",
+            head_cell:
+              "border border-none text-center text-sm lg:w-16 md:h-12 md:w-16 sm:w-10 w-10",
+            nav_button: "hover:opacity-60 rounded-full text-lightYellow",
+          }}
         />
       </div>
     </div>
