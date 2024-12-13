@@ -50,7 +50,7 @@ export function ChartOverview({
 
   return (
     <Card className="w-full min-h-[450px] max-h-[450px] flex-[0.6] bg-outerCard border-2 relative flex flex-col">
-      <CardTitle className="p-5 text-xl text-lightYellow">
+      <CardTitle className="p-5 pb-1 text-xl text-lightYellow">
         {view === "monthly" ? (
           <span>
             Overview from
@@ -63,7 +63,7 @@ export function ChartOverview({
           </span>
         )}
       </CardTitle>
-      <CardContent className="px-5">
+      <CardContent>
         <ChartContainer
           config={chartConfig}
           className="min-h-60 w-full text-white text-md"

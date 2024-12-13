@@ -92,7 +92,6 @@ const Overview: React.FC<OverviewProps> = ({ selected, skippedDays }) => {
   const end = selected === 'weekly' ? endOfWeek(new Date(), { weekStartsOn: 0 }) : endOfMonth(new Date());
 
   const thisWeek = `${format(start, 'MMM dd')} to ${format(end, 'MMM dd')}`;
-  console.log(thisWeek);
 
   return (
     <Card className="bg-outerCard py-4 border-none px-8 space-y-2 w-full md:max-w-2xl lg:max-w-none md:mx-auto">

@@ -22,6 +22,8 @@ import { ChartOverview } from "./ChartOverview";
 import { formatDate } from "@/utils/dateFormatter";
 import Overview from "./Overview";
 import Error from "../Error";
+import { Button } from "@/components/ui/button";
+import { useSearchParams } from "react-router-dom";
 
 type DataType = {
   habit: string;
@@ -34,30 +36,38 @@ type Data = {
 };
 
 const WeeklyHabits = () => {
-  const [loading, setLoading] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [loading, setLoading] = useState({
+    habits: false,
+    userHabitCount: false,
+  });
   const [habits, setHabits] = useState<DataType[]>([]);
   const [selectedDay, setSelectedDay] = useState<Date>(startOfToday());
   const [error, setError] = useState<string | null>(null);
   const [userHabitCount, setUserHabitCount] = useState<Data[]>([]);
+  const [page, setPage] = useState(searchParams.get("page") ? parseInt(searchParams.get("page") || "1") : 1);
+  const [totalPages, setTotalPages] = useState(0);
+  const limit = 12;
 
   const startRange = startOfWeek(selectedDay, { weekStartsOn: 0 });
   const endRange = endOfWeek(selectedDay, { weekStartsOn: 0 });
   const skippedDays = userHabitCount.filter((item) => item.count === 0).length;
 
   const fetchHabits = async () => {
-    setLoading(true);
+    setLoading((prevState) => ({ ...prevState, habits: true }));
     try {
       const response = await useFetch(
-        `/analytics/habit-days/${startRange}-${endRange}`,
+        `/analytics/habit-days/${startRange}-${endRange}?page=${page}&limit=${limit}`,
         "get"
       );
-      const result = response.data;
+      const result = response.data.data;
+
       setHabits(result.data || []);
-      setLoading(false);
+      setTotalPages(result.totalPages);
     } catch (error: any) {
       setError(error.message);
     } finally {
-      setLoading(false);
+      setLoading((prevState) => ({ ...prevState, habits: false }));
     }
   };
 
@@ -82,18 +92,23 @@ const WeeklyHabits = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      setLoading((prevState) => ({ ...prevState, userHabitCount: true }));
       try {
         await Promise.all([fetchHabits(), fetchUserHabitCount()]);
       } catch (error) {
         setError("Error fetching data");
       } finally {
-        setLoading(false);
+        setLoading((prevState) => ({ ...prevState, userHabitCount: false }));
       }
     };
 
     fetchData();
   }, [selectedDay]);
+
+  useEffect(() => {
+    setSearchParams({ page: page.toString() });
+    fetchHabits();
+  }, [page]);
 
   const handleChangeWeek = (direction: "next" | "prev") => {
     const newDate = new Date(selectedDay);
@@ -113,7 +128,6 @@ const WeeklyHabits = () => {
   }
 
   console.log(habits)
-
   return (
     <div className="space-y-6 w-full flex flex-col gap-4">
       <Overview selected="weekly" skippedDays={skippedDays} />
@@ -122,7 +136,7 @@ const WeeklyHabits = () => {
           <ChartOverview
             data={userHabitCount}
             view="weekly"
-            loading={loading}
+            loading={loading.userHabitCount}
             weeklyDateRange={`${formatDate(startRange)} - ${formatDate(
               endRange
             )}`}
@@ -161,7 +175,7 @@ const WeeklyHabits = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="w-full">
-            {loading ? (
+            {loading.habits ? (
               <Loading className="mt-5" />
             ) : habits.length === 0 || userHabitCount.length === 0 ? (
               <CardDescription className="space-y-5 text-center text-lg absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
@@ -214,6 +228,24 @@ const WeeklyHabits = () => {
                       })}
                     </div>
                   ))}
+                </div>
+                <div className="w-full flex justify-center gap-4 items-center mt-5">
+                  <Button
+                    disabled={page === 1}
+                    onClick={() => setPage(Math.max(page - 1, 1))}
+                    className="col-span-1"
+                  >
+                    <ChevronLeftIcon className="flex-shrink-0 w-5 h-5" />
+                  </Button>
+                  <span className="col-span-2">
+                    Page {page} of {totalPages}
+                  </span>
+                  <Button
+                    disabled={page === totalPages}
+                    onClick={() => setPage(Math.min(page + 1, totalPages))}
+                  >
+                    <ChevronRightIcon className="flex-shrink-0 w-5 h-5" />
+                  </Button>
                 </div>
               </>
             )}
