@@ -57,7 +57,11 @@ const ChallengeCard: React.FC<{
 
   return (
     <div
-      className={`flex flex-1 bg-innermostCard py-4 h-28 rounded-2xl lg:px-8 sm:px-8 px-4 gap-4 align-middle justify-between transform transition-transform duration-500 ease-in-out ${className}`}
+      className={`flex flex-1 bg-innermostCard py-4 h-28 rounded-2xl cursor-pointer hover:-translate-y-1 hover:shadow-md shadow-black hover:bg-slate-500 lg:px-8 sm:px-8 px-4 gap-4 align-middle justify-between transform transition-all duration-500 ease-in-out ${className}`}
+      onClick={() => {
+        onCheck(habit._id, !checked);
+        updateAccomplishedStatus();
+      }}
     >
       <div className="flex items-center w-full justify-between">
         <div className="flex items-center gap-4 w-3/4">
