@@ -82,7 +82,6 @@ const Habits: React.FC = () => {
           setWeeklyCounts(counts);
           setTotalPages(response.data.data.totalPages);
         } else {
-          console.log(result.data.length > 0);
           setHabits([]);
           setNumHabits(0);
           setHabitStates({});
@@ -205,8 +204,6 @@ const Habits: React.FC = () => {
       form.reset();
     }
   };
-
-  console.log(loading)
 
   return (
     <div className="w-full min-h-full bg-gradient-to-br from-[#2A3D43] to-[#40575C] relative overflow-hidden">

@@ -6,7 +6,6 @@ export default function PrivateRoute() {
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
   if (!currentUser || !currentUser.token) {
-    console.log("redirecting to login");
     return <Navigate to="/login" />;
   }
   

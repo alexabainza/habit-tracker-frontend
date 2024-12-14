@@ -22,10 +22,8 @@ export function MonthlyHabits() {
         throw new Error("Failed to fetch habit data");
       }
       setHabitData(response.data.data);
-      console.log(response.data.data);
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching data:", error);
       setLoading(false);
     }
   };
@@ -34,7 +32,6 @@ export function MonthlyHabits() {
     fetchData();
   }, [selectedYear, selectedMonth]);
   const skippedDays = habitData.filter((item) => item.count === 0).length;
-  console.log("monthly skipped days", skippedDays);
 
   const modifiers = useMemo(() => {
     const highActivity: Date[] = [];

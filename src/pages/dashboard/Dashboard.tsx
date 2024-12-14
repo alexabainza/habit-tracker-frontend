@@ -35,7 +35,6 @@ const Dashboard: React.FC = () => {
         const response = await useFetch(`/habits?page=${page}&limit=${limit}`, 'get');
         const result = response.data.data;
         if (result.data && result.data.length > 0) {
-          console.log(result.data);
           setHabits(result.data);
           setNumHabits(result.total);
 
@@ -51,7 +50,6 @@ const Dashboard: React.FC = () => {
           setWeeklyCounts(counts);
           setTotalPages(response.data.data.totalPages);
         } else {
-          console.log(result.data.length > 0);
           setHabits([]);
           setNumHabits(0);
           setHabitStates({});
