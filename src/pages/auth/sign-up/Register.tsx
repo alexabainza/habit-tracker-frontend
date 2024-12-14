@@ -75,6 +75,8 @@ const RegisterScreen: React.FC = () => {
     }
   };
 
+  console.log(form.formState.errors);
+
   return (
     <div className="flex justify-center items-center w-full bg-gradient-to-br from-[#2A3D43] via-[#40575C] to-[#61878A] text-white">
       <Button

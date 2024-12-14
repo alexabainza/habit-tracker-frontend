@@ -7,13 +7,14 @@ import WeeklyHabits from "./WeeklyHabits";
 import { useSearchParams } from "react-router-dom";
 
 const Analytics: React.FC = () => {
-  const [history, setHistory] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [selected, setSelected] = useState(
-    history.get("frequency") || "weekly"
+    searchParams.get("frequency") || "weekly"
   );
 
   const handleChangeSelected = (frequency: string) => {
-    setHistory({ frequency });
+    const currentParams = Object.fromEntries(searchParams.entries());
+    setSearchParams({ ...currentParams, frequency });
     setSelected(frequency);
   };
 
@@ -30,11 +31,10 @@ const Analytics: React.FC = () => {
               onClick={() => handleChangeSelected("weekly")}
             >
               <span
-                className={`${
-                  selected === "weekly"
+                className={`${selected === "weekly"
                     ? "underline text-lightYellow font-semibold tracking-wide"
                     : "text-white"
-                }`}
+                  }`}
               >
                 Weekly
               </span>
@@ -44,11 +44,10 @@ const Analytics: React.FC = () => {
               onClick={() => handleChangeSelected("monthly")}
             >
               <span
-                className={`${
-                  selected === "monthly"
+                className={`${selected === "monthly"
                     ? "underline text-lightYellow font-semibold tracking-wide"
                     : "text-white"
-                }`}
+                  }`}
               >
                 Monthly
               </span>

@@ -20,6 +20,7 @@ import { DumbbellIcon, SquarePen, Trash2 } from "lucide-react";
 import { colors } from "@/utils/constants";
 import StreakCard from "@/pages/habits/StreakCard";
 import { formatDate } from "@/utils/dateFormatter";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface HabitCardProps {
   habit: Habit["habit"];
@@ -37,7 +38,7 @@ const HabitCard: React.FC<HabitCardProps> = ({
   const [openDialog, setOpenDialog] = useState(false);
 
   return loading ? (
-    <div className="animate-pulse flex justify-between bg-softGreen" />
+    <Skeleton className="animate-pulse flex justify-between bg-softGreen" />
   ) : (
     <>
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>

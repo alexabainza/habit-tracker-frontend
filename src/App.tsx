@@ -22,25 +22,38 @@ function App() {
       <BrowserRouter>
         <Sonner duration={1500} />
         <Navbar />
-        <HabitsProvider>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route element={<GuestRoute />}>
-              <Route path="/login" element={<LoginScreen />} />
-              <Route path="/register" element={<RegisterScreen />} />
-              <Route path="/verify-email" element={<Verify />} />
-              <Route path="/forgot" element={<ForgotPassword />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-            </Route>
-            <Route element={<PrivateRoute />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/habits" element={<Habits />} />
-              <Route path="/analytics" element={<Analytics />} />
-              <Route path="/profile" element={<Profile />} />
-            </Route>
-            <Route path="*" element={<Error />} />
-          </Routes>
-        </HabitsProvider>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<LandingPage />} />
+          <Route element={<GuestRoute />}>
+            <Route path="/login" element={<LoginScreen />} />
+            <Route path="/register" element={<RegisterScreen />} />
+            <Route path="/verify-email" element={<Verify />} />
+            <Route path="/forgot" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+          </Route>
+
+          {/* Private Routes */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/dashboard" element={
+              <HabitsProvider>
+                <Dashboard />
+              </HabitsProvider>
+            } />
+            <Route path="/habits" element={
+              <HabitsProvider>
+                <Habits />
+              </HabitsProvider>
+            } />
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/profile" element={<Profile />} />
+          </Route>
+
+          {/* Fallback Route */}
+          <Route path="*" element={<Error />} />
+        </Routes>
+
+        {/* Navbar */}
       </BrowserRouter>
     </main>
   );

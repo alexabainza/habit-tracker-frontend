@@ -32,19 +32,30 @@ import { CardColor } from "@/utils/constants";
 import { Label } from "@/components/ui/label";
 import { useHabits } from "@/hooks/use-habits";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useSearchParams } from "react-router-dom";
 
 const Habits: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const {
     habits,
+    error,
     loading,
-    totalPages,
-    page,
-    setPage,
+    numHabits,
+    habitStates,
     setLoading,
     setHabits,
-    limit,
+    setHabitStates,
+    setWeeklyCounts,
+    setNumHabits,
+    handleCheck,
+    setError,
   } = useHabits();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [page, setPage] = useState(searchParams.get("page") ? parseInt(searchParams.get("page") || "1") : 1);
+  const limit = 12;
+  const [totalPages, setTotalPages] = useState(1);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [habitToUpdate, setHabitToUpdate] = useState<Habit["habit"] | null>(
@@ -52,6 +63,54 @@ const Habits: React.FC = () => {
   );
   const [habitToDelete, setHabitToDelete] = useState<string | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchHabits = async () => {
+      setLoading(true);
+      try {
+        const response = await useFetch(`/habits?page=${page}&limit=${limit}`, 'get');
+        const result = response.data.data;
+        if (result.data && result.data.length > 0) {
+          setHabits(result.data);
+          setNumHabits(result.total);
+
+          const states: { [key: string]: boolean } = {};
+          const counts: { [key: string]: number } = {};
+
+          result.data.forEach((habit: Habit) => {
+            states[habit.habit._id] = habit.accomplished;
+            counts[habit.habit._id] = habit.weeklyCount;
+          });
+
+          setHabitStates(states);
+          setWeeklyCounts(counts);
+          setTotalPages(response.data.data.totalPages);
+        } else {
+          console.log(result.data.length > 0);
+          setHabits([]);
+          setNumHabits(0);
+          setHabitStates({});
+          setWeeklyCounts({});
+        }
+      } catch (error: any) {
+        setHabits([]);
+        setNumHabits(0);
+        setHabitStates({});
+        setWeeklyCounts({});
+        setError({
+          message: error.response?.data?.message || error.message,
+          status: error.response?.status || "500",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const currentParams = Object.fromEntries(searchParams.entries());
+    setSearchParams({ ...currentParams, page: page.toString() });
+    fetchHabits();
+  }, [page]);
+
   const form = useForm({
     resolver: zodResolver(habitSchema),
     defaultValues: {
@@ -87,10 +146,10 @@ const Habits: React.FC = () => {
 
         setIsDialogOpen(false);
       }
-      setLoading(false);
       form.reset();
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Error creating habit.");
+    } finally {
       setLoading(false);
     }
   };
@@ -99,7 +158,6 @@ const Habits: React.FC = () => {
     if (!habitToUpdate) return;
 
     setLoading(true);
-    console.log(form.getValues());
 
     try {
       const { name, goal, color } = form.getValues();
@@ -152,6 +210,8 @@ const Habits: React.FC = () => {
     }
   };
 
+  console.log(loading)
+
   return (
     <div className="w-full min-h-full bg-gradient-to-br from-[#2A3D43] to-[#40575C] relative overflow-hidden">
       <div className="w-full py-12 lg:px-16 sm:px-5 px-5 space-y-4">
@@ -161,7 +221,73 @@ const Habits: React.FC = () => {
               <h1 className="w-full lg:text-4xl sm:text-3xl text-2xl font-bold text-lightYellow tracking-wider ">
                 Your Habits
               </h1>
-              <div className="md:hidden w-full flex md:justify-end items-center md:gap-4 mt-4 text-lightYellow gap-4">
+              {totalPages > 1 && (
+                <div className="md:hidden w-full flex md:justify-end items-center md:gap-4 mt-4 text-lightYellow gap-4">
+                  <Button
+                    disabled={page === 1}
+                    onClick={() => setPage(Math.max(page - 1, 1))}
+                  >
+                    <ChevronLeft className="flex-shrink-0 w-5 h-5" />
+                    <span>Previous</span>
+                  </Button>
+                  <span>
+                    {page} of {totalPages}
+                  </span>
+                  <Button
+                    disabled={page === totalPages}
+                    onClick={() => setPage(Math.min(page + 1, totalPages))}
+                  >
+                    <span>Next</span>
+                    <ChevronRight className="flex-shrink-0 w-5 h-5" />
+                  </Button>
+                </div>
+              )}
+            </section>
+            <DialogTrigger asChild>
+              <Button
+                className="h-16 w-16 md:h-12 md:w-fit bg-lightYellow text-black hover:bg-yellow-500 fixed bottom-5 right-5 md:bottom-0 md:right-0 md:relative rounded-full md:rounded-md shadow-md shadow-neutral-900 z-50"
+                onClick={() => {
+                  setIsDialogOpen(true);
+                  setIsEditing(false);
+                }}
+              >
+                <Plus className="w-12 h-12 flex-shrink-0" />
+                <span className="ml-1 hidden md:block ">Create Habit</span>
+              </Button>
+            </DialogTrigger>
+          </div>
+
+          <div className="mt-6 grid gap-4">
+            {loading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6 w-full mt-2">
+                {[...Array(4)].map((_, index) => (
+                  <Skeleton key={index} className="h-24 lg:col-span-2 xl:col-span-1 bg-innermostCard" />
+                ))}
+              </div>
+            ) : habits.length === 0 ? (
+              <div className="space-y-8 mt-28">
+                <img src="/error.svg" alt="No habits found" className="w-96 object-cover mx-auto" />
+                <p className="text-white text-center text-xl md:text-3xl font-bold">No habits found</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6">
+                {habits.map((habit) => (
+                  <HabitCard
+                    key={habit.habit._id}
+                    habit={habit.habit}
+                    onDelete={() => handleDelete(habit.habit._id)}
+                    onEdit={(habit) => {
+                      setHabitToUpdate(habit);
+                      setIsEditing(true);
+                      setIsDialogOpen(true);
+                    }}
+                    loading={loading}
+                  />
+                ))}
+              </div>
+            )}
+            {totalPages > 1 && (
+              <div className="w-full max-w-5xl hidden md:flex justify-center items-center gap-4 text-lightYellow mx-auto md:fixed bottom-5 left-1/2 transform -translate-x-1/2">
                 <Button
                   disabled={page === 1}
                   onClick={() => setPage(Math.max(page - 1, 1))}
@@ -180,66 +306,7 @@ const Habits: React.FC = () => {
                   <ChevronRight className="flex-shrink-0 w-5 h-5" />
                 </Button>
               </div>
-            </section>
-            <DialogTrigger asChild>
-              <Button
-                className="h-16 w-16 md:h-12 md:w-fit bg-lightYellow text-black hover:bg-yellow-500 fixed bottom-5 right-5 md:bottom-0 md:right-0 md:relative rounded-full md:rounded-md shadow-md shadow-neutral-900 z-50"
-                onClick={() => {
-                  setIsDialogOpen(true);
-                  setIsEditing(false);
-                }}
-              >
-                <Plus className="w-12 h-12 flex-shrink-0" />
-                <span className="ml-1 hidden md:block ">Create Habit</span>
-              </Button>
-            </DialogTrigger>
-          </div>
-
-          <div className="mt-6 grid gap-4">
-            {loading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6 w-full">
-                {[...Array(limit)].map((_, index) => (
-                  <Skeleton key={index} className="h-24 lg:col-span-2 xl:col-span-1 bg-innermostCard" />
-                ))}
-              </div>
-            ) : habits.length === 0 ? (
-              <div className="text-center text-white">No habits found.</div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6">
-                {habits.map((habit) => (
-                  <HabitCard
-                    key={habit.habit._id}
-                    habit={habit.habit}
-                    onDelete={() => handleDelete(habit.habit._id)}
-                    onEdit={(habit) => {
-                      setHabitToUpdate(habit);
-                      setIsEditing(true);
-                      setIsDialogOpen(true);
-                    }}
-                    loading={loading}
-                  />
-                ))}
-              </div>
             )}
-            <div className="w-full max-w-5xl hidden md:flex justify-center items-center gap-4 text-lightYellow mx-auto md:fixed bottom-5 left-1/2 transform -translate-x-1/2">
-              <Button
-                disabled={page === 1}
-                onClick={() => setPage(Math.max(page - 1, 1))}
-              >
-                <ChevronLeft className="flex-shrink-0 w-5 h-5" />
-                <span>Previous</span>
-              </Button>
-              <span>
-                {page} of {totalPages}
-              </span>
-              <Button
-                disabled={page === totalPages}
-                onClick={() => setPage(Math.min(page + 1, totalPages))}
-              >
-                <span>Next</span>
-                <ChevronRight className="flex-shrink-0 w-5 h-5" />
-              </Button>
-            </div>
           </div>
           <ConfirmationDialog
             open={isDeleteDialogOpen}

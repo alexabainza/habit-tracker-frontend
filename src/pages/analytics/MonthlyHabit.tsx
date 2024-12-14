@@ -70,15 +70,15 @@ export function MonthlyHabits() {
   }));
 
   return (
-    <div className="space-y-2 w-full flex flex-col relative gap-2 min-h-dvh">
+    <div className="space-y-5 w-full flex flex-col relative gap-2 min-h-dvh overflow-x-hidden md:max-w-2xl lg:max-w-none md:mx-auto lg:m-0">
       <Overview selected="monthly" skippedDays={skippedDays} />
-      <div className="flex lg:flex-row md:flex-col sm:flex-col flex-col gap-4">
-        <div className="lg:w-4/5 md:w-full w-full">
-          <ChartOverview view="monthly" loading={loading} data={data} />
+      <div className="flex lg:flex-row md:flex-col sm:flex-col flex-col gap-4 md:gap-6">
+        <div className="w-full lg:max-w-xl xl:max-w-3xl flex-1">
+          <ChartOverview view="monthly" loading={loading} data={data} className="max-h-[550px]"/>
         </div>
         <Calendar
           mode="single"
-          className="text-white text-3xl bg-outerCard rounded-xl flex flex-1 justify-center border-2 border-black"
+          className="text-white text-3xl bg-outerCard rounded-xl flex flex-1 justify-center border-2 border-black py-5 max-h-[550px] w-full lg:max-w-lg px-5 pl-0"
           modifiers={modifiers}
           onMonthChange={handleMonthChange}
           modifiersClassNames={{
@@ -90,13 +90,13 @@ export function MonthlyHabits() {
               "bg-green-200 rounded-full text-outerCard hover:bg-green-200/80",
           }}
           classNames={{
-            months: "lg:p-4 sm:p-2 p-2 rounded-xl",
-            table: "mt-8 ",
+            months: "lg:p-4 sm:p-2 p-2 rounded-xl w-full",
+            table: "mt-8 w-full",
             caption_label:
               "lg:text-xl sm:text-lg text-lg font-medium text-lightYellow",
-            day: "lg:h-16 md:h-14 sm:h-10 h-10 lg:w-16 md:w-14 sm:w-10 w-10 text-center",
-            cell: "lg:text-lg sm:text-sm text-sm lg:w-16 md:w-16 sm:w-10 w-10 text-center",
-            head_cell: "text-center text-sm lg:w-16 md:w-14 sm:w-10 w-10 mt-4",
+            day: "lg:h-12 md:h-14 sm:h-16 h-10 lg:w-12 md:w-14 sm:w-16 w-10 text-center",
+            cell: "lg:text-lg sm:text-sm text-sm lg:w-4 md:w-16 sm:w-10 w-10 text-center mx-auto",
+            head_cell: "text-center text-sm lg:w-12 md:w-14 sm:w-10 w-10 mt-4 w-full mx-auto",
             nav_button: "hover:opacity-60 rounded-full text-lightYellow",
           }}
         />

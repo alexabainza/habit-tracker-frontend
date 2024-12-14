@@ -43,7 +43,6 @@ const WeeklyHabits = () => {
   });
   const [habits, setHabits] = useState<DataType[]>([]);
   const [selectedDay, setSelectedDay] = useState<Date>(startOfToday());
-  const [error, setError] = useState<string | null>(null);
   const [userHabitCount, setUserHabitCount] = useState<Data[]>([]);
   const [page, setPage] = useState(
     searchParams.get("page") ? parseInt(searchParams.get("page") || "1") : 1
@@ -67,7 +66,7 @@ const WeeklyHabits = () => {
       setHabits(result.data || []);
       setTotalPages(result.totalPages);
     } catch (error: any) {
-      setError(error.message);
+      setHabits([]);
     } finally {
       setLoading((prevState) => ({ ...prevState, habits: false }));
     }
@@ -89,7 +88,7 @@ const WeeklyHabits = () => {
         setUserHabitCount([]);
       }
     } catch (error: any) {
-      setError(error.message);
+      setUserHabitCount([]);
     }
   };
 
@@ -99,7 +98,7 @@ const WeeklyHabits = () => {
       try {
         await Promise.all([fetchHabits(), fetchUserHabitCount()]);
       } catch (error) {
-        setError("Error fetching data");
+        ("Error fetching data");
       } finally {
         setLoading((prevState) => ({ ...prevState, userHabitCount: false }));
       }
@@ -109,7 +108,8 @@ const WeeklyHabits = () => {
   }, [selectedDay]);
 
   useEffect(() => {
-    setSearchParams({ page: page.toString() });
+    const currentParams = Object.fromEntries(searchParams.entries());
+    setSearchParams({ ...currentParams, page: page.toString() });
     fetchHabits();
   }, [page]);
 
@@ -126,16 +126,11 @@ const WeeklyHabits = () => {
     }
   };
 
-  if (error) {
-    return <Error message={error} errorStatus="500" />;
-  }
-
-  console.log(habits);
   return (
-    <div className="space-y-4 w-full flex flex-col gap-1">
+    <div className="space-y-5 w-full flex flex-col gap-1 md:max-w-2xl lg:max-w-none md:mx-auto lg:m-0">
       <Overview selected="weekly" skippedDays={skippedDays} />
-      <div className="flex flex-col lg:flex-row gap-4">
-        <div className="w-full md:max-w-2xl lg:max-w-3xl md:mx-auto lg:m-0">
+      <div className="flex flex-col lg:flex-row gap-4 md:gap-6">
+        <div className="w-full">
           <ChartOverview
             data={userHabitCount}
             view="weekly"
@@ -183,8 +178,8 @@ const WeeklyHabits = () => {
             ) : habits.length === 0 || userHabitCount.length === 0 ? (
               <CardDescription className="space-y-5 text-center text-lg absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                 <GiDeadWood className="w-40 h-40 mx-auto" />
-                <h3>
-                  Seems barren here. <br />
+                <h3 className="space-x-1.5">
+                  <span>Seems barren here.</span>
                   <strong>Start being productive!</strong>
                 </h3>
               </CardDescription>
@@ -216,7 +211,7 @@ const WeeklyHabits = () => {
                           startOfWeek(selectedDay, {
                             weekStartsOn: 0,
                           }).getDate() +
-                            (index + 1)
+                          (index + 1)
                         );
                         const isActive = habit.day
                           .map((d) => new Date(d).toISOString().split("T")[0])
@@ -224,9 +219,8 @@ const WeeklyHabits = () => {
                         return (
                           <div
                             key={`habit-${habit.habit}-day-${index}`}
-                            className={`col-span-1 row-span-1 h-6 sm:h-8 lg:h-6 flex items-center justify-center rounded-md ${
-                              isActive ? "bg-green-500" : "bg-gray-200"
-                            }`}
+                            className={`col-span-1 row-span-1 h-6 sm:h-8 lg:h-6 flex items-center justify-center rounded-md ${isActive ? "bg-green-500" : "bg-gray-200"
+                              }`}
                           />
                         );
                       })}

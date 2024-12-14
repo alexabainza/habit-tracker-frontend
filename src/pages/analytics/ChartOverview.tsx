@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/chart";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
 const chartConfig = {
   count: {
@@ -29,6 +30,7 @@ type ChartOverviewProps = {
   data: Data[];
   view: "weekly" | "monthly";
   weeklyDateRange?: string;
+  className?: string;
 };
 
 export function ChartOverview({
@@ -36,6 +38,7 @@ export function ChartOverview({
   data,
   view,
   weeklyDateRange,
+  className,
 }: ChartOverviewProps) {
   // Derive date range for monthly view
   const dateRange = data.length
@@ -51,7 +54,7 @@ export function ChartOverview({
   }
 
   return (
-    <Card className="w-full min-h-80 max-h-[450px] md:min-h-80 flex-[0.6] bg-outerCard border-2 relative flex flex-col">
+    <Card className={cn("w-full min-h-80 max-h-[450px] md:min-h-80 flex-[0.6] bg-outerCard border-2 relative flex flex-col", className)}>
       <CardTitle className="p-5 pb-1 text-xl text-lightYellow">
         {view === "monthly" ? (
           <span>

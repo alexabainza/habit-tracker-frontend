@@ -1,7 +1,5 @@
 import { Habit } from "@/utils/types";
-import { createContext, PropsWithChildren, useContext, useState, useEffect } from "react";
-import { useFetch } from "@/hooks/use-fetch";
-import { useSearchParams } from "react-router-dom";
+import { createContext, PropsWithChildren, useContext, useState } from "react";
 
 interface HabitsContextType {
     habits: any[];
@@ -16,13 +14,7 @@ interface HabitsContextType {
     setWeeklyCounts: (weeklyCounts: { [id: string]: number }) => void;
     error: { message: string; status: string } | null;
     setError: (error: { message: string; status: string } | null) => void;
-    completed: number;
-    percentage: number;
     handleCheck: (id: string, checked: boolean) => void;
-    page: number;
-    setPage: (page: number) => void;
-    limit: number;
-    totalPages: number;
 }
 
 const HabitsContextInstance = createContext<HabitsContextType | undefined>(undefined);
@@ -35,58 +27,11 @@ export const HabitsProvider = ({ children }: PropsWithChildren) => {
     const [weeklyCounts, setWeeklyCounts] = useState<{ [id: string]: number }>({});
     const [error, setError] = useState<{ message: string; status: string } | null>(null);
 
-    const [searchParams, setSearchParams] = useSearchParams();
-
-    const [page, setPage] = useState(searchParams.get("page") ? parseInt(searchParams.get("page") || "1") : 1);
-    const limit = 12;
-    const [totalPages, setTotalPages] = useState(0);
-
-     
-    useEffect(() => {
-        const fetchHabits = async () => {
-            setLoading(true);
-            setSearchParams({ page: page.toString() });
-            try {
-                const response = await useFetch(`/habits?page=${page}&limit=${limit}`, 'get');
-                const result = response.data.data;
-                
-                if (result.data && result.data.length > 0) {
-                    setHabits(result.data);
-                    setNumHabits(result.total);
-
-                    const states: { [key: string]: boolean } = {};
-                    const counts: { [key: string]: number } = {};
-                    
-                    result.data.forEach((habit: Habit) => {
-                        states[habit.habit._id] = habit.accomplished;
-                        counts[habit.habit._id] = habit.weeklyCount;
-                    });
-                    
-                    setHabitStates(states);
-                    setWeeklyCounts(counts);
-                }
-                setTotalPages(response.data.data.totalPages);
-            } catch (error: any) {
-                setError({
-                    message: error.response?.data?.message || error.message,
-                    status: error.response?.status || "500",
-                });
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchHabits();
-    }, [page]);
-
-    const completed = Object.values(habitStates).filter(Boolean).length;
-    const percentage = numHabits === 0 ? 0 : (completed / numHabits) * 100;
-    
     const handleCheck = (id: string, checked: boolean) => {
         setHabitStates((prevStates) => {
             const updatedHabitStates = { ...prevStates };
             const updatedWeeklyCounts = { ...weeklyCounts };
-            
+
             const habit = habits.find((h) => h.habit._id === id);
             if (habit) {
                 const newWeeklyCount = checked
@@ -121,13 +66,7 @@ export const HabitsProvider = ({ children }: PropsWithChildren) => {
                 setWeeklyCounts,
                 error,
                 setError,
-                completed,
-                percentage,
                 handleCheck,
-                page,
-                setPage,
-                limit,
-                totalPages,
             }}
         >
             {children}

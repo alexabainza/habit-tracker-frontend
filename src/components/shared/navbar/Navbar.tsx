@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { MountainIcon } from "lucide-react";
 import Navigation from "./Navigation";
 import UserActions from "./UserActions";
 import { useSelector } from "react-redux";
