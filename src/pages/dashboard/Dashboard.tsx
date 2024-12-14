@@ -85,7 +85,7 @@ const Dashboard: React.FC = () => {
 
   const percentage = (completed / numHabits) * 100;
 
-  if (!loading) {
+  if (loading) {
     return (
       <div className="w-full bg-gradient-to-br from-[#2A3D43] to-[#40575C] flex flex-col py-8 lg:px-16 sm:px-8 px-5">
         <h1 className="lg:text-4xl sm:text-3xl text-3xl font-bold text-lightYellow tracking-wider py-12">
