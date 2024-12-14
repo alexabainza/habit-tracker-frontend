@@ -142,7 +142,7 @@ const WeeklyHabits = () => {
         </div>
         <Card className="w-full md:min-w-96 md:max-w-2xl lg:max-w-xl mx-auto lg:mr-0 border-none rounded-xl text-yellow-300 min-h-96 sm:min-h-96 lg:min-h-96 relative flex flex-col items-center gap-5 shadow-none">
           <CardHeader className="p-0 w-full">
-            <CardTitle className="font-semibold flex items-center justify-center w-full mx-auto gap-4 pb-2 border-b border-b-lightYellow border-opacity-40">
+            <CardTitle className="font-semibold flex items-center justify-center w-full mx-auto gap-4 pb-5 border-b border-b-lightYellow border-opacity-40">
               <button
                 onClick={() => handleChangeWeek("prev")}
                 type="button"

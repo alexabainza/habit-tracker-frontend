@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFetch } from "@/hooks/use-fetch";
-import { endOfMonth, endOfWeek, format, getWeek, startOfMonth, startOfWeek } from "date-fns";
+import { endOfMonth, endOfWeek, format, startOfMonth, startOfWeek } from "date-fns";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { toast } from "sonner";
 
