@@ -21,7 +21,6 @@ import { GiDeadWood } from "react-icons/gi";
 import { ChartOverview } from "./ChartOverview";
 import { formatDate } from "@/utils/dateFormatter";
 import Overview from "./Overview";
-import Error from "../Error";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "react-router-dom";
 
@@ -218,7 +217,7 @@ const WeeklyHabits = () => {
                           .includes(dateForDay.toISOString().split("T")[0]);
                         return (
                           <div
-                            key={`habit-${habit.habit}-day-${index}`}
+                            key={`habit-${habit.habit}-day-${index}-${day}`}
                             className={`col-span-1 row-span-1 h-6 sm:h-8 lg:h-6 flex items-center justify-center rounded-md ${isActive ? "bg-green-500" : "bg-gray-200"
                               }`}
                           />
