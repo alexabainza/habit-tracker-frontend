@@ -62,14 +62,14 @@ const StreakCard: React.FC<StreakCardProps> = ({ id }) => {
     accomplished: accomplishedDates.map((date) => new Date(date)),
   };
 
-  if(loading) {
-    return <Skeleton className="w-full h-[550px] bg-innermostCard" />
+  if (loading) {
+    return <Skeleton className="w-full h-[550px] bg-innermostCard" />;
   }
 
   return (
     <div className="w-full flex flex-col items-center justify-between">
-      <div className="flex lg:flex-row md:flex-row  gap-2 w-full">
-        <div className="flex w-full lg:max-h-[120px] sm:max-h-[80px] max-h-[80px] bg-innermostCard py-8 rounded-lg gap-4 lg:px-8 sm:px-4 px-4 items-center">
+      <div className="flex lg:flex-row md:flex-row sm:flex-col flex-col gap-2 w-full">
+        <div className="flex w-full lg:max-h-[120px] sm:max-h-[80px] max-h-[80px] bg-innermostCard py-8 rounded-2xl gap-4 lg:px-8 sm:px-4 px-4 items-center">
           <span className="lg:text-7xl sm:text-5xl text-5xl font-extrabold text-lightYellow">
             {streakData.current}
           </span>

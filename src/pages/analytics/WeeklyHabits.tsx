@@ -21,7 +21,6 @@ import { GiDeadWood } from "react-icons/gi";
 import { ChartOverview } from "./ChartOverview";
 import { formatDate } from "@/utils/dateFormatter";
 import Overview from "./Overview";
-import Error from "../Error";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "react-router-dom";
 
@@ -127,7 +126,7 @@ const WeeklyHabits = () => {
   };
 
   return (
-    <div className="space-y-5 w-full flex flex-col gap-1 md:max-w-2xl lg:max-w-none md:mx-auto lg:m-0">
+    <div className="space-y-5 w-full flex flex-col gap-1 md:max-w-2xl lg:max-w-none min-h-dvh">
       <Overview selected="weekly" skippedDays={skippedDays} />
       <div className="flex flex-col lg:flex-row gap-4 md:gap-6">
         <div className="w-full">
@@ -211,7 +210,7 @@ const WeeklyHabits = () => {
                           startOfWeek(selectedDay, {
                             weekStartsOn: 0,
                           }).getDate() +
-                          (index + 1)
+                            (index + 1)
                         );
                         const isActive = habit.day
                           .map((d) => new Date(d).toISOString().split("T")[0])
@@ -219,8 +218,9 @@ const WeeklyHabits = () => {
                         return (
                           <div
                             key={`habit-${habit.habit}-day-${index}`}
-                            className={`col-span-1 row-span-1 h-6 sm:h-8 lg:h-6 flex items-center justify-center rounded-md ${isActive ? "bg-green-500" : "bg-gray-200"
-                              }`}
+                            className={`col-span-1 row-span-1 h-6 sm:h-8 lg:h-6 flex items-center justify-center rounded-md ${
+                              isActive ? "bg-green-500" : "bg-gray-200"
+                            }`}
                           />
                         );
                       })}

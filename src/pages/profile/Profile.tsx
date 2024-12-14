@@ -277,22 +277,23 @@ export default function Profile() {
                         DELETE<span className="hidden lg:inline">ACCOUNT</span>
                       </Button>
                     </AlertDialogTrigger>
-                    <AlertDialogContent className="bg-white">
+                    <AlertDialogContent className="bg-outerCard">
                       <AlertDialogHeader>
-                        <AlertDialogTitle>
+                        <AlertDialogTitle className="text-lightYellow">
                           Deleting <strong>{user?.username}</strong>'s account
                         </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          This will permanently
-                          delete your account and remove your data from our
-                          servers.
+                        <AlertDialogDescription className="text-white">
+                          This will permanently delete your account and remove
+                          your data from our servers.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel className="text-white border hover:opacity-50">
+                          Cancel
+                        </AlertDialogCancel>
                         <AlertDialogAction
                           onClick={confirmDelete}
-                          className="bg-red-600 text-white hover:bg-red-500"
+                          className="bg-red-500 text-white hover:bg-red-700"
                         >
                           Continue
                         </AlertDialogAction>
@@ -320,18 +321,22 @@ export default function Profile() {
                         LOGOUT<span className="hidden lg:inline">ACCOUNT</span>
                       </Button>
                     </AlertDialogTrigger>
-                    <AlertDialogContent className="bg-white">
+                    <AlertDialogContent className="bg-outerCard">
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Logging<strong> {user?.username} </strong>out</AlertDialogTitle>
-                        <AlertDialogDescription>
+                        <AlertDialogTitle className="text-lightYellow">
+                          Logging<strong> {user?.username} </strong>out
+                        </AlertDialogTitle>
+                        <AlertDialogDescription className="text-white">
                           Leaving so soon? This will sign you out.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel className="text-white border hover:opacity-50">
+                          Cancel
+                        </AlertDialogCancel>
                         <AlertDialogAction
                           onClick={onSignOut}
-                          className="bg-black text-white hover:bg-gray-700"
+                          className="bg-white text-main hover:bg-gray-800 hover:text-white"
                         >
                           Continue
                         </AlertDialogAction>

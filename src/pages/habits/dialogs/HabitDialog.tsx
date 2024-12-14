@@ -5,6 +5,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,132 +17,143 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { LoaderIcon } from "lucide-react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { habitSchema } from "@/utils/schemas";
+import { Plus } from "lucide-react";
+import { toast } from "sonner";
+import { useFetch } from "@/hooks/use-fetch";
 import { Habit } from "@/utils/types";
 
-interface HabitDialogProps {
+type AddHabitDialogProps = {
   isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isEditing: boolean;
-  habitToUpdate: Habit["habit"] | null;
-  handleSubmit: () => Promise<void>;
-  handleUpdateHabit: () => Promise<void>;
-  loading: boolean;
-}
+  setIsOpen: (open: boolean) => void;
+  onHabitAdded: (habit: Habit) => void;
+  initialHabit?: Habit["habit"] | null; // Optional: For editing a habit
+  isEditing?: boolean;
+  setIsEditing?: (editing: boolean) => void;
+};
 
-const HabitDialog: React.FC<HabitDialogProps> = ({
+const AddHabitDialog: React.FC<AddHabitDialogProps> = ({
   isOpen,
   setIsOpen,
-  isEditing,
-  habitToUpdate,
-  handleSubmit,
-  handleUpdateHabit,
-  loading,
+  onHabitAdded,
+  initialHabit = null,
+  isEditing = false,
+  setIsEditing,
 }) => {
   const form = useForm({
     resolver: zodResolver(habitSchema),
     defaultValues: {
       name: "",
       goal: 0,
+      color: "",
     },
     mode: "onSubmit",
   });
 
   useEffect(() => {
-    if (habitToUpdate) {
-      form.setValue("name", habitToUpdate.name);
-      form.setValue("goal", habitToUpdate.goal);
+    if (initialHabit) {
+      form.setValue("name", initialHabit.name);
+      form.setValue("goal", initialHabit.goal);
+      form.setValue("color", initialHabit.color);
     }
-  }, [habitToUpdate, form]);
+  }, [initialHabit, form]);
+
+  const handleSubmit = async () => {
+    try {
+      const method = isEditing ? "put" : "post";
+      const endpoint = isEditing ? "/habits" : "/habits";
+      const body = isEditing
+        ? { id: initialHabit?._id, ...form.getValues() }
+        : form.getValues();
+
+      const response = await useFetch(endpoint, method, body);
+
+      const result = response.data;
+
+      if (result.status === 400) {
+        toast.error(result.message);
+      } else {
+        toast.success(
+          isEditing
+            ? "Habit updated successfully."
+            : "Habit created successfully."
+        );
+        onHabitAdded(result.data);
+        setIsOpen(false);
+        form.reset();
+      }
+    } catch (error: any) {
+      toast.error(
+        error.response?.data?.message || "Error creating or updating habit."
+      );
+    }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-[400px] py-12 bg-slate-50">
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-3xl">
-            {isEditing ? "Update Habit" : "Create New Habit"}
+          <DialogTitle>
+            {isEditing ? "Edit Habit" : "Add New Habit"}
           </DialogTitle>
+          <DialogDescription>
+            {isEditing
+              ? "Update the details of your habit."
+              : "Fill out the form to create a new habit."}
+          </DialogDescription>
         </DialogHeader>
-        <DialogDescription>
-          {isEditing
-            ? "Edit the details of your habit."
-            : "Enter the details for your new habit."}
-        </DialogDescription>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(
-              isEditing ? handleUpdateHabit : handleSubmit
-            )}
-            className="space-y-6"
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
           >
             <FormField
-              control={form.control}
               name="name"
+              control={form.control}
               render={({ field }) => (
-                <FormItem className="flex flex-col gap-0">
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Habit name"
-                      {...field}
-                      className="border-[#6490BC] rounded-md placeholder-gray-200"
-                    />
+                    <Input placeholder="Habit name" {...field} />
                   </FormControl>
-                  <FormMessage className="text-xs text-red-400" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
             <FormField
-              control={form.control}
               name="goal"
+              control={form.control}
               render={({ field }) => (
-                <FormItem className="flex flex-col gap-0">
-                  <FormLabel className="font-bold text-xs text-deepOlive">
-                    Repetitions per week
-                  </FormLabel>
+                <FormItem>
+                  <FormLabel>Goal</FormLabel>
                   <FormControl>
-                    <div className="flex justify-between">
-                      {[1, 2, 3, 4, 5, 6, 7].map((value) => (
-                        <label
-                          key={value}
-                          className={`px-4 py-1 rounded-full cursor-pointer border-2 border-black ${
-                            field.value === value ? "bg-softGreen" : ""
-                          }`}
-                        >
-                          <input
-                            type="radio"
-                            {...field}
-                            value={value}
-                            checked={field.value === value}
-                            onChange={() => field.onChange(value)}
-                            className="hidden"
-                          />
-                          <span className="text-sm">{value}</span>
-                        </label>
-                      ))}
-                    </div>
+                    <Input
+                      type="number"
+                      placeholder="Goal (e.g., 7 days)"
+                      {...field}
+                    />
                   </FormControl>
-                  <FormMessage className="text-xs text-red-400" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
-            <Button
-              className="bg-sageGreen hover:bg-mutedGreen w-full text-white text-sm"
-              type="submit"
-              disabled={loading}
-            >
-              {loading ? (
-                <div className="flex items-center gap-x-1.5">
-                  <LoaderIcon className="w-6 h-6 animate-spin" />
-                  Loading...
-                </div>
-              ) : isEditing ? (
-                "Update Habit"
-              ) : (
-                "Add Habit"
+            <FormField
+              name="color"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Color</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Color (e.g., #FF5733)" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
+            />
+            <Button type="submit">
+              {isEditing ? "Update Habit" : "Create Habit"}
             </Button>
           </form>
         </Form>
@@ -150,4 +162,4 @@ const HabitDialog: React.FC<HabitDialogProps> = ({
   );
 };
 
-export default HabitDialog;
+export default AddHabitDialog;

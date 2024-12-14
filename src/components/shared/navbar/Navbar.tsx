@@ -15,17 +15,21 @@ const Navbar: React.FC = () => {
       <button
         type="button"
         onClick={toggleBurgerMenu}
-        className={` h-12 w-12 md:hidden fixed top-9 right-5 transition-all duration-300 z-[100] rounded-full justify-center items-center bg-[#5F7A7A] shadow-sm hover:shadow-lightYellow hover:-translate-y-1 ${
+        className={` h-12 w-12 md:hidden fixed top-9 right-5 transition-all duration-300 z-[80] rounded-full justify-center items-center bg-[#5F7A7A] shadow-sm hover:shadow-lightYellow hover:-translate-y-1 ${
           isBurgerOpen ? "opacity-0" : "border border-gray-700 opacity-100"
         }`}
       >
-        <img src="/auth.svg" alt="Menu" className="h-12 w-12 object-contain absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+        <img
+          src="/auth.svg"
+          alt="Menu"
+          className="h-12 w-12 object-contain absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        />
         <span className="sr-only">Toggle Menu</span>
       </button>
       {isBurgerOpen && (
         <div
           onClick={toggleBurgerMenu}
-          className="bg-black/40 h-screen w-screen fixed top-0 left-0 transition-opacity duration-300 z-[100]"
+          className="bg-black/40 h-screen w-screen fixed top-0 left-0 transition-opacity duration-300 z-[80]"
         />
       )}
       <nav
@@ -34,7 +38,11 @@ const Navbar: React.FC = () => {
         }`}
       >
         <Link to="/" className="flex items-center justify-center w-20">
-          <img src="/auth.svg" alt="Tribbit" className="h-14 w-14 flex-shrink-0" />
+          <img
+            src="/auth.svg"
+            alt="Tribbit"
+            className="h-14 w-14 flex-shrink-0"
+          />
           <span className="sr-only text-[var(--color-primary)]">Tribbit</span>
         </Link>
         <Navigation />

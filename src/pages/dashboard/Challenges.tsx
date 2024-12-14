@@ -22,7 +22,7 @@ const ChallengeCard: React.FC<{
   // Check if screen size is small
   useEffect(() => {
     const handleResize = () => {
-      setIsSmallScreen(window.innerWidth <= 640); // 640px is typical for small screens
+      setIsSmallScreen(window.innerWidth <= 640);
     };
 
     handleResize(); // Check initial size

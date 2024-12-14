@@ -21,13 +21,21 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
 }) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[400px] py-12 bg-slate-50">
+      <DialogContent className="sm:max-w-[400px] py-12 bg-innermostCard">
         <DialogHeader>
-          <DialogTitle className="text-3xl">{title}</DialogTitle>
+          <DialogTitle className="text-3xl text-lightYellow">
+            {title}
+          </DialogTitle>
         </DialogHeader>
-        <DialogDescription>{description}</DialogDescription>
+        <DialogDescription className="text-white">
+          {description}
+        </DialogDescription>
         <div className="flex justify-between mt-4">
-          <Button variant="outline" onClick={onClose} className="w-full mr-2">
+          <Button
+            variant="outline"
+            onClick={onClose}
+            className="w-full mr-2 border border-white text-white"
+          >
             {cancelButtonText}
           </Button>
           <Button
@@ -36,7 +44,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
               onClose();
             }}
             className={`w-full ${
-              isDestructive ? "bg-red-600 hover:bg-red-700 text-white" : ""
+              isDestructive ? "bg-red-500 hover:bg-red-700 text-white" : ""
             }`}
           >
             {confirmButtonText}
