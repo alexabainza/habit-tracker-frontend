@@ -38,16 +38,12 @@ const Habits: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const {
     habits,
-    error,
     loading,
-    numHabits,
-    habitStates,
     setLoading,
     setHabits,
     setHabitStates,
     setWeeklyCounts,
     setNumHabits,
-    handleCheck,
     setError,
   } = useHabits();
 

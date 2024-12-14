@@ -1,7 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import ChallengeCard from "@/pages/dashboard/Challenges";
-import Loading from "@/components/ui/loading";
-import Error from "../Error";
 import { useHabits } from "@/hooks/use-habits";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRightIcon, LoaderIcon } from "lucide-react";
@@ -13,7 +11,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 const Dashboard: React.FC = () => {
   const {
     habits,
-    error,
     loading,
     numHabits,
     habitStates,
