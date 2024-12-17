@@ -2,10 +2,15 @@ import React, { useEffect, useMemo, useState } from "react";
 import ChallengeCard from "@/pages/dashboard/Challenges";
 import { useHabits } from "@/hooks/use-habits";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRightIcon, LoaderIcon } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRightIcon,
+  LoaderIcon,
+  PlusIcon,
+} from "lucide-react";
 import { useFetch } from "@/hooks/use-fetch";
 import { Habit } from "@/utils/types";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const Dashboard: React.FC = () => {
@@ -111,9 +116,22 @@ const Dashboard: React.FC = () => {
             alt="No habits found"
             className="w-96 object-cover"
           />
-          <p className="text-white text-center text-xl md:text-3xl font-bold">
-            No habits found
+          <p className="text-white text-center text-2xl md:text-3xl lg:text-4xl font-bold">
+            It's lonely here...
           </p>
+          <Button
+            asChild
+            size="lg"
+            className="w-full font-bold text-xl bg-lightYellow text-black hover:bg-yellow-400 transition-all duration-300 hover:-translate-y-0.5 shadow-sm shadow-black hover:shadow hover:shadow-black"
+          >
+            <Link
+              to="/habits/?create=true"
+              className="w-40 h-14 flex items-center gap-x-2"
+            >
+              <PlusIcon className="w-8 h-8 font-bold flex-shrink-0" />
+              <span>Create a habit</span>
+            </Link>
+          </Button>
         </div>
       </div>
     );

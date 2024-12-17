@@ -51,6 +51,7 @@ body,
 #root {
   scroll-behavior: smooth;
   height: 100%;
+  background-color: #2a3d43;
 }
 
 ::-webkit-scrollbar {

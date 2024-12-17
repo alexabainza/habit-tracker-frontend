@@ -54,7 +54,9 @@ const Habits: React.FC = () => {
   );
   const limit = 12;
   const [totalPages, setTotalPages] = useState(1);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(
+    searchParams.get("create") === "true"
+  );
   const [isEditing, setIsEditing] = useState(false);
   const [habitToUpdate, setHabitToUpdate] = useState<Habit["habit"] | null>(
     null
@@ -87,6 +89,7 @@ const Habits: React.FC = () => {
           setWeeklyCounts(counts);
           setTotalPages(response.data.data.totalPages);
         } else {
+          result.data.length > 0;
           setHabits([]);
           setNumHabits(0);
           setHabitStates({});
@@ -258,7 +261,7 @@ const Habits: React.FC = () => {
           <div className="mt-6 grid gap-4">
             {loading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6 w-full mt-2">
-                {[...Array(4)].map((_, index) => (
+                {[...Array(8)].map((_, index) => (
                   <Skeleton
                     key={index}
                     className="h-24 lg:col-span-2 xl:col-span-1 bg-innermostCard"
@@ -272,8 +275,8 @@ const Habits: React.FC = () => {
                   alt="No habits found"
                   className="w-96 object-cover mx-auto"
                 />
-                <p className="text-white text-center text-xl md:text-3xl font-bold">
-                  No habits found
+                <p className="text-white text-center text-2xl md:text-3xl lg:text-4xl font-bold">
+                  It's lonely here...
                 </p>
               </div>
             ) : (

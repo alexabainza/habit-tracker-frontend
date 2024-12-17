@@ -29,8 +29,6 @@ type OverviewCardProps = {
   description?: string;
 };
 
-const cache: Record<string, any> = {};
-
 const Overview: React.FC<OverviewProps> = ({ selected, skippedDays }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({
@@ -50,20 +48,15 @@ const Overview: React.FC<OverviewProps> = ({ selected, skippedDays }) => {
       setLoading(true);
 
       try {
-        const streakCacheKey = `/analytics/user-streak/${selected}`;
-        const consistencyCacheKey = `/analytics/user-consistency/${selected}`;
-
         // Check if data is in the cache
-        const streakData =
-          cache[streakCacheKey] ||
-          (await useFetch(`/analytics/user-streak/${selected}`, "get"));
-        const consistencyData =
-          cache[consistencyCacheKey] ||
-          (await useFetch(`/analytics/user-consistency/${selected}`, "get"));
-
-        // Save data to cache
-        cache[streakCacheKey] = streakData;
-        cache[consistencyCacheKey] = consistencyData;
+        const streakData = await useFetch(
+          `/analytics/user-streak/${selected}`,
+          "get"
+        );
+        const consistencyData = await useFetch(
+          `/analytics/user-consistency/${selected}`,
+          "get"
+        );
 
         if (streakData.status === 204 || consistencyData.status === 204) {
           return;

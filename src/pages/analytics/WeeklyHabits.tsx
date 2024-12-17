@@ -150,7 +150,7 @@ const WeeklyHabits = () => {
                 <ChevronLeftIcon className="w-7 h-7 flex-shrink-0" />
                 <p className="sr-only">Prev</p>
               </button>
-              <span className="text-lg space-x-1.5">
+              <span className="text-lg space-x-1.5 font-bold tracking-wider">
                 {format(startRange, "LLLL") + " "}
                 {startRange
                   .toLocaleDateString()
@@ -189,7 +189,7 @@ const WeeklyHabits = () => {
                   {DaysInWeek.map((day, index) => (
                     <span
                       key={`day-${index}`}
-                      className="text-center font-semibold text-sm text-yellow-300"
+                      className="text-center font-semibold text-sm text-lightYellow"
                     >
                       {day}
                     </span>
@@ -199,7 +199,7 @@ const WeeklyHabits = () => {
                   {habits.map((habit) => (
                     <div
                       key={`habit-${habit.habit}`}
-                      className="col-span-11 grid grid-cols-11 gap-2 items-center"
+                      className="col-span-11 grid grid-cols-11 gap-2 items-center hover:bg-innermostCard rounded-md p-2 transition-all duration-300"
                     >
                       <div className="col-span-4 truncate font-medium text-sm overflow-ellipsis overflow-hidden max-w-40">
                         {habit.habit}
