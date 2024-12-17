@@ -21,7 +21,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { ChevronLeft, ChevronRight, LoaderIcon, Plus } from "lucide-react";
+import { LoaderIcon, Plus } from "lucide-react";
 import { habitSchema } from "@/utils/schemas";
 import { useFetch } from "@/hooks/use-fetch";
 import { Habit } from "@/utils/types";
@@ -33,6 +33,7 @@ import { Label } from "@/components/ui/label";
 import { useHabits } from "@/hooks/use-habits";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSearchParams } from "react-router-dom";
+import Pagination from "@/components/ui/pagination";
 
 const Habits: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
@@ -215,6 +216,12 @@ const Habits: React.FC = () => {
 
   return (
     <div className="w-full min-h-full bg-gradient-to-br from-[#2A3D43] to-[#40575C] relative overflow-hidden">
+      <img
+        src="/error.svg"
+        alt="background"
+        draggable={false}
+        className="absolute object-cover z-0 opacity-5 -rotate-[35deg] -right-96 -bottom-96"
+      />
       <div className="w-full py-12 lg:px-16 sm:px-5 px-5 space-y-4">
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <div className="flex gap-4 justify-between">
@@ -223,25 +230,12 @@ const Habits: React.FC = () => {
                 Your Habits
               </h1>
               {totalPages > 1 && (
-                <div className="md:hidden w-full flex md:justify-end items-center md:gap-4 mt-4 text-lightYellow gap-4">
-                  <Button
-                    disabled={page === 1}
-                    onClick={() => setPage(Math.max(page - 1, 1))}
-                  >
-                    <ChevronLeft className="flex-shrink-0 w-5 h-5" />
-                    <span>Previous</span>
-                  </Button>
-                  <span>
-                    {page} of {totalPages}
-                  </span>
-                  <Button
-                    disabled={page === totalPages}
-                    onClick={() => setPage(Math.min(page + 1, totalPages))}
-                  >
-                    <span>Next</span>
-                    <ChevronRight className="flex-shrink-0 w-5 h-5" />
-                  </Button>
-                </div>
+                <Pagination
+                  page={page}
+                  totalPages={totalPages}
+                  setPage={setPage}
+                  className="md:hidden mt-4"
+                />
               )}
             </section>
             <DialogTrigger asChild>
@@ -297,25 +291,12 @@ const Habits: React.FC = () => {
               </div>
             )}
             {totalPages > 1 && (
-              <div className="w-full max-w-5xl hidden md:flex justify-center items-center gap-4 text-lightYellow mx-auto md:fixed bottom-5 left-1/2 transform -translate-x-1/2">
-                <Button
-                  disabled={page === 1}
-                  onClick={() => setPage(Math.max(page - 1, 1))}
-                >
-                  <ChevronLeft className="flex-shrink-0 w-5 h-5" />
-                  <span>Previous</span>
-                </Button>
-                <span>
-                  {page} of {totalPages}
-                </span>
-                <Button
-                  disabled={page === totalPages}
-                  onClick={() => setPage(Math.min(page + 1, totalPages))}
-                >
-                  <span>Next</span>
-                  <ChevronRight className="flex-shrink-0 w-5 h-5" />
-                </Button>
-              </div>
+              <Pagination
+                page={page}
+                totalPages={totalPages}
+                setPage={setPage}
+                className="hidden md:flex fixed bottom-5 left-1/2 transform -translate-x-1/2"
+              />
             )}
           </div>
           <ConfirmationDialog

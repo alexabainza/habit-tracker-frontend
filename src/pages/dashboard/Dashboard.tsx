@@ -2,16 +2,12 @@ import React, { useEffect, useMemo, useState } from "react";
 import ChallengeCard from "@/pages/dashboard/Challenges";
 import { useHabits } from "@/hooks/use-habits";
 import { Button } from "@/components/ui/button";
-import {
-  ChevronLeft,
-  ChevronRightIcon,
-  LoaderIcon,
-  PlusIcon,
-} from "lucide-react";
+import { LoaderIcon, PlusIcon } from "lucide-react";
 import { useFetch } from "@/hooks/use-fetch";
 import { Habit } from "@/utils/types";
 import { Link, useSearchParams } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
+import Pagination from "@/components/ui/pagination";
 
 const Dashboard: React.FC = () => {
   const {
@@ -140,29 +136,18 @@ const Dashboard: React.FC = () => {
   return (
     <div className="w-full bg-gradient-to-br from-[#2A3D43] to-[#40575C]">
       <div className="lg:px-16 sm:px-8 px-5 space-y-4 m-auto items-center justify-center py-8">
-        <section className="w-full flex flex-col py-8 md:flex-row items-end justify-between">
+        <section className="w-full flex flex-col pt-8 space-y-4 md:flex-row items-end justify-between">
           <h1 className="lg:text-4xl sm:text-3xl text-2xl font-bold text-lightYellow tracking-wider w-full">
             Dashboard
           </h1>
-          <div className="w-full flex md:justify-end items-center md:gap-4 mt-4 text-lightYellow">
-            <Button
-              disabled={page === 1}
-              onClick={() => setPage(Math.max(page - 1, 1))}
-            >
-              <ChevronLeft className="flex-shrink-0 w-5 h-5" />
-              <span>Previous</span>
-            </Button>
-            <span>
-              {page} of {totalPages}
-            </span>
-            <Button
-              disabled={page === totalPages}
-              onClick={() => setPage(Math.min(page + 1, totalPages))}
-            >
-              <span>Next</span>
-              <ChevronRightIcon className="flex-shrink-0 w-5 h-5" />
-            </Button>
-          </div>
+          {totalPages > 1 && (
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              setPage={setPage}
+              className="w-full flex justify-start md:justify-end items-center md:gap-4 mt-4 text-lightYellow"
+            />
+          )}
         </section>
         <section className="bg-outerCard sm:px-8 px-4 py-8 rounded-xl  space-y-3">
           <div className="flex justify-between items-end px-2">
