@@ -44,7 +44,12 @@ cd habit-tracker-frontend
 npm install
 ```
 
-4. **Run the app**
+4. **Create a .env file in the root directory and add the necessary environment variables. Refer to .env.example if available.**
+```
+cp .env.example .env
+```
+   
+5. **Run the app**
 
 ```
 npm run dev
