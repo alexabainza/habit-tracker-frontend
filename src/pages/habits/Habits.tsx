@@ -44,7 +44,6 @@ const Habits: React.FC = () => {
     setHabits,
     setHabitStates,
     setWeeklyCounts,
-    setNumHabits,
     setError,
   } = useHabits();
 
@@ -76,7 +75,6 @@ const Habits: React.FC = () => {
         const result = response.data.data;
         if (result.data && result.data.length > 0) {
           setHabits(result.data);
-          setNumHabits(result.total);
 
           const states: { [key: string]: boolean } = {};
           const counts: { [key: string]: number } = {};
@@ -92,13 +90,11 @@ const Habits: React.FC = () => {
         } else {
           result.data.length > 0;
           setHabits([]);
-          setNumHabits(0);
           setHabitStates({});
           setWeeklyCounts({});
         }
       } catch (error: any) {
         setHabits([]);
-        setNumHabits(0);
         setHabitStates({});
         setWeeklyCounts({});
         setError({
@@ -214,14 +210,18 @@ const Habits: React.FC = () => {
     }
   };
 
+  const paginatedHabits = habits.slice((page - 1) * limit, page * limit);
+
   return (
     <div className="w-full min-h-full bg-gradient-to-br from-[#2A3D43] to-[#40575C] relative overflow-hidden">
-      <img
-        src="/error.svg"
-        alt="background"
-        draggable={false}
-        className="absolute object-cover z-0 opacity-5 -rotate-[35deg] -right-96 -bottom-96"
-      />
+      {habits.length > 0 && !loading && (
+        <img
+          src="/error.svg"
+          alt="background"
+          draggable={false}
+          className="absolute object-cover z-0 opacity-5 -rotate-[35deg] -right-96 -bottom-96"
+        />
+      )}
       <div className="w-full py-12 lg:px-16 sm:px-5 px-5 space-y-4">
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <div className="flex gap-4 justify-between">
@@ -275,7 +275,7 @@ const Habits: React.FC = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6">
-                {habits.map((habit) => (
+                {paginatedHabits.map((habit) => (
                   <HabitCard
                     key={habit.habit._id}
                     habit={habit.habit}
@@ -295,7 +295,7 @@ const Habits: React.FC = () => {
                 page={page}
                 totalPages={totalPages}
                 setPage={setPage}
-                className="hidden md:flex fixed bottom-5 left-1/2 transform -translate-x-1/2"
+                className="hidden md:flex fixed bottom-5 left-1/2 transform -translate-x-1/2 mx-auto"
               />
             )}
           </div>
@@ -376,7 +376,7 @@ const Habits: React.FC = () => {
                         </div>
                       </FormControl>
 
-                      <FormMessage className="text-xs text-red-100" />
+                      <FormMessage className="text-xs text-red-400" />
                     </FormItem>
                   )}
                 />

@@ -85,6 +85,7 @@ const Dashboard: React.FC = () => {
   }, [habits, habitStates]);
 
   const percentage = (completed / numHabits) * 100;
+  const paginatedHabits = habits.slice((page - 1) * limit, page * limit);
 
   if (loading) {
     return (
@@ -178,7 +179,7 @@ const Dashboard: React.FC = () => {
           </div>
 
           <div className="space-y-4">
-            {habits.map((habit) => (
+            {paginatedHabits.map((habit) => (
               <ChallengeCard
                 key={habit.habit._id}
                 habit={habit.habit}
