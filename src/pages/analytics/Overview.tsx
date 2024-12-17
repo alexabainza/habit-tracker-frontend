@@ -7,7 +7,13 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFetch } from "@/hooks/use-fetch";
-import { endOfMonth, endOfWeek, format, startOfMonth, startOfWeek } from "date-fns";
+import {
+  endOfMonth,
+  endOfWeek,
+  format,
+  startOfMonth,
+  startOfWeek,
+} from "date-fns";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -88,16 +94,23 @@ const Overview: React.FC<OverviewProps> = ({ selected, skippedDays }) => {
     fetchData();
   }, [selected]);
 
-  const start = selected === 'weekly' ? startOfWeek(new Date(), { weekStartsOn: 0 }) : startOfMonth(new Date());
-  const end = selected === 'weekly' ? endOfWeek(new Date(), { weekStartsOn: 0 }) : endOfMonth(new Date());
+  const start =
+    selected === "weekly"
+      ? startOfWeek(new Date(), { weekStartsOn: 0 })
+      : startOfMonth(new Date());
+  const end =
+    selected === "weekly"
+      ? endOfWeek(new Date(), { weekStartsOn: 0 })
+      : endOfMonth(new Date());
 
-  const thisWeek = `${format(start, 'MMM dd')} to ${format(end, 'MMM dd')}`;
+  const thisWeek = `${format(start, "MMM dd")} to ${format(end, "MMM dd")}`;
 
   return (
-    <Card className="bg-outerCard lg:py-4 sm:py-2 py-2 border-2 lg:px-8 md:px-4 sm:px-2 px-2 space-y-2 w-full md:mx-auto flex flex-col justify-center">
+    <Card className="bg-outerCard lg:py-4 sm:py-2 py-2 border-2 lg:px-8 md:px-4 sm:px-2 px-2 space-y-2 w-full mx-auto flex flex-col justify-center">
       <CardHeader className="pb-0 pl-4">
         <CardTitle className="text-lightYellow text-xl">
-          Streak Overview for <span className="uppercase font-bold underline">{thisWeek}</span>
+          Streak Overview for{" "}
+          <span className="uppercase font-bold underline">{thisWeek}</span>
         </CardTitle>
       </CardHeader>
       <CardContent className="grid sm:grid-cols-2 xl:grid-cols-4 xl:grid-rows-1 gap-4 overflow-x-auto w-full p-3">

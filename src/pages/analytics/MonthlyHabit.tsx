@@ -74,7 +74,12 @@ export function MonthlyHabits() {
       <Overview selected="monthly" skippedDays={skippedDays} />
       <div className="flex lg:flex-row md:flex-col sm:flex-col flex-col gap-4 md:gap-6">
         <div className="w-full lg:max-w-xl xl:max-w-3xl flex-1">
-          <ChartOverview view="monthly" loading={loading} data={data} className="max-h-[550px]"/>
+          <ChartOverview
+            view="monthly"
+            loading={loading}
+            data={data}
+            className="max-h-[550px]"
+          />
         </div>
         <Calendar
           mode="single"
@@ -95,8 +100,9 @@ export function MonthlyHabits() {
             caption_label:
               "lg:text-xl sm:text-lg text-lg font-medium text-lightYellow",
             day: "lg:h-12 md:h-14 sm:h-16 h-10 lg:w-12 md:w-14 sm:w-16 w-10 text-center",
-            cell: "lg:text-lg sm:text-sm text-sm lg:w-4 md:w-16 sm:w-10 w-10 text-center mx-auto",
-            head_cell: "text-center text-sm lg:w-12 md:w-14 sm:w-10 w-10 mt-4 w-full mx-auto",
+            cell: "lg:text-lg sm:text-sm text-sm lg:w-16 md:w-16 sm:w-10 w-10 text-center mx-auto ",
+            head_cell:
+              "text-center text-sm lg:w-12 md:w-14 sm:w-10 w-10 mt-4 w-full mx-auto",
             nav_button: "hover:opacity-60 rounded-full text-lightYellow",
           }}
         />

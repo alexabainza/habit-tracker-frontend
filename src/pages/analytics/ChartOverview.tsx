@@ -12,7 +12,6 @@ import {
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { endOfWeek, format, startOfWeek } from "date-fns";
 
 const chartConfig = {
   count: {
@@ -54,12 +53,6 @@ export function ChartOverview({
     );
   }
 
-  const thisWeek = `${format(
-    startOfWeek(new Date(), { weekStartsOn: 0 }),
-    "LLL dd"
-  )} - 
-  ${format(endOfWeek(new Date(), { weekStartsOn: 0 }), "LLL dd yyyy")}`;
-
   return (
     <Card
       className={cn(
@@ -76,7 +69,7 @@ export function ChartOverview({
         ) : (
           <span>
             Overview from
-            <strong className="ml-2">{thisWeek}</strong>
+            <strong className="ml-2">{weeklyDateRange}</strong>
           </span>
         )}
       </CardTitle>

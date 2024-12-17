@@ -5,7 +5,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,7 +19,6 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { habitSchema } from "@/utils/schemas";
-import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { useFetch } from "@/hooks/use-fetch";
 import { Habit } from "@/utils/types";
@@ -40,7 +38,6 @@ const AddHabitDialog: React.FC<AddHabitDialogProps> = ({
   onHabitAdded,
   initialHabit = null,
   isEditing = false,
-  setIsEditing,
 }) => {
   const form = useForm({
     resolver: zodResolver(habitSchema),
