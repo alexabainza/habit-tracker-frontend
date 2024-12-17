@@ -2,6 +2,15 @@
 
 **Made by:** Alex Abainza, Mark Allen Jugalbot, Stella Salde - BS Computer Science 3
 
+## Visit our app here:
+
+🐸 [tribbit-app.vercel.app](https://tribbit-app.vercel.app)
+<br/>
+🐸 [tribbit-app.vercel.app](https://tribbit-app.vercel.app)
+<br/>
+🐸 [tribbit-app.vercel.app](https://tribbit-app.vercel.app)
+<br/>
+
 ## About the App
 
 Tribbit is an application designed to help users build and maintain positive habits. With features like habit creation, streak tracking, and detailed progress analytics, users can easily set daily or weekly targets, log their completions, and visualize their progress through interactive charts and graphs.
@@ -35,7 +44,7 @@ git clone https://github.com/alexabainza/habit-tracker-frontend.git
 2. **Navigate to the root folder**
 
 ```
-cd habit-tracker-frontend
+cd tribbit-app
 ```
 
 3. **Install dependencies**
