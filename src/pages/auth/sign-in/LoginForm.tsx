@@ -53,7 +53,6 @@ const LoginForm = () => {
 
             if (result.status === 200) {
                 toast.success(result.message);
-                console.log(result.data);
                 setOtpSent(result.data.email);
             }
         } catch (error: any) {

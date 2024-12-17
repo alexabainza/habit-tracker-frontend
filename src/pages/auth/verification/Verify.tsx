@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { BanIcon, ChevronLeftIcon, Loader2Icon, MountainIcon } from 'lucide-react'
+import { BanIcon, ChevronLeftIcon, Loader2Icon } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';

@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig } from "axios";
 export const useFetch = async (url: string, method: string = "GET", data?: any, headers?: Record<string, string>) => {
     // Construct base URL dynamically based on environment
     try {
-        const baseURL = process.env.NODE_ENV === "development" ? "http://localhost:8080/api" : import.meta.env.VITE_BASE_API_URL;
+        const baseURL = process.env.NODE_ENV === "development" ? "http://localhost:3000/api" : import.meta.env.VITE_BASE_API_URL;
 
         const config: AxiosRequestConfig = {
             method,

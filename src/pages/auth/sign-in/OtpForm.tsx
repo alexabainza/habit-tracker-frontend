@@ -68,8 +68,6 @@ export function InputOTPForm({ email }: { email: string }) {
         }
     };
 
-    console.log("InputOTPForm", email);
-
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">

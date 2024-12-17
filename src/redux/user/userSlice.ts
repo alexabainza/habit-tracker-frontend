@@ -26,7 +26,6 @@ const getTokenExpirationTime = (token: string): number | null => {
     const decoded: { exp: number } = jwtDecode(token);
     return decoded.exp * 1000;
   } catch (error) {
-    console.error("Invalid token:", error);
     return null;
   }
 };

@@ -67,7 +67,6 @@ export default function Profile() {
         form.setValue("username", result.data.username);
         setUser(result.data || []);
       } catch (error) {
-        console.error(error);
         toast.error("Failed to fetch user data.");
       } finally {
         setLoading(false);

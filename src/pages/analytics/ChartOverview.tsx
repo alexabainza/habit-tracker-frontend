@@ -37,8 +37,8 @@ export function ChartOverview({
   loading,
   data,
   view,
-  weeklyDateRange,
   className,
+  weeklyDateRange,
 }: ChartOverviewProps) {
   // Derive date range for monthly view
   const dateRange = data.length

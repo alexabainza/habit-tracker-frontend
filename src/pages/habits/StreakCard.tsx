@@ -2,7 +2,6 @@ import { useFetch } from "@/hooks/use-fetch";
 import { StreakCardProps } from "@/utils/types";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
-import Loading from "../../components/ui/loading";
 import { Calendar } from "../../components/ui/calendar";
 import { formatDateToMMM_d } from "@/utils/dateFormatter";
 import { Skeleton } from "@/components/ui/skeleton";
